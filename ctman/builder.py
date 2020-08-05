@@ -1,6 +1,6 @@
 import os, datetime
 from cantools.util import cmd, read, write
-from hazards import chemicals, chemprops
+from ctman.hazards import chemicals, chemprops
 
 def part(fname):
 	return "# %s\r\n%s"%(fname.split(".")[0], read(os.path.join("templates", fname)))
