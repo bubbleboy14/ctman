@@ -1,5 +1,6 @@
 syms = {
 	".": ["_man.py"],
+	"css": ["man.css"],
 	"html": ["man"],
 	"js": ["man"]
 }
