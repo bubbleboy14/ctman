@@ -1,0 +1,16 @@
+#ctheader img {
+	height: 100%;
+}
+
+.ctform > div {
+	margin: 10px;
+	padding: 10px;
+	border-radius: 5px;
+	border: 1px solid black;
+}
+
+.ctform input, .ctform button, .ctform textarea {
+	width: 100%;
+	display: block;
+	margin: 10px auto;
+}
