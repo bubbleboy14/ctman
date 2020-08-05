@@ -1,4 +1,4 @@
-dirs = ["build"]
+dirs = ["build", "templates"]
 syms = {
 	".": ["_man.py"],
 	"css": ["man.css"],
