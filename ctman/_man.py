@@ -1,5 +1,5 @@
 from cantools.web import respond, succeed, cgi_get
-from builder import build
+from ctman.builder import build
 from model import db
 
 def response():
