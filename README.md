@@ -4,8 +4,10 @@ Manual generation framework.
 
 # Back (Init Config)
 
+    dirs = ["build", "templates"]
     syms = {
     	".": ["_man.py"],
+    	"css": ["man.css"],
     	"html": ["man"],
     	"js": ["man"]
     }
@@ -13,7 +15,8 @@ Manual generation framework.
     	"ctman.model": ["*"]
     }
     routes = {
-    	"/_man": "_man.py"
+    	"/_man": "_man.py",
+    	"/build": "build"
     }
     requires = ["ctuser"]
     
