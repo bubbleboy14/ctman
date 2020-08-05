@@ -1,3 +1,4 @@
+dirs = ["build"]
 syms = {
 	".": ["_man.py"],
 	"css": ["man.css"],
@@ -8,6 +9,7 @@ model = {
 	"ctman.model": ["*"]
 }
 routes = {
-	"/_man": "_man.py"
+	"/_man": "_man.py",
+	"/build": "build"
 }
 requires = ["ctuser"]
