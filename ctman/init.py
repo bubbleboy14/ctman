@@ -1,4 +1,7 @@
-dirs = ["build", "templates"]
+dirs = ["build", "templates", "tex"]
+copies = {
+	"tex": ["imps.tex", "pre.tex"]
+}
 syms = {
 	".": ["_man.py"],
 	"css": ["man.css"],
