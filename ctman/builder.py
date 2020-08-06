@@ -23,19 +23,16 @@ def inject(data, injects):
 		data = data.replace("{%s}"%(i,), injects[i])
 	return data
 
-def frame(data):
-	return "![logo](img/logo.jpg)\r\n\r\n%s"%(data,)
-
 def export(data):
 	fname = "_".join(str(datetime.datetime.now()).split(".")[0].split(" "))
 	mdname = os.path.join("build", "%s.md"%(fname,))
 	write(data, mdname)
 	bname = os.path.join("build", "%s.pdf"%(fname,))
-	cmd("pandoc %s -o %s --toc"%(mdname, bname))
+	cmd("pandoc %s -o %s --toc -H tex/imps.tex -B tex/pre.tex"%(mdname, bname))
 	return bname
 
 def build(injects, assembly):
 	template = assemble(assembly)
 	fulltemp = hazard(template, assembly)
-	data = frame(inject(fulltemp, injects))
+	data = inject(fulltemp, injects)
 	return export(data)
