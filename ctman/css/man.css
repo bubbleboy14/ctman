@@ -3,7 +3,7 @@
 }
 
 .ctform > div {
-	margin: 10px;
+	margin: 5px;
 	padding: 10px;
 	border-radius: 5px;
 	border: 1px solid black;
@@ -12,9 +12,9 @@
 .ctform input, .ctform button, .ctform textarea {
 	width: 100%;
 	display: block;
-	margin: 10px auto;
+	margin: 5px auto;
 }
 
 .ctform button {
-	width: calc(100% - 20px);
+	width: calc(100% - 10px);
 }
