@@ -7,6 +7,13 @@ class Section(db.TimeStampedBase):
 	description = db.Text()
 	sections = db.ForeignKey(kind="section", repeated=True)
 
+	def secs(self, depth=1):
+		"\r\n\r\n".join([s.content(depth) for s in db.get_multi(self.sections)])
+
+	def content(self, depth=1):
+		return "\r\n\r\n".join(["%s %s"%("#" * depth, self.name),
+			self.description, self.secs(depth + 1)])
+
 class Template(Section):
 	pass
 
