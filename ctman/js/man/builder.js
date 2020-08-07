@@ -1,5 +1,5 @@
 man.builder.Browser = CT.Class({
-	"CLASSNAME": "man.builder.Browser",
+	CLASSNAME: "man.builder.Browser",
 	build: function(d) {
 		var n = CT.dom.div(null, "margined padded bordered round");
 		n.refresh = function() {
