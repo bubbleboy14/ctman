@@ -16,6 +16,11 @@ class SecBase(db.TimeStampedBase):
 		return "\r\n\r\n".join(["%s %s"%("#" * depth, self.name),
 			self.description, self.secs(sections, depth + 1)])
 
+	def unrolled(self):
+		d = self.data()
+		d['sections'] = [s.unrolled() for s in db.get_multi(self.sections)]
+		return d
+
 class Section(SecBase):
 	pass
 
