@@ -1,5 +1,5 @@
-man.templates.Browser = CT.Class({
-	CLASSNAME: "man.templates.Browser",
+man.browsers.Template = CT.Class({
+	CLASSNAME: "man.browsers.Template",
 	view: function(d) {
 		var _ = this._, mcfg = core.config.ctman, val;
 		CT.dom.setContent(_.nodes.content, [
