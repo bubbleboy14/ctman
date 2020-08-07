@@ -61,11 +61,7 @@ man.builder.Browser = CT.Class({
 							key: d.key,
 							assembly: d.assembly,
 							injections: d.injections
-						} : d, function(dfull) {
-							if (d.key)
-								return view(dfull);
-							_.tlist.postAdd(dfull, true);
-						});
+						} : d);
 					}
 				}),
 			], "margined padded bordered round"),
