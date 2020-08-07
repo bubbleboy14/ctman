@@ -2,7 +2,7 @@ from cantools import db
 from ctuser.model import *
 from ctedit.model import PageEdit, Style
 
-class Section(db.TimeStampedBase):
+class SecBase(db.TimeStampedBase):
 	name = db.String()
 	description = db.Text()
 	sections = db.ForeignKey(kind="section", repeated=True)
@@ -16,7 +16,10 @@ class Section(db.TimeStampedBase):
 		return "\r\n\r\n".join(["%s %s"%("#" * depth, self.name),
 			self.description, self.secs(sections, depth + 1)])
 
-class Template(Section):
+class Section(SecBase):
+	pass
+
+class Template(SecBase):
 	owner = db.ForeignKey(kind=CTUser)
 
 class Document(db.TimeStampedBase):
