@@ -5,12 +5,12 @@ from ctman.hazards import chemicals, chemprops
 def part(fname):
 	return "# %s\r\n%s"%(fname.split(".")[0], read(os.path.join("templates", fname)))
 
-def assemble(arules): # do something w/ arules{...}
+def assemble(sections): # do something w/ sections[]
 	for dirpath, dirnames, filenames in os.walk("templates"):
 		return "\n\n".join([part(fname) for fname in filenames])
 
 def hazard(template, arules): # do non-chems as well
-	chems = arules.get("hazards", { "chemical": [] })["chemical"]
+	chems = arules.get("chemical")
 	if not chems: return template
 	chart = [chemprops, ["---" for p in chemprops]]
 	for chem in chems:
@@ -31,8 +31,8 @@ def export(data):
 	cmd("pandoc %s -o %s --toc -H tex/imps.tex -B tex/pre.tex"%(mdname, bname))
 	return bname
 
-def build(injects, assembly):
-	template = assemble(assembly)
-	fulltemp = hazard(template, assembly)
+def build(injects, assembly={}, template=None):
+	tempbod = (template and template.content or assemble)(assembly.get("sections"))
+	fulltemp = hazard(tempbod, assembly.get("hazards", {}))
 	data = inject(fulltemp, injects)
 	return export(data)
