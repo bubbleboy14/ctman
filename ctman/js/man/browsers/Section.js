@@ -27,17 +27,8 @@ man.browsers.Section = CT.Class({
 		});
 	},
 	sections: function(d) {
-		var n = CT.dom.div(null, "margined padded bordered round"),
-			section = this.section, asec = this.asec;
-		n.refresh = function() {
-			CT.dom.setContent(n, [
-				CT.dom.button("add section", asec(d, n), "right"),
-				"sections",
-				d.sections.map(section)
-			]);
-		};
-		n.refresh();
-		return n;
+		return man.util.refresher("sections", "add section",
+			n => this.asec(d, n), _ => d.sections.map(this.section));
 	},
 	view: function(d) {
 		var _ = this._, mcfg = core.config.ctman, val;
