@@ -14,3 +14,7 @@
 	display: block;
 	margin: 10px auto;
 }
+
+.ctform button {
+	width: calc(100% - 20px);
+}
