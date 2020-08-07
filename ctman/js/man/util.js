@@ -11,5 +11,18 @@ man.util = {
 				items: core.config.ctman[fname]
 			}),
 		], "margined padded bordered round");
+	},
+	refresher: function(title, buttname, buttcb, bodgen) {
+		var n = CT.dom.div(null, "margined padded bordered round"),
+			section = this.section, asec = this.asec;
+		n.refresh = function() {
+			CT.dom.setContent(n, [
+				CT.dom.button(buttname, buttcb(n), "right"),
+				title,
+				bodgen()
+			]);
+		};
+		n.refresh();
+		return n;
 	}
 };
