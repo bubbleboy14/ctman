@@ -4,7 +4,7 @@ from model import db
 
 def response():
 	doc = db.get(cgi_get("key"))
-	doc.pdf = build(doc.injections, doc.assembly)
+	doc.pdf = build(doc.injections, doc.assembly, doc.template)
 	doc.put()
 	succeed(doc.data())
 
