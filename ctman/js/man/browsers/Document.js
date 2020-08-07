@@ -1,27 +1,24 @@
 man.browsers.Document = CT.Class({
 	CLASSNAME: "man.browsers.Document",
-	build: function(d) {
-		var n = CT.dom.div(null, "margined padded bordered round");
-		n.refresh = function() {
-			CT.dom.setContent(n, [
-				"pdf build",
-				d.pdf && CT.dom.link("click here to download", null, d.pdf, "block"),
-				CT.dom.button("click here to build/rebuild", function() {
-					CT.net.post({
-						path: "/_man",
-						params: {
-							key: d.key
-						},
-						cb: function(newd) {
-							d.pdf = newd.pdf;
-							n.refresh();
-						}
-					});
-				})
-			]);
+	builder: function(d, n) {
+		return function() {
+			CT.net.post({
+				path: "/_man",
+				params: {
+					key: d.key
+				},
+				cb: function(newd) {
+					d.pdf = newd.pdf;
+					n.refresh();
+				}
+			});
 		};
-		n.refresh();
-		return n;
+	},
+	build: function(d) {
+		return man.util.refresher("pdf build",
+			"click here to build/rebuild", n => this.builder(d, n),
+			_ => d.pdf && CT.dom.link("click here to download",
+				null, d.pdf, "block"));
 	},
 	hazards: function(d) {
 		var hcfg = core.config.ctman.hazards.chemical,
