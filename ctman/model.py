@@ -17,7 +17,7 @@ class Section(db.TimeStampedBase):
 			self.description, self.secs(sections, depth + 1)])
 
 class Template(Section):
-	pass
+	owner = db.ForeignKey(kind=CTUser)
 
 class Document(db.TimeStampedBase):
 	owner = db.ForeignKey(kind=CTUser)
