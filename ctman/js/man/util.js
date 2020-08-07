@@ -1,7 +1,7 @@
 man.util = {
 	form: function(d, fname, cb) {
 		return CT.dom.div([
-			fname,
+			d[fname] && fname,
 			CT.layout.form({
 				cb: cb,
 				button: true,
