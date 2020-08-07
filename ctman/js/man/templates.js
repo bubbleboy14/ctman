@@ -2,7 +2,7 @@ man.templates.Browser = CT.Class({
 	CLASSNAME: "man.templates.Browser",
 	view: function(d) {
 		var _ = this._, mcfg = core.config.ctman, val;
-		CT.dom.setContent(_.content, [
+		CT.dom.setContent(_.nodes.content, [
 			CT.dom.div(d.name, "bigger centered"),
 			CT.layout.form({
 				button: true,
@@ -28,7 +28,7 @@ man.templates.Browser = CT.Class({
 	init: function(opts) {
 		this.opts = CT.merge(opts, {
 			modelName: "template",
-			blurs: ["template name", "template title", "name that tmeplate"]
+			blurs: ["template name", "template title", "name that template"]
 		}, this.opts);
 	}
 }, CT.Browser);
