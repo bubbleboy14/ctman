@@ -4,19 +4,12 @@ man.browsers.Template = CT.Class({
 		var _ = this._, mcfg = core.config.ctman, val;
 		CT.dom.setContent(_.nodes.content, [
 			CT.dom.div(d.name, "bigger centered"),
-			CT.layout.form({
-				button: true,
-				labels: true,
-				bname: "save",
-				values: d,
-				items: mcfg.template, // just desc for now...
-				cb: function(vals) {
-					for (val in vals)
-						d[val] = vals[val];
-					_.edit(d.key ? CT.merge({
-						key: d.key
-					}, vals) : d);
-				}
+			man.util.form(d, "template", function(vals) {
+				for (val in vals)
+					d[val] = vals[val];
+				_.edit(d.key ? CT.merge({
+					key: d.key
+				}, vals) : d);
 			})
 		]);
 	},

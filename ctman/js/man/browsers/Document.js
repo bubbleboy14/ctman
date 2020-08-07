@@ -42,29 +42,19 @@ man.browsers.Document = CT.Class({
 				"hazards",
 				haz
 			], "margined padded bordered round"),
-			CT.dom.div([
-				"injections",
-				CT.layout.form({
-					button: true,
-					labels: true,
-					bname: "save",
-					values: d.injections,
-					items: mcfg.injections,
-					cb: function(vals) {
-						d.injections = vals;
-						d.assembly = {
-							hazards: {
-								chemical: haz.value.map(v => mcfg.hazards.chemical[v])
-							}
-						};
-						_.edit(d.key ? {
-							key: d.key,
-							assembly: d.assembly,
-							injections: d.injections
-						} : d);
+			man.util.form(d, "injections", function(vals) {
+				d.injections = vals;
+				d.assembly = {
+					hazards: {
+						chemical: haz.value.map(v => mcfg.hazards.chemical[v])
 					}
-				}),
-			], "margined padded bordered round"),
+				};
+				_.edit(d.key ? {
+					key: d.key,
+					assembly: d.assembly,
+					injections: d.injections
+				} : d);
+			}),
 			d.key && this.build(d)
 		]);
 	},
