@@ -5,5 +5,5 @@ CT.require("man.builder");
 
 CT.onload(function() {
 	CT.initCore();
-	man.builder.form();
+	new man.builder.Browser();
 });
