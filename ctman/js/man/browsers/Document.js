@@ -31,30 +31,64 @@ man.browsers.Document = CT.Class({
 		return cz;
 	},
 	swaptemp: function(d, n) {
-		var _ = this._;
+		var _ = this._, bs = this.buildSecs;
 		return function() {
 			_.templates.length ? CT.modal.choice({
 				prompt: "please select a template",
 				data: ["default (static)"].concat(_.templates),
 				cb: function(tmp) {
-					d.template = (tmp == "default (static)")
-						? null : tmp.key;
-					CT.db.put({
-						key: d.key,
-						template: d.template
-					}, n.refresh);
+					var upobj = { key: d.key };
+					d.template = (tmp == "default (static)") ? null : tmp.key;
+					bs(d);
+					upobj.template = d.template;
+					upobj.assembly = d.assembly;
+					CT.db.put(upobj, n.refresh);
 				}
 			}) : alert("create a template on the templates page");
 		};
 	},
+	_bs: function(d) {
+		var actives = this._secmap[d.key].value;
+		return {
+			key: d.key,
+			sections: d.sections.filter(function(sec, i) {
+				return actives.includes(i);
+			}).map(this._bs)
+		};
+	},
+	buildSecs: function(d) {
+		if (!d.template) {
+			delete d.assembly.sections;
+			return;
+		}
+		d.assembly.sections = this._bs(CT.data.get(d.template)).sections;
+	},
+	_secmap: {},
+	_onmap: {},
+	upons: function(d) {
+		var s;
+		this._onmap[d.key] = d.sections.map(function(s, i) {
+			return i;
+		});
+		for (s of d.sections)
+			this.upons(s);
+	},
 	section: function(d) {
+		var cz = CT.dom.choices(d.sections.map(this.section), true),
+			ons = this._onmap[d.key];
+		this._secmap[d.key] = cz;
+		ons && CT.dom.each(cz, function(sel, i) {
+			if (ons.includes(i))
+				sel.onclick();
+		});
 		return CT.dom.div([
 			d.name,
-			CT.dom.choices(d.sections.map(this.section), true)
+			cz
 		]);
 	},
 	sections: function(d) {
 		if (!d.template) return CT.dom.div("default (static)", "centered");
+		this.upons({ key: d.template, sections: d.assembly.sections || [] });
 		return this.section(CT.data.get(d.template));
 	},
 	template: function(d) {
@@ -63,7 +97,8 @@ man.browsers.Document = CT.Class({
 	},
 	view: function(d) {
 		var _ = this._, haz = this.hazards(d),
-			mcfg = core.config.ctman, view = this.view;
+			mcfg = core.config.ctman, view = this.view,
+			bs = this.buildSecs;
 		CT.dom.setContent(_.nodes.content, [
 			CT.dom.div(d.name, "bigger centered"),
 			this.template(d),
@@ -78,6 +113,7 @@ man.browsers.Document = CT.Class({
 						chemical: haz.value.map(v => mcfg.hazards.chemical[v])
 					}
 				};
+				bs(d); // adds assembly.sections[]
 				_.edit(d.key ? {
 					key: d.key,
 					assembly: d.assembly,
