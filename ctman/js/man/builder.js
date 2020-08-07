@@ -36,7 +36,7 @@ man.builder.Browser = CT.Class({
 	view: function(d) {
 		var _ = this._, haz = this.hazards(d),
 			mcfg = core.config.ctman, view = this.view;
-		CT.dom.setContent(_.content, [
+		CT.dom.setContent(_.nodes.content, [
 			CT.dom.div(d.name, "bigger centered"),
 			CT.dom.div([
 				"hazards",
