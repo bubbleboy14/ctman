@@ -48,11 +48,11 @@ man.browsers.Document = CT.Class({
 		};
 	},
 	_bs: function(d) {
-		var actives = this._secmap[d.key].value;
+		var cz = this._secmap[d.key], actives = cz && cz.value;
 		return {
 			key: d.key,
 			sections: d.sections.filter(function(sec, i) {
-				return actives.includes(i);
+				return actives && actives.includes(i);
 			}).map(this._bs)
 		};
 	},
