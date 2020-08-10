@@ -101,7 +101,7 @@ man.browsers.Document = CT.Class({
 			bs = this.buildSecs;
 		CT.dom.setContent(_.nodes.content, [
 			CT.dom.div(d.name, "bigger centered"),
-			this.template(d),
+			d.key && this.template(d),
 			CT.dom.div([
 				"hazards",
 				haz
