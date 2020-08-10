@@ -15,8 +15,8 @@ def hazard(template, arules): # do non-chems as well
 	chart = [chemprops, ["---" for p in chemprops]]
 	for chem in chems:
 		chart.append([chemicals[chem][p] for p in chemprops])
-	return "%s\r\n\r\n# Hazards - Chemical\r\n\r\n %s"%(template,
-		" \r\n".join(map(lambda r : " | ".join(r), chart)))
+	return "%s\r\n\r\n# Hazards - Chemical\r\n\r\n| %s |"%(template,
+		" |\r\n| ".join(map(lambda r : " | ".join(r), chart)))
 
 def inject(data, injects):
 	for i in injects:
