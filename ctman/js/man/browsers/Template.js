@@ -1,5 +1,8 @@
 man.browsers.Template = CT.Class({
 	CLASSNAME: "man.browsers.Template",
+	extra: function(d) {
+		return d.key && this.sections(d);
+	},
 	init: function(opts) { // requires opts.sections
 		this.opts = CT.merge(opts, {
 			owner: true,
