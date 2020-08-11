@@ -8,8 +8,9 @@ man.browsers.Section = CT.Class({
 			items.length ? CT.modal.choice({
 				prompt: "please select a section",
 				data: items,
-				cb: function(sec) {
-					d.sections.push(sec.key);
+				style: "multiple-choice",
+				cb: function(sz) {
+					d.sections = d.sections.concat(sz.map(s => s.key));
 					CT.db.put({
 						key: d.key,
 						sections: d.sections
