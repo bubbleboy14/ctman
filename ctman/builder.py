@@ -34,7 +34,7 @@ def export(doc, data):
 		if not os.path.exists(iname):
 			sym("../%s"%(doc.logo.path,), iname)
 	write(read("tex/pre.tex").replace("_CLIENT_LOGO_",
-		doc.logo and str(doc.logo.value) or "logo"), pname)
+		doc.logo and iname or "img/logo"), pname)
 	cmd("pandoc %s -o %s --toc -H tex/imps.tex -B %s"%(mdname, bname, pname))
 	return bname
 
