@@ -1,5 +1,5 @@
 import os, datetime
-from cantools.util import cmd, read, write
+from cantools.util import cmd, read, write, sym
 from ctman.hazards import chemicals, chemprops
 
 def part(fname):
@@ -23,16 +23,24 @@ def inject(data, injects):
 		data = data.replace("{%s}"%(i,), injects[i])
 	return data
 
-def export(data):
+def export(doc, data):
 	fname = "_".join(str(datetime.datetime.now()).split(".")[0].split(" "))
 	mdname = os.path.join("build", "%s.md"%(fname,))
 	write(data, mdname)
 	bname = os.path.join("build", "%s.pdf"%(fname,))
-	cmd("pandoc %s -o %s --toc -H tex/imps.tex -B tex/pre.tex"%(mdname, bname))
+	pname = os.path.join("build", "%s.tex"%(fname,))
+	if doc.logo:
+		iname = os.path.join("build", "%s.jpg"%(doc.logo.value,))
+		if not os.path.exists(iname):
+			sym("../%s"%(doc.logo.path,), iname)
+	write(read("tex/pre.tex").replace("_CLIENT_LOGO_",
+		doc.logo and str(doc.logo.value) or "logo"), pname)
+	cmd("pandoc %s -o %s --toc -H tex/imps.tex -B %s"%(mdname, bname, pname))
 	return bname
 
-def build(injects, assembly={}, template=None):
-	tempbod = (template and template.content or assemble)(assembly.get("sections"))
-	fulltemp = hazard(tempbod, assembly.get("hazards", {}))
-	data = inject(fulltemp, injects)
-	return export(data)
+def build(doc):
+	afunc = doc.template and doc.template.get().content or assemble
+	tempbod = afunc(doc.assembly.get("sections"))
+	fulltemp = hazard(tempbod, doc.assembly.get("hazards", {}))
+	data = inject(fulltemp, doc.injections)
+	return export(doc, data)
