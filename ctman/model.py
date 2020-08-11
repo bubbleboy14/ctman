@@ -13,10 +13,13 @@ class SecBase(db.TimeStampedBase):
 			db.get(s['key']).content(s['sections'], depth) for s in sections
 		] or [s.content(depth=depth) for s in db.get_multi(self.sections)])
 
+	def desc(self):
+		return self.description
+
 	def content(self, sections=None, depth=1):
 		tline = "%s %s"%("#" * depth, self.name)
 		secs = self.sections and self.secs(sections, depth + 1) or ""
-		cont = "\r\n\r\n".join([tline, self.description, secs])
+		cont = "\r\n\r\n".join([tline, self.desc(), secs])
 		log(cont)
 		return cont
 
@@ -26,7 +29,12 @@ class SecBase(db.TimeStampedBase):
 		return d
 
 class Section(SecBase):
-	pass
+	image = db.Binary()
+
+	def desc(self):
+		if not self.image:
+			return self.description
+		return "%s\r\n\r\n![](%s)"%(self.description, self.image.path)
 
 class Template(SecBase):
 	owner = db.ForeignKey(kind=CTUser)
