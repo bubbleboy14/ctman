@@ -33,6 +33,7 @@ class Template(SecBase):
 
 class Document(db.TimeStampedBase):
 	owner = db.ForeignKey(kind=CTUser)
+	logo = db.Binary()
 	template = db.ForeignKey(kind=Template)
 	name = db.String()
 	injections = db.JSON()
