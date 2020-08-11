@@ -18,3 +18,7 @@
 .ctform button {
 	width: calc(100% - 10px);
 }
+
+.ctlist, .basicpopup {
+	overflow-y: auto;
+}
