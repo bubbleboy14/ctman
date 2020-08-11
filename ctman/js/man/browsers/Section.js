@@ -41,8 +41,14 @@ man.browsers.Section = CT.Class({
 					key: d.key
 				}, vals) : d);
 			}),
-			d.key && this.sections(d)
+			this.extra(d)
 		]);
+	},
+	extra: function(d) {
+		return d.key && [
+			man.util.image(d),
+			this.sections(d)
+		];
 	},
 	defaults: function() {
 		return {
