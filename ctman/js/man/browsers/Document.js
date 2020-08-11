@@ -95,22 +95,6 @@ man.browsers.Document = CT.Class({
 		return man.util.refresher("template", "swap",
 			n => this.swaptemp(d, n), _ => this.sections(d));
 	},
-	logo: function(d) {
-		var inode = CT.dom.img(d.logo, "w1"), dd = CT.file.dragdrop(function(ctfile) {
-			ctfile.upload("/_db", function(ilink) {
-				inode.src = d.logo = ilink;
-			}, {
-				action: "blob",
-				key: d.key,
-				property: "logo"
-			});
-		});
-		return CT.dom.div([
-			"client logo",
-			inode,
-			dd
-		], "margined padded bordered round");
-	},
 	view: function(d) {
 		var _ = this._, haz = this.hazards(d),
 			mcfg = core.config.ctman, view = this.view,
@@ -136,7 +120,7 @@ man.browsers.Document = CT.Class({
 					injections: d.injections
 				} : d);
 			}),
-			d.key && this.logo(d),
+			d.key && man.util.image(d, "logo", "client logo"),
 			d.key && this.build(d)
 		]);
 	},
