@@ -24,5 +24,22 @@ man.util = {
 		};
 		n.refresh();
 		return n;
+	},
+	image: function(d, iprop, title) {
+		iprop = iprop || "image";
+		var inode = CT.dom.img(d[iprop], "w1"), dd = CT.file.dragdrop(function(ctfile) {
+			ctfile.upload("/_db", function(ilink) {
+				inode.src = d[iprop] = ilink;
+			}, {
+				action: "blob",
+				key: d.key,
+				property: iprop
+			});
+		});
+		return CT.dom.div([
+			title || iprop,
+			inode,
+			dd
+		], "margined padded bordered round");
 	}
 };
