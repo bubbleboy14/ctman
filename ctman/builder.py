@@ -12,7 +12,7 @@ def assemble(sections): # do something w/ sections[]
 def hazard(template, arules): # do non-chems as well
 	chems = arules.get("chemical")
 	if not chems: return template
-	chart = [chemprops, ["---"*((i+1)*5) for i in range(len(chemprops))]]
+	chart = [chemprops, ["-"*((i+1)*5) for i in range(len(chemprops))]]
 	for chem in chems:
 		chart.append([chemicals[chem][p] for p in chemprops])
 	return "%s\r\n\r\n# Hazards - Chemical\r\n\r\n| %s |"%(template,
@@ -23,18 +23,33 @@ def inject(data, injects):
 		data = data.replace("{%s}"%(i,), injects[i])
 	return data
 
-def export(doc, data):
-	fname = "_".join(str(datetime.datetime.now()).split(".")[0].split(" "))
-	mdname = os.path.join("build", "%s.md"%(fname,))
-	write("\\newpage%s"%(data,), mdname)
-	bname = os.path.join("build", "%s.pdf"%(fname,))
+SUSHEET = """\\begin{center}
+{\\huge Sign-in Sheet}
+\\begin{tabular}{ |p{2.5cm}|p{2.5cm}|p{2.5cm}|p{2.5cm}| }
+\\hline
+Name & Signature & Company & Date \\\\ \\hline
+%s \\\\ \\hline
+\\end{tabular}
+\\end{center}
+"""%("\\\\ \\hline\r\n".join([" & & & " for i in range(40)]),)
+
+def pretex(doc, fname):
 	pname = os.path.join("build", "%s.tex"%(fname,))
 	if doc.logo:
 		iname = os.path.join("build", "%s.jpg"%(doc.logo.value,))
 		if not os.path.exists(iname):
 			sym("../%s"%(doc.logo.path,), iname)
 	write(read("tex/pre.tex").replace("_CLIENT_LOGO_",
-		doc.logo and iname or "img/logo.jpg"), pname)
+		doc.logo and iname or "img/logo.jpg").replace("_SIGNUP_SHEET_",
+			SUSHEET), pname)
+	return pname
+
+def export(doc, data):
+	fname = "_".join(str(datetime.datetime.now()).split(".")[0].split(" "))
+	mdname = os.path.join("build", "%s.md"%(fname,))
+	write("\\newpage%s"%(data,), mdname)
+	bname = os.path.join("build", "%s.pdf"%(fname,))
+	pname = pretex(doc, fname)
 	cmd("pandoc %s -o %s --toc -H tex/imps.tex -B %s"%(mdname, bname, pname))
 	return bname
 
