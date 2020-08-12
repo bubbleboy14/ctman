@@ -26,7 +26,7 @@ def inject(data, injects):
 def export(doc, data):
 	fname = "_".join(str(datetime.datetime.now()).split(".")[0].split(" "))
 	mdname = os.path.join("build", "%s.md"%(fname,))
-	write(data, mdname)
+	write("\\newpage%s"%(data,), mdname)
 	bname = os.path.join("build", "%s.pdf"%(fname,))
 	pname = os.path.join("build", "%s.tex"%(fname,))
 	if doc.logo:
@@ -34,7 +34,7 @@ def export(doc, data):
 		if not os.path.exists(iname):
 			sym("../%s"%(doc.logo.path,), iname)
 	write(read("tex/pre.tex").replace("_CLIENT_LOGO_",
-		doc.logo and iname or "img/logo"), pname)
+		doc.logo and iname or "img/logo.jpg"), pname)
 	cmd("pandoc %s -o %s --toc -H tex/imps.tex -B %s"%(mdname, bname, pname))
 	return bname
 
