@@ -39,6 +39,9 @@ class Section(SecBase):
 	image = db.Binary()
 	headerless = db.Boolean(default=False)
 
+	def labeler(self):
+		return "%s [%s]"%(self.name, self.index)
+
 	def body(self, depth):
 		return self.headerless and self.desc() or self.full(depth)
 
