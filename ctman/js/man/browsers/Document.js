@@ -18,7 +18,7 @@ man.browsers.Document = CT.Class({
 		return man.util.refresher("pdf build",
 			"click here to build/rebuild", n => this.builder(d, n),
 			_ => d.pdf && CT.dom.link("click here to download",
-				null, d.pdf, "block"));
+				null, d.pdf, "block", null, null, true));
 	},
 	hazards: function(d) {
 		var hcfg = core.config.ctman.hazards.chemical,
