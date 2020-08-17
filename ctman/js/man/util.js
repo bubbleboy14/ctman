@@ -42,5 +42,15 @@ man.util = {
 			inode,
 			dd
 		], "margined padded bordered round");
+	},
+	sideslide: function() {
+		var b = CT.dom.button("retract side bar", function() {
+			b._re = !b._re;
+			b.innerHTML = (b._re ? "expand" : "retract") + " side bar";
+			CT.dom.className("ctcontent").forEach(function(n) {
+				n.classList[b._re ? "add" : "remove"]("noside");
+			});
+		}, "abs cbl");
+		return b;
 	}
 };
