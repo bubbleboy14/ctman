@@ -69,9 +69,21 @@ man.browsers.Section = CT.Class({
 				return d.sections.map(s => sec(s, d));
 			});
 	},
+	unheader: function(d) {
+		var _ = this._;
+		if (!d.key || !this.opts.headerlessness) return;
+		return CT.dom.checkboxAndLabel("headerless", d.headerless,
+			null, null, "right bordered round", function(cb) {
+				_.edit({
+					key: d.key,
+					headerless: cb.checked
+				});
+			});
+	},
 	view: function(d) {
 		var _ = this._, mcfg = core.config.ctman, val;
 		CT.dom.setContent(_.nodes.content, [
+			this.unheader(d),
 			CT.dom.div(d.name, "bigger centered"),
 			man.util.form(d, "template", function(vals) {
 				for (val in vals)
@@ -97,6 +109,7 @@ man.browsers.Section = CT.Class({
 	init: function(opts) {
 		this.opts = CT.merge(opts, {
 			owner: false,
+			headerlessness: true,
 			modelName: "section",
 			blurs: ["section name", "section title", "name that section"]
 		}, this.opts);
