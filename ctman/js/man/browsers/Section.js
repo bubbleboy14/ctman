@@ -73,12 +73,24 @@ man.browsers.Section = CT.Class({
 		var _ = this._;
 		if (!d.key || !this.opts.headerlessness) return;
 		return CT.dom.checkboxAndLabel("headerless", d.headerless,
-			null, null, "right bordered round", function(cb) {
+			null, null, "abs ctr bordered round shiftup", function(cb) {
 				_.edit({
 					key: d.key,
 					headerless: cb.checked
 				});
 			});
+	},
+	inject: function(ta) {
+		return CT.dom.button("inject variable", function() {
+			CT.modal.choice({
+				prompt: "choose an injection variable",
+				data: core.config.ctman.injections.map(i => i.name),
+				cb: function(ivar) {
+					ta.setRangeText("{{" + ivar + "}}",
+						ta.selectionStart, ta.selectionEnd);
+				}
+			});
+		}, "right");
 	},
 	view: function(d) {
 		var _ = this._, mcfg = core.config.ctman, val;
@@ -91,6 +103,8 @@ man.browsers.Section = CT.Class({
 				_.edit(d.key ? CT.merge({
 					key: d.key
 				}, vals) : d);
+			}, {
+				description: this.inject
 			}),
 			this.extra(d)
 		]);
