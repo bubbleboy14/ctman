@@ -16,10 +16,17 @@ class SecBase(db.TimeStampedBase):
 	def desc(self):
 		return self.description
 
-	def content(self, sections=None, depth=1):
+	def full(self, depth):
 		tline = "%s %s"%("#" * depth, self.name)
+		return "%s\r\n\r\n%s"%(tline, self.desc())
+
+	def body(self, depth):
+		return self.full(depth)
+
+	def content(self, sections=None, depth=1):
+		body = self.body(depth)
 		secs = self.sections and self.secs(sections, depth + 1) or ""
-		cont = "\r\n\r\n".join([tline, self.desc(), secs])
+		cont = "%s\r\n\r\n%s"%(body, secs)
 		log(cont)
 		return cont
 
@@ -30,6 +37,10 @@ class SecBase(db.TimeStampedBase):
 
 class Section(SecBase):
 	image = db.Binary()
+	headerless = db.Boolean(default=False)
+
+	def body(self, depth):
+		return self.headerless and self.desc() or self.full()
 
 	def desc(self):
 		if not self.image:
