@@ -22,3 +22,12 @@
 .ctlist, .basicpopup {
 	overflow-y: auto;
 }
+
+.ctcontent {
+	transition: all 1s;
+	background: white;
+}
+
+.ctcontent.noside {
+	left: 10px;
+}
