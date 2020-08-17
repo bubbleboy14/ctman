@@ -1,9 +1,10 @@
 man.util = {
-	form: function(d, fname, cb) {
+	form: function(d, fname, cb, extra) {
 		return CT.dom.div([
 			d[fname] && fname,
 			CT.layout.form({
 				cb: cb,
+				extra: extra,
 				button: true,
 				labels: true,
 				bname: "save",
