@@ -40,7 +40,7 @@ class Section(SecBase):
 	headerless = db.Boolean(default=False)
 
 	def body(self, depth):
-		return self.headerless and self.desc() or self.full()
+		return self.headerless and self.desc() or self.full(depth)
 
 	def desc(self):
 		if not self.image:
