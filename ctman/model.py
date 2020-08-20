@@ -2,6 +2,7 @@ from cantools import db
 from cantools.util import log
 from ctuser.model import *
 from ctedit.model import PageEdit, Style
+from ctman.util import colfix
 
 class SecBase(db.TimeStampedBase):
 	name = db.String()
@@ -13,8 +14,11 @@ class SecBase(db.TimeStampedBase):
 			db.get(s['key']).content(s['sections'], depth) for s in sections
 		] or [s.content(depth=depth) for s in db.get_multi(self.sections)])
 
+	def fixed_desc(self):
+		return colfix(self.description)
+
 	def desc(self):
-		return self.description
+		return self.fixed_desc()
 
 	def full(self, depth):
 		tline = "%s %s"%("#" * depth, self.name)
@@ -46,9 +50,10 @@ class Section(SecBase):
 		return self.headerless and self.desc() or self.full(depth)
 
 	def desc(self):
+		d = self.fixed_desc()
 		if not self.image:
-			return self.description
-		return "%s\r\n\r\n![](%s)"%(self.description, self.image.path)
+			return d
+		return "%s\r\n\r\n![](%s)"%(d, self.image.path)
 
 class Template(SecBase):
 	owner = db.ForeignKey(kind=CTUser)
