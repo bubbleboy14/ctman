@@ -34,8 +34,8 @@
 		]
 	},
 	"template": [{
-		"wyz": true,
 		"isTA": true,
+		"wyz": "nonbsp",
 		"name": "description",
 		"blurs": ["please describe", "please expand", "tell all here"]
 	}],
