@@ -2,7 +2,7 @@ from cantools import db
 from cantools.util import log
 from ctuser.model import *
 from ctedit.model import PageEdit, Style
-from ctman.util import colfix
+from ctman.util import h2l
 
 class SecBase(db.TimeStampedBase):
 	name = db.String()
@@ -15,7 +15,7 @@ class SecBase(db.TimeStampedBase):
 		] or [s.content(depth=depth) for s in db.get_multi(self.sections)])
 
 	def fixed_desc(self):
-		return colfix(self.description)
+		return h2l(self.description)
 
 	def desc(self):
 		return self.fixed_desc()
