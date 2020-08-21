@@ -86,8 +86,7 @@ man.browsers.Section = CT.Class({
 				prompt: "choose an injection variable",
 				data: core.config.ctman.injections.map(i => i.name),
 				cb: function(ivar) {
-					ta.setRangeText("{{" + ivar + "}}",
-						ta.selectionStart, ta.selectionEnd);
+					tinyMCE.activeEditor.selection.setContent("{{" + ivar + "}}");
 				}
 			});
 		}, "right");
