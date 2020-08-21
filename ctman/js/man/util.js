@@ -52,5 +52,13 @@ man.util = {
 			});
 		}, "abs cbl");
 		return b;
+	},
+	help: function() {
+		var hcfg = core.config.ctman.help,
+			pname = location.pathname.slice(5, -5) || "documents";
+		CT.modal.modal([
+			CT.dom.div(pname + " page", "biggest centered"),
+			CT.dom.div(hcfg[pname], "kidvp")
+		]);
 	}
 };
