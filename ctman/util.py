@@ -12,6 +12,8 @@ flags = {
 		"tex": "\\emph{%s}"
 	}
 }
+for i in range(1, 7):
+	flags["h%s"%(i,)] = { "tex": "#" * i + " %s" }
 
 def h2l(h):
 	for flag in flags:
