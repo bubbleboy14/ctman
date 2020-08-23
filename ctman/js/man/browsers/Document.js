@@ -3,6 +3,7 @@ man.browsers.Document = CT.Class({
 	builder: function(d, n) {
 		return function() {
 			CT.net.post({
+				spinner: true,
 				path: "/_man",
 				params: {
 					key: d.key
