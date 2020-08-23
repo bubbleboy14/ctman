@@ -66,3 +66,4 @@ class Document(db.TimeStampedBase):
 	injections = db.JSON()
 	assembly = db.JSON()
 	pdf = db.String()
+	signup_sheet = db.Boolean(default=True)
