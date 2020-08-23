@@ -23,7 +23,8 @@ def inject(data, injects):
 		data = data.replace("{{%s}}"%(i,), injects[i])
 	return data
 
-SUSHEET = """\\begin{center}
+SUSHEET = """\\newpage
+\\begin{center}
 {\\huge Sign-in Sheet}
 \\begin{tabular}{ |p{2.5cm}|p{2.5cm}|p{2.5cm}|p{2.5cm}| }
 \\hline
@@ -41,7 +42,7 @@ def pretex(doc, fname):
 			sym("../%s"%(doc.logo.path,), iname)
 	write(read("tex/pre.tex").replace("_CLIENT_LOGO_",
 		doc.logo and iname or "img/logo.jpg").replace("_SIGNUP_SHEET_",
-			SUSHEET), pname)
+			doc.signup_sheet and SUSHEET or ""), pname)
 	return pname
 
 def export(doc, data):
