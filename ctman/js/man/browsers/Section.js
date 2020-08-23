@@ -52,14 +52,17 @@ man.browsers.Section = CT.Class({
 		});
 	},
 	section: function(key, d) {
-		var s = CT.data.get(key), n = CT.dom.div([
-			CT.dom.button("move", _ => this.move(key, d, n), "right"),
-			s.name
-		], "choice_cell", null, {
+		var n = CT.dom.div(null, "choice_cell", null, {
 			onclick: function() {
 				CT.dom.id("tl" + key).trigger();
 			}
-		})
+		}), mover = this.move;
+		CT.db.one(key, function(s) { // meh shouldn't be necessary...
+			CT.dom.setContent(n, [
+				CT.dom.button("move", _ => mover(key, d, n), "right"),
+				s.name
+			]);
+		});
 		return n;
 	},
 	sections: function(d) {
