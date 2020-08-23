@@ -96,6 +96,19 @@ man.browsers.Document = CT.Class({
 		return man.util.refresher("template", "swap",
 			n => this.swaptemp(d, n), _ => this.sections(d));
 	},
+	susheet: function(d) {
+		var _ = this._;
+		return CT.dom.div([
+			"signup sheet",
+			CT.dom.checkboxAndLabel("include signup sheet",
+				d.signup_sheet, null, null, null, function(cb) {
+					_.edit({
+						key: d.key,
+						signup_sheet: cb.checked
+					});
+				})
+		], "margined padded bordered round");
+	},
 	view: function(d) {
 		var _ = this._, haz = this.hazards(d),
 			mcfg = core.config.ctman, view = this.view,
@@ -122,6 +135,7 @@ man.browsers.Document = CT.Class({
 				} : d);
 			}),
 			d.key && man.util.image(d, "logo", "client logo"),
+			d.key && this.susheet(d),
 			d.key && this.build(d)
 		]);
 	},
