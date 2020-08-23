@@ -31,3 +31,7 @@
 .ctcontent.noside {
 	left: 10px;
 }
+
+.bottomhalf .ctlist {
+	bottom: 30px;
+}
