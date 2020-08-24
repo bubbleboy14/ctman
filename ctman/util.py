@@ -41,6 +41,13 @@ flags = {
 for i in range(1, 7):
 	flags["h%s"%(i,)] = { "tex": "#" * i + " %s" }
 
+for i in range(1, 4):
+	flags["t%s"%(i,)] = {
+		"start": '<p style="padding-left: %spx;">'%(i * 30,),
+		"end": "</p>",
+		"tex": "|" + "    " * i + " %s"
+	}
+
 def trans(h, flag):
 	rules = flags[flag]
 	sflag = rules.get("start", "<%s>"%(flag,))
