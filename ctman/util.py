@@ -1,5 +1,15 @@
 flags = {
-	"color:": {
+	"center": {
+		"start": '<p style="text-align: center;">',
+		"end": "</p>",
+		"tex": "\\begin{center}\r\n%s\r\n\\end{center}"
+	},
+	"right": {
+		"start": '<p style="text-align: right;">',
+		"end": "</p>",
+		"tex": "\\begin{flushright}\r\n%s\r\n\\end{flushright}"
+	},
+	"color": {
 		"start": '<span style="color: #',
 		"end": "</span>",
 		"mid": ';">',
@@ -15,19 +25,23 @@ flags = {
 for i in range(1, 7):
 	flags["h%s"%(i,)] = { "tex": "#" * i + " %s" }
 
+def trans(h, flag):
+	rules = flags[flag]
+	sflag = rules.get("start", "<%s>"%(flag,))
+	eflag = rules.get("end", "</%s>"%(flag,))
+	tex = rules["tex"]
+	while sflag in h:
+		start = h.index(sflag)
+		end = h.index(eflag, start)
+		seg = h[start + len(sflag):end]
+		if "mid" in rules:
+			[c, t] = seg.split(rules["mid"])
+			h = h[:start] + tex%(c, t) + h[end + len(eflag):]
+		else:
+			h = h[:start] + tex%(seg,) + h[end + len(eflag):]
+	return h
+
 def h2l(h):
 	for flag in flags:
-		rules = flags[flag]
-		sflag = rules.get("start", "<%s>"%(flag,))
-		eflag = rules.get("end", "</%s>"%(flag,))
-		tex = rules["tex"]
-		while sflag in h:
-			start = h.index(sflag)
-			end = h.index(eflag)
-			seg = h[start + len(sflag):end]
-			if "mid" in rules:
-				[c, t] = seg.split(rules["mid"])
-				h = h[:start] + tex%(c, t) + h[end + len(eflag):]
-			else:
-				h = h[:start] + tex%(seg,) + h[end + len(eflag):]
+		h = trans(h, flag)
 	return h
