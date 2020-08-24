@@ -1,13 +1,19 @@
 flags = {
+	"ol": {
+		"liner": "1. %s"
+	},
+	"ul": {
+		"liner": "- %s"
+	},
 	"center": {
 		"start": '<p style="text-align: center;">',
 		"end": "</p>",
-		"tex": "\\begin{center}\r\n%s\r\n\\end{center}"
+		"tex": "\\begin{center}\n%s\n\\end{center}"
 	},
 	"right": {
 		"start": '<p style="text-align: right;">',
 		"end": "</p>",
-		"tex": "\\begin{flushright}\r\n%s\r\n\\end{flushright}"
+		"tex": "\\begin{flushright}\n%s\n\\end{flushright}"
 	},
 	"color": {
 		"start": '<span style="color: #',
@@ -39,12 +45,16 @@ def trans(h, flag):
 	rules = flags[flag]
 	sflag = rules.get("start", "<%s>"%(flag,))
 	eflag = rules.get("end", "</%s>"%(flag,))
-	tex = rules["tex"]
+	tex = rules.get("tex")
 	while sflag in h:
 		start = h.index(sflag)
 		end = h.index(eflag, start)
 		seg = h[start + len(sflag):end]
-		if "mid" in rules:
+		if "liner" in rules:
+			lines = seg[1:-1].split("\n")
+			mdblock = "\n".join([rules["liner"]%(s[4:-5],) for s in lines])
+			tx = "\n%s\n"%(mdblock,)
+		elif "mid" in rules:
 			[c, t] = seg.split(rules["mid"])
 			tx = tex%(c, t)
 			if "alt" in rules:
