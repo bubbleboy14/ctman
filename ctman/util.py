@@ -12,6 +12,10 @@ flags = {
 	"color": {
 		"start": '<span style="color: #',
 		"end": "</span>",
+		"alt": {
+			"split": "; background-color: #",
+			"tex": "\\colorbox[HTML]{%s}{\\textcolor[HTML]{%s}{%s}}"
+		},
 		"mid": ';">',
 		"tex": "\\textcolor[HTML]{%s}{%s}"
 	},
@@ -42,9 +46,15 @@ def trans(h, flag):
 		seg = h[start + len(sflag):end]
 		if "mid" in rules:
 			[c, t] = seg.split(rules["mid"])
-			h = h[:start] + tex%(c, t) + h[end + len(eflag):]
+			tx = tex%(c, t)
+			if "alt" in rules:
+				alt = rules["alt"]
+				if alt["split"] in c:
+					[fg, bg] = c.split(alt["split"])
+					tx = alt["tex"]%(bg, fg, t)
 		else:
-			h = h[:start] + tex%(seg,) + h[end + len(eflag):]
+			tx = tex%(seg,)
+		h = h[:start] + tx + h[end + len(eflag):]
 	return h
 
 def h2l(h):
