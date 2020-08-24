@@ -15,6 +15,12 @@ flags = {
 		"mid": ';">',
 		"tex": "\\textcolor[HTML]{%s}{%s}"
 	},
+	"background": {
+		"start": '<span style="background-color: #',
+		"end": "</span>",
+		"mid": ';">',
+		"tex": "\\colorbox[HTML]{%s}{%s}"
+	},
 	"strong": {
 		"tex": "\\textbf{%s}"
 	},
