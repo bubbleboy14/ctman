@@ -28,6 +28,10 @@ flags = {
 	"background": {
 		"start": '<span style="background-color: #',
 		"end": "</span>",
+		"alt": {
+			"split": "; color: #",
+			"tex": "\\textcolor[HTML]{%s}{\\colorbox[HTML]{%s}{%s}}"
+		},
 		"mid": ';">',
 		"tex": "\\colorbox[HTML]{%s}{%s}"
 	},
