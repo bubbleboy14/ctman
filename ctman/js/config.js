@@ -35,7 +35,7 @@
 	},
 	"template": [{
 		"isTA": true,
-		"wyz": "nonbsp restricted",
+		"wyz": "nonbsp restricted tables",
 		"name": "description",
 		"blurs": ["please describe", "please expand", "tell all here"]
 	}],
