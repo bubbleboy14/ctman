@@ -75,3 +75,4 @@ class Document(db.TimeStampedBase):
 	assembly = db.JSON()
 	pdf = db.String()
 	signup_sheet = db.Boolean(default=True)
+	table_of_contents = db.Boolean(default=True)
