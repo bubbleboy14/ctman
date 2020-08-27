@@ -5,7 +5,8 @@ TSEP = '</tr>'
 
 swaps = {
 	"<p>|": "|",
-	"|</p>": "|"
+	"|</p>": "|",
+	"text-align: left; ": ""
 }
 flags = {
 	"ol": {
