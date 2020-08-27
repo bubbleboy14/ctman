@@ -133,7 +133,7 @@ man.browsers.Document = CT.Class({
 					assembly: d.assembly,
 					injections: d.injections
 				} : d);
-			}),
+			}, null, d.template && man.injections.fields(CT.data.get(d.template))),
 			d.key && man.util.image(d, "logo", "client logo"),
 			d.key && this.susheet(d),
 			d.key && this.build(d)
@@ -157,5 +157,6 @@ man.browsers.Document = CT.Class({
 		CT.db.get("template", function(tz) {
 			_.templates = tz;
 		}, 1000, 0, null, null, null, null, "unrolled");
+		man.injections.init();
 	}
 }, CT.Browser);
