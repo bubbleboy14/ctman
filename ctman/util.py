@@ -1,3 +1,7 @@
+TSTART = '<table style="border-collapse: collapse; width: 100%;" border="1">\n<tbody>\n<tr>\n'
+TEND = '\n</tr>\n</tbody>\n</table>'
+TSEP = '\n</tr>\n<tr>\n'
+
 flags = {
 	"ol": {
 		"liner": "1. %s"
@@ -52,6 +56,20 @@ for i in range(1, 4):
 		"tex": "|" + "    " * i + " %s"
 	}
 
+def row(chunk):
+	return [part.split("<")[0] for part in chunk.split('">')[1:]]
+
+def table(seg):
+	rowz = map(row, seg.split(TSEP))
+	rowz = [rowz[0]] + [["-" * 30] * len(rowz[0])] + rowz[1:]
+	return "\n".join(["| %s |"%(" | ".join(r),) for r in rowz])
+
+flags["table"] = {
+	"start": TSTART,
+	"end": TEND,
+	"handler": table
+}
+
 def trans(h, flag):
 	rules = flags[flag]
 	sflag = rules.get("start", "<%s>"%(flag,))
@@ -61,7 +79,9 @@ def trans(h, flag):
 		start = h.index(sflag)
 		end = h.index(eflag, start)
 		seg = h[start + len(sflag):end]
-		if "liner" in rules:
+		if "handler" in rules:
+			tx = rules["handler"](seg)
+		elif "liner" in rules:
 			lines = seg[1:-1].split("\n")
 			mdblock = "\n".join([rules["liner"]%(s[4:-5],) for s in lines])
 			tx = "\n%s\n"%(mdblock,)
