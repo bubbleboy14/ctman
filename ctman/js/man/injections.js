@@ -1,17 +1,57 @@
 man.injections = {
-	_: {},
+	_: {
+		varieties: {
+			"text": {
+
+			},
+			"text block": {
+
+			}
+		},
+		inew: function(cb) {
+			CT.modal.prompt({
+				prompt: "what's the new injection variable's name?",
+				cb: function(name) {
+					CT.modal.choice({
+						prompt: "what kind of variable is it?",
+						data: ["text", "text block"],
+						cb: function(variety) {
+							CT.db.put({
+								modelName: "injection",
+								name: name,
+								variety: variety
+							}, function(ivar) {
+								man.injections._.injections.push(ivar);
+								cb(ivar);
+							});
+						}
+					});
+				}
+			})
+		}
+	},
 	button: function(d, n) {
+		var _ = man.injections._, pushit = function(iz) {
+			d.injections = iz.map(i => i.key);
+			CT.db.put({
+				key: d.key,
+				injections: d.injections
+			}, n.refresh);
+		}, niv = "new injection variable";
 		return function() {
 			CT.modal.choice({
 				style: "multiple-choice",
-				data: man.injections._.injections,
-				selections: d.injections.map(i => CT.data.get(i)),
+				data: [niv].concat(_.injections),
+				selections: d.injections.map(i => CT.data.get(i).name),
 				cb: function(iz) {
-					d.injections = iz.map(i => i.key);
-					CT.db.put({
-						key: d.key,
-						injections: d.injections
-					}, n.refresh);
+					if (iz.includes(niv)) {
+						_.inew(function(ivar) {
+							CT.data.remove(iz, niv);
+							iz.push(ivar);
+							pushit(iz);
+						});
+					} else
+						pushit(iz);
 				}
 			});
 		};
