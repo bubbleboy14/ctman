@@ -1,13 +1,5 @@
 man.injections = {
 	_: {
-		varieties: {
-			"text": {
-
-			},
-			"text block": {
-
-			}
-		},
 		inew: function(cb) {
 			CT.modal.prompt({
 				prompt: "what's the new injection variable's name?",
@@ -29,6 +21,16 @@ man.injections = {
 				}
 			})
 		}
+	},
+	fields: function(template) {
+		return template.injections.map(function(ikey) {
+			var i = CT.data.get(ikey), d = {
+				name: i.name
+			};
+			if (i.variety == "text block")
+				d.isTA = true;
+			return d;
+		});
 	},
 	button: function(d, n) {
 		var _ = man.injections._, pushit = function(iz) {
