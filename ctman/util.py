@@ -3,6 +3,10 @@ TSTARTEND = '<tbody>'
 TEND = '\n</tr>\n</tbody>\n</table>'
 TSEP = '</tr>'
 
+swaps = {
+	"<p>|": "|",
+	"|</p>": "|"
+}
 flags = {
 	"ol": {
 		"liner": "1. %s"
@@ -103,6 +107,8 @@ def trans(h, flag):
 	return h
 
 def h2l(h):
+	for swap in swaps:
+		h = h.replace(swap, swaps[swap])
 	for flag in flags:
 		h = trans(h, flag)
 	return h
