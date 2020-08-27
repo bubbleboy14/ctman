@@ -55,8 +55,13 @@ class Section(SecBase):
 			return d
 		return "%s\r\n\r\n![](%s)"%(d, self.image.path)
 
+class Injection(db.TimeStampedBase):
+	name = db.String()
+	variety = db.String(choices=["text", "text block"])
+
 class Template(SecBase):
 	owner = db.ForeignKey(kind=CTUser)
+	injections = db.ForeignKey(kind=Injection, repeated=True)
 
 class Document(db.TimeStampedBase):
 	owner = db.ForeignKey(kind=CTUser)
