@@ -96,17 +96,18 @@ man.browsers.Document = CT.Class({
 		return man.util.refresher("template", "swap",
 			n => this.swaptemp(d, n), _ => this.sections(d));
 	},
-	susheet: function(d) {
+	settings: function(d) {
 		var _ = this._;
 		return CT.dom.div([
-			"signup sheet",
-			CT.dom.checkboxAndLabel("include signup sheet",
-				d.signup_sheet, null, null, null, function(cb) {
-					_.edit({
-						key: d.key,
-						signup_sheet: cb.checked
+			"settings",
+			["signup_sheet", "table_of_contents"].map(function(p) {
+				return CT.dom.checkboxAndLabel("include " + p.replace(/_/g, " "),
+					d[p], null, null, null, function(cb) {
+						var evars = { key: d.key };
+						evars[p] = cb.checked;
+						CT.db.put(evars);
 					});
-				})
+			})
 		], "margined padded bordered round");
 	},
 	view: function(d) {
@@ -135,7 +136,7 @@ man.browsers.Document = CT.Class({
 				} : d);
 			}, null, d.template && man.injections.fields(CT.data.get(d.template))),
 			d.key && man.util.image(d, "logo", "client logo"),
-			d.key && this.susheet(d),
+			d.key && this.settings(d),
 			d.key && this.build(d)
 		]);
 	},
