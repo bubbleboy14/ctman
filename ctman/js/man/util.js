@@ -1,5 +1,5 @@
 man.util = {
-	form: function(d, fname, cb, extra) {
+	form: function(d, fname, cb, extra, items) {
 		return CT.dom.div([
 			d[fname] && fname,
 			CT.layout.form({
@@ -9,7 +9,7 @@ man.util = {
 				labels: true,
 				bname: "save",
 				values: d[fname] || d,
-				items: core.config.ctman[fname]
+				items: items || core.config.ctman[fname]
 			}),
 		], "margined padded bordered round");
 	},
