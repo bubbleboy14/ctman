@@ -1,5 +1,12 @@
 man.browsers.Template = CT.Class({
 	CLASSNAME: "man.browsers.Template",
+	choosevar: function(d, cb) {
+		CT.modal.choice({
+			prompt: "choose an injection variable",
+			data: d.injections.map(i => CT.data.get(i).name),
+			cb: cb
+		});
+	},
 	extra: function(d) {
 		return d.key && [
 			this.sections(d),

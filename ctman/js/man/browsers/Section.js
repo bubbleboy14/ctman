@@ -83,14 +83,17 @@ man.browsers.Section = CT.Class({
 				});
 			});
 	},
-	inject: function(ta) {
+	choosevar: function(d, cb) {
+		CT.modal.prompt({
+			prompt: "what's the injection variable?",
+			cb: cb
+		})
+	},
+	inject: function(ta, d) {
+		var cvar = this.choosevar;
 		return CT.dom.button("inject variable", function() {
-			CT.modal.choice({
-				prompt: "choose an injection variable",
-				data: core.config.ctman.injections.map(i => i.name),
-				cb: function(ivar) {
-					tinyMCE.activeEditor.selection.setContent("{{" + ivar + "}}");
-				}
+			cvar(d, function(ivar) {
+				tinyMCE.activeEditor.selection.setContent("{{" + ivar + "}}");
 			});
 		}, "right");
 	},
@@ -106,7 +109,7 @@ man.browsers.Section = CT.Class({
 					key: d.key
 				}, vals) : d);
 			}, {
-				description: this.inject
+				description: ta => this.inject(ta, d)
 			}),
 			this.extra(d)
 		]);
