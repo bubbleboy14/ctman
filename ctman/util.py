@@ -1,6 +1,7 @@
-TSTART = '<table style="border-collapse: collapse; width: 100%;" border="1">\n<tbody>\n<tr>\n'
+TSTART = '<table'
+TSTARTEND = '<tbody>'
 TEND = '\n</tr>\n</tbody>\n</table>'
-TSEP = '\n</tr>\n<tr>\n'
+TSEP = '</tr>'
 
 flags = {
 	"ol": {
@@ -57,7 +58,7 @@ for i in range(1, 4):
 	}
 
 def row(chunk):
-	return [part.split("<")[0] for part in chunk.split('">')[1:]]
+	return [part.split("<")[0] for part in chunk.split('">')[2:]]
 
 def table(seg):
 	rowz = map(row, seg.split(TSEP))
@@ -66,6 +67,7 @@ def table(seg):
 
 flags["table"] = {
 	"start": TSTART,
+	"startend": TSTARTEND,
 	"end": TEND,
 	"handler": table
 }
@@ -73,12 +75,14 @@ flags["table"] = {
 def trans(h, flag):
 	rules = flags[flag]
 	sflag = rules.get("start", "<%s>"%(flag,))
+	seflag = rules.get("startend")
 	eflag = rules.get("end", "</%s>"%(flag,))
 	tex = rules.get("tex")
 	while sflag in h:
 		start = h.index(sflag)
+		startend = seflag and h.index(seflag, start)
 		end = h.index(eflag, start)
-		seg = h[start + len(sflag):end]
+		seg = h[(startend or start) + len(seflag or sflag):end]
 		if "handler" in rules:
 			tx = rules["handler"](seg)
 		elif "liner" in rules:
