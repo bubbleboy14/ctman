@@ -9,6 +9,7 @@ CT.require("man.browsers.Template");
 
 CT.onload(function() {
 	CT.initCore();
+	CT.db.setLimit(1000);
 	var tophalf = CT.dom.div(null, "abs tophalf"),
 		bottomhalf = CT.dom.div(null, "abs bottomhalf");
 	CT.dom.setContent("ctmain", [
