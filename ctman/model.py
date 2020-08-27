@@ -20,12 +20,12 @@ class SecBase(db.TimeStampedBase):
 	def desc(self):
 		return self.fixed_desc()
 
-	def full(self, depth):
-		tline = "%s %s"%("#" * depth, self.name)
-		return "%s\r\n\r\n%s"%(tline, self.desc())
+	def header(self):
+		return self.name
 
 	def body(self, depth):
-		return self.full(depth)
+		tline = "%s %s"%("#" * depth, self.header())
+		return "%s\r\n\r\n%s"%(tline, self.desc())
 
 	def content(self, sections=None, depth=1):
 		body = self.body(depth)
@@ -46,8 +46,8 @@ class Section(SecBase):
 	def labeler(self):
 		return "%s [%s]"%(self.name, self.index)
 
-	def body(self, depth):
-		return self.headerless and self.desc() or self.full(depth)
+	def header(self):
+		return self.headerless and " " or self.name
 
 	def desc(self):
 		d = self.fixed_desc()
