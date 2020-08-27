@@ -51,7 +51,10 @@ def export(doc, data):
 	write("\\newpage%s"%(data,), mdname)
 	bname = os.path.join("build", "%s.pdf"%(fname,))
 	pname = pretex(doc, fname)
-	cmd("pandoc %s -o %s --toc -N -H tex/imps.tex -B %s"%(mdname, bname, pname))
+	pcmd = "pandoc %s -o %s -H tex/imps.tex -B %s"%(mdname, bname, pname)
+	if doc.table_of_contents:
+		pcmd += " --toc -N"
+	cmd(pcmd)
 	return bname
 
 def build(doc):
