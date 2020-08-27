@@ -66,6 +66,9 @@ class Template(SecBase):
 	owner = db.ForeignKey(kind=CTUser)
 	injections = db.ForeignKey(kind=Injection, repeated=True)
 
+	def body(self, depth):
+		return self.desc()
+
 class Document(db.TimeStampedBase):
 	owner = db.ForeignKey(kind=CTUser)
 	logo = db.Binary()
