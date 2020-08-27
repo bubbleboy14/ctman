@@ -59,6 +59,9 @@ class Injection(db.TimeStampedBase):
 	name = db.String()
 	variety = db.String(choices=["text", "text block"])
 
+	def labeler(self):
+		return "%s (%s)"%(self.name, self.variety)
+
 class Template(SecBase):
 	owner = db.ForeignKey(kind=CTUser)
 	injections = db.ForeignKey(kind=Injection, repeated=True)
