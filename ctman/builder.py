@@ -3,7 +3,7 @@ from cantools.util import cmd, read, write, sym
 from ctman.hazards import chemicals, chemprops
 
 def part(fname):
-	return "# %s\r\n%s"%(fname.split(".")[0], read(os.path.join("templates", fname)))
+	return "# %s\n%s"%(fname.split(".")[0], read(os.path.join("templates", fname)))
 
 def assemble(sections): # do something w/ sections[]
 	for dirpath, dirnames, filenames in os.walk("templates"):
@@ -15,8 +15,8 @@ def hazard(template, arules): # do non-chems as well
 	chart = [chemprops, ["---"*((i+1)*5) for i in range(len(chemprops))]]
 	for chem in chems:
 		chart.append([chemicals[chem][p] for p in chemprops])
-	return "%s\r\n\r\n# Hazards - Chemical\r\n\r\n| %s |"%(template,
-		" |\r\n| ".join(map(lambda r : " | ".join(r), chart)))
+	return "%s\n\n# Hazards - Chemical\n\n| %s |"%(template,
+		" |\n| ".join(map(lambda r : " | ".join(r), chart)))
 
 def inject(data, injects):
 	for i in injects:
