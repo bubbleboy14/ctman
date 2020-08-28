@@ -120,7 +120,7 @@ def trans(h, flag):
 def dhead(h, depth):
 	flags = ["\n%s "%("#" * i,) for i in range(1, 7)]
 	flags.reverse()
-	flags += [f.replace("\n", "\r") for r in flags] # ugh
+	flags += [f.replace("\n", "\r") for f in flags] # ugh
 	dpref = depth * "#"
 	for flag in flags:
 		h = h.replace(flag, "%s%s"%(dpref, flag))
