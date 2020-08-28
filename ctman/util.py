@@ -117,19 +117,19 @@ def trans(h, flag):
 		h = h[:start] + tx + h[end + len(eflag):]
 	return h
 
+hflags = ["%s "%("#" * i,) for i in range(1, 7)]
+hflags.reverse()
+
+def pline(line, dpref):
+	for flag in hflags:
+		if line.startswith(flag):
+			return "%s%s"%(dpref, line)
+	return line
+
 def dhead(h, depth):
-	flags = ["%s "%("#" * i,) for i in range(1, 7)]
-	flags.reverse()
 	dpref = depth * "#"
 	lines = h.split("\n")
-	out = []
-	for line in lines:
-		for flag in flags:
-			if line.startswith(flag):
-				out.append("%s%s"%(dpref, line))
-				break
-		out.append(line)
-	return "\n".join(out)
+	return "\n".join(map(lambda line : pline(line, dpref), lines))
 
 def h2l(h, depth=0):
 	for swap in swaps:
