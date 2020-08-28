@@ -10,9 +10,13 @@ swaps = {
 }
 flags = {
 	"ol": {
+		"start": "<ol",
+		"startend": ">",
 		"liner": "1. %s"
 	},
 	"ul": {
+		"start": "<ul",
+		"startend": ">",
 		"liner": "- %s"
 	},
 	"center": {
@@ -92,7 +96,7 @@ def trans(h, flag):
 			tx = rules["handler"](seg)
 		elif "liner" in rules:
 			lines = seg[1:-1].split("\n")
-			mdblock = "\n".join([rules["liner"]%(s[4:-5],) for s in lines])
+			mdblock = "\n".join([rules["liner"]%(s.split(">")[1][:-5],) for s in lines])
 			tx = "\n%s\n"%(mdblock,)
 		elif "mid" in rules:
 			[c, t] = seg.split(rules["mid"])
