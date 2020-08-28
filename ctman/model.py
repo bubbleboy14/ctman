@@ -9,25 +9,25 @@ class SecBase(db.TimeStampedBase):
 	description = db.Text()
 	sections = db.ForeignKey(kind="section", repeated=True)
 
-	def secs(self, sections=None, depth=1):
+	def secs(self, sections=None, depth=0):
 		return "\r\n\r\n".join(sections and [
 			db.get(s['key']).content(s['sections'], depth) for s in sections
 		] or [s.content(depth=depth) for s in db.get_multi(self.sections)])
 
-	def fixed_desc(self):
-		return h2l(self.description)
+	def fixed_desc(self, depth=0):
+		return h2l(self.description, depth)
 
-	def desc(self):
-		return self.fixed_desc()
+	def desc(self, depth=0):
+		return self.fixed_desc(depth)
 
 	def header(self):
 		return self.name
 
 	def body(self, depth):
 		tline = "%s %s"%("#" * depth, self.header())
-		return "%s\r\n\r\n%s"%(tline, self.desc())
+		return "%s\r\n\r\n%s"%(tline, self.desc(depth))
 
-	def content(self, sections=None, depth=1):
+	def content(self, sections=None, depth=0):
 		body = self.body(depth)
 		secs = self.sections and self.secs(sections, depth + 1) or ""
 		cont = "%s\r\n\r\n%s"%(body, secs)
@@ -49,8 +49,8 @@ class Section(SecBase):
 	def header(self):
 		return self.headerless and " " or self.name
 
-	def desc(self):
-		d = self.fixed_desc()
+	def desc(self, depth=0):
+		d = self.fixed_desc(depth)
 		if not self.image:
 			return d
 		return "%s\r\n\r\n![](%s)"%(d, self.image.path)
@@ -67,7 +67,7 @@ class Template(SecBase):
 	injections = db.ForeignKey(kind=Injection, repeated=True)
 
 	def body(self, depth):
-		return self.desc()
+		return self.desc(depth)
 
 class Document(db.TimeStampedBase):
 	owner = db.ForeignKey(kind=CTUser)
