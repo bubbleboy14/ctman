@@ -118,13 +118,18 @@ def trans(h, flag):
 	return h
 
 def dhead(h, depth):
-	flags = ["\n%s "%("#" * i,) for i in range(1, 7)]
+	flags = ["%s "%("#" * i,) for i in range(1, 7)]
 	flags.reverse()
-	flags += [f.replace("\n", "\r") for f in flags] # ugh
 	dpref = depth * "#"
-	for flag in flags:
-		h = h.replace(flag, "%s%s"%(dpref, flag))
-	return h
+	lines = h.split("\n")
+	out = []
+	for line in lines:
+		for flag in flags:
+			if line.startswith(flag):
+				out.append("%s%s"%(dpref, line))
+				break
+		out.append(line)
+	return "\n".join(out)
 
 def h2l(h, depth=0):
 	for swap in swaps:
