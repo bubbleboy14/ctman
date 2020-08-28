@@ -58,7 +58,11 @@ flags = {
 }
 
 for i in range(1, 7):
-	flags["h%s"%(i,)] = { "tex": "#" * i + " %s" }
+	flags["h%s"%(i,)] = {
+		"start": "<h%s"%(i,),
+		"startend": ">",
+		"tex": "#" * i + " %s"
+	}
 
 for i in range(1, 4):
 	flags["t%s"%(i,)] = {
