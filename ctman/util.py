@@ -56,6 +56,7 @@ flags = {
 		"tex": "\\emph{%s}"
 	}
 }
+
 for i in range(1, 7):
 	flags["h%s"%(i,)] = { "tex": "#" * i + " %s" }
 
@@ -112,9 +113,19 @@ def trans(h, flag):
 		h = h[:start] + tx + h[end + len(eflag):]
 	return h
 
-def h2l(h):
+def dhead(h, depth):
+	flags = ["%s "%("#" * i,) for i in range(1, 7)]
+	flags.reverse()
+	dpref = depth * "#"
+	for flag in flags:
+		h = h.replace(flag, "%s%s"%(dpref, flag))
+	return h
+
+def h2l(h, depth=0):
 	for swap in swaps:
 		h = h.replace(swap, swaps[swap])
 	for flag in flags:
 		h = trans(h, flag)
+	if depth:
+		h = dhead(h, depth)
 	return h
