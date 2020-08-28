@@ -67,7 +67,7 @@ for i in range(1, 4):
 	}
 
 def row(chunk):
-	return [part.split("<")[0] for part in chunk.split('">')[2:]]
+	return [part.split("</td>")[0].replace("\n", "") for part in chunk.split('">')[2:]]
 
 def table(seg):
 	rowz = map(row, seg.split(TSEP))
