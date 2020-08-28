@@ -114,7 +114,7 @@ def trans(h, flag):
 	return h
 
 def dhead(h, depth):
-	flags = ["%s "%("#" * i,) for i in range(1, 7)]
+	flags = ["\n%s "%("#" * i,) for i in range(1, 7)]
 	flags.reverse()
 	dpref = depth * "#"
 	for flag in flags:
