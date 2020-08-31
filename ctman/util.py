@@ -71,9 +71,16 @@ for i in range(1, 4):
 		"tex": "|" + "    " * i + " %s"
 	}
 
+def clean(data):
+	while "<div" in data:
+		s = data.index("<div")
+		se = data.index(">", s)
+		e = data.index("</div>", s)
+		data = data[:s] + data[se + 1 : e] + data[e + len("</div>"):]
+	return data.replace("\n", "").replace("<p>", "").replace("</p>", "")
+
 def row(chunk):
-	return [part.split("</td>")[0].replace("\n", "").replace("<p>",
-		"").replace("</p>", "") for part in chunk.split('">')[2:]]
+	return [clean(part.split(">", 1)[1].split("</td>")[0]) for part in chunk.split('<td')[1:]]
 
 def table(seg):
 	rowz = map(row, seg.split(TSEP))
