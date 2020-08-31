@@ -20,7 +20,7 @@ def hazard(template, arules): # do non-chems as well
 
 def inject(data, injects):
 	for i in injects:
-		data = data.replace("{{%s}}"%(i,), injects[i])
+		data = data.replace("{{%s}}"%(i,), injects[i].replace("\n\n", "\\\n"))
 	return data
 
 SUSHEET = """\\newpage
