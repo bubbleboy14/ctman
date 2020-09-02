@@ -1,3 +1,5 @@
+from cantools import config
+
 TSTART = '<table'
 TSTARTEND = '<tbody>'
 TEND = '\n</tr>\n</tbody>\n</table>'
@@ -124,6 +126,7 @@ def trans(h, flag):
 		h = h[:start] + tx + h[end + len(eflag):]
 	return h
 
+lahead = [ "\\large", "\\large", "\\Large", "\\LARGE", "\\huge", "\\Huge" ]
 hflags = ["%s "%("#" * i,) for i in range(1, 7)]
 hflags.reverse()
 
@@ -138,11 +141,24 @@ def dhead(h, depth):
 	lines = h.split("\n")
 	return "\n".join(map(lambda line : pline(line, dpref), lines))
 
+def latline(line):
+	for i in range(6):
+		flag = hflags[i]
+		if line.startswith(flag):
+			return "%s %s\n"%(lahead[i], line[len(flag):])
+	return line
+
+def lhead(h):
+	return "\n".join(map(latline, h.split("\n")))
+
+def fixhead(h, depth):
+	if config.ctman.toc.secheaders:
+		return dhead(h, depth)
+	return lhead(h)
+
 def h2l(h, depth=0):
 	for swap in swaps:
 		h = h.replace(swap, swaps[swap])
 	for flag in flags:
 		h = trans(h, flag)
-	if depth:
-		h = dhead(h, depth)
-	return h
+	return fixhead(h, depth)
