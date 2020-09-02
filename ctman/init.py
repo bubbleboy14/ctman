@@ -16,3 +16,8 @@ routes = {
 	"/build": "build"
 }
 requires = ["ctuser"]
+cfg = {
+	"toc": {
+		"secheaders": False
+	}
+}
