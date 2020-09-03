@@ -11,10 +11,10 @@ man.util = {
 				values: d[fname] || d,
 				items: items || core.config.ctman[fname]
 			}),
-		], "margined padded bordered round");
+		], core.config.ctman.classes[d.modelName].form);
 	},
-	refresher: function(title, buttname, buttcb, bodgen) {
-		var n = CT.dom.div(null, "margined padded bordered round"),
+	refresher: function(title, buttname, buttcb, bodgen, classes) {
+		var n = CT.dom.div(null, classes || "margined padded bordered round"),
 			section = this.section, asec = this.asec;
 		n.refresh = function() {
 			CT.dom.setContent(n, [
@@ -41,7 +41,7 @@ man.util = {
 			title || iprop,
 			inode,
 			dd
-		], "margined padded bordered round");
+		], core.config.ctman.classes[d.modelName].image);
 	},
 	sideslide: function() {
 		var b = CT.dom.button("retract side bar", function() {
