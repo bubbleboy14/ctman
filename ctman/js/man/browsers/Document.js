@@ -19,7 +19,8 @@ man.browsers.Document = CT.Class({
 		return man.util.refresher("pdf build",
 			"click here to build/rebuild", n => this.builder(d, n),
 			_ => d.pdf && CT.dom.link("click here to download",
-				null, d.pdf, "block", null, null, true));
+				null, d.pdf, "block", null, null, true),
+			core.config.ctman.classes.document.build);
 	},
 	hazards: function(d) {
 		var hcfg = core.config.ctman.hazards.chemical,
@@ -94,7 +95,8 @@ man.browsers.Document = CT.Class({
 	},
 	template: function(d) {
 		return man.util.refresher("template", "swap",
-			n => this.swaptemp(d, n), _ => this.sections(d));
+			n => this.swaptemp(d, n), _ => this.sections(d),
+			core.config.ctman.classes.document.template);
 	},
 	settings: function(d) {
 		var _ = this._;
@@ -108,19 +110,20 @@ man.browsers.Document = CT.Class({
 						CT.db.put(evars);
 					});
 			})
-		], "margined padded bordered round");
+		], core.config.ctman.classes.document.settings);
 	},
 	view: function(d) {
 		var _ = this._, haz = this.hazards(d),
-			mcfg = core.config.ctman, view = this.view,
-			bs = this.buildSecs;
+			mcfg = core.config.ctman,
+			classes = mcfg.classes.document,
+			view = this.view, bs = this.buildSecs;
 		CT.dom.setContent(_.nodes.content, [
-			CT.dom.div(d.name, "bigger centered"),
+			CT.dom.div(d.name, classes.title),
 			d.key && this.template(d),
 			CT.dom.div([
 				"hazards",
 				haz
-			], "margined padded bordered round"),
+			], classes.hazards),
 			man.util.form(d, "injections", function(vals) {
 				d.injections = vals;
 				d.assembly = {
