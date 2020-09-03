@@ -70,7 +70,7 @@ man.browsers.Section = CT.Class({
 		return man.util.refresher("sections", "add section",
 			n => this.asec(d, n), function() {
 				return d.sections.map(s => sec(s, d));
-			});
+			}, core.config.ctman.classes[d.modelName].sections);
 	},
 	unheader: function(d) {
 		var _ = this._;
