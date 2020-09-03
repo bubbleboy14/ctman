@@ -59,14 +59,15 @@ man.injections = {
 		};
 	},
 	editor: function(d) {
+		var classes = core.config.ctman.classes.template;
 		return man.util.refresher("injections", "edit injection variables",
 			n => this.button(d, n), function() {
 				return d.injections.map(function(ikey) {
 					var i = CT.data.get(ikey);
 					return CT.dom.div(i.name + " (" + i.variety + ")",
-						"margined padded bordered round inline-block");
+						classes.injection);
 				});
-			});
+			}, classes.injections);
 	},
 	init: function() {
 		CT.db.get("injection", function(iz) {
