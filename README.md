@@ -33,6 +33,29 @@ Manual generation framework.
 ## core.config.ctman
 ### Import line: 'CT.require("core.config");'
     {
+    	"classes": {
+    		"document": {
+    			"title": "bigger centered document_title",
+    			"template": "margined padded bordered round document_template",
+    			"hazards": "margined padded bordered round document_hazards",
+    			"form": "margined padded bordered round document_form",
+    			"image": "margined padded bordered round document_image",
+    			"settings": "margined padded bordered round document_settings",
+    			"build": "margined padded bordered round document_build"
+    		},
+    		"section": {
+    			"form": "margined padded bordered round section_form",
+    			"image": "margined padded bordered round section_image",
+    			"sections": "margined padded bordered round section_sections"
+    		},
+    		"template": {
+    			"form": "margined padded bordered round template_form",
+    			"image": "margined padded bordered round template_image",
+    			"sections": "margined padded bordered round template_sections",
+    			"injections": "margined padded bordered round template_injections",
+    			"injection": "margined padded bordered round inline-block template_injection"
+    		}
+    	},
     	"help": {
     		"templates": [
     			"Menus",
