@@ -26,7 +26,7 @@ def inject(data, injects):
 SUSHEET = """\\newpage
 \\begin{center}
 {\\huge Sign-in Sheet}
-\\begin{tabular}{ |p{2.5cm}|p{2.5cm}|p{2.5cm}|p{2.5cm}| }
+\\begin{tabular}{ |p{3cm}|p{3cm}|p{3cm}|p{3cm}| }
 \\hline
 Name & Signature & Company & Date \\\\ \\hline
 %s \\\\ \\hline
@@ -51,7 +51,7 @@ def export(doc, data):
 	write("\\newpage%s"%(data,), mdname)
 	bname = os.path.join("build", "%s.pdf"%(fname,))
 	pname = pretex(doc, fname)
-	pcmd = "pandoc %s -o %s -H tex/imps.tex -B %s"%(mdname, bname, pname)
+	pcmd = "pandoc %s -o %s -H tex/imps.tex -B %s -V geometry:margin=1in"%(mdname, bname, pname)
 	if doc.table_of_contents:
 		pcmd += " --toc -N"
 	cmd(pcmd)
