@@ -11,17 +11,20 @@ CT.onload(function() {
 	CT.initCore();
 	CT.db.setLimit(1000);
 	var tophalf = CT.dom.div(null, "abs tophalf"),
-		bottomhalf = CT.dom.div(null, "abs bottomhalf");
+		bottomhalf = CT.dom.div(null, "abs bottomhalf"),
+		minmax = man.util.minmax(tophalf, bottomhalf);
 	CT.dom.setContent("ctmain", [
 		tophalf,
 		bottomhalf,
-		man.util.sideslide()
+		man.util.sideslide(),
+		minmax
 	]);
 	var secs = new man.browsers.Section({
 		parent: bottomhalf
 	});
 	new man.browsers.Template({
 		parent: tophalf,
-		sections: secs
+		sections: secs,
+		onsection: minmax.bottom
 	});
 });
