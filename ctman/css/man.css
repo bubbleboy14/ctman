@@ -35,3 +35,7 @@
 .bottomhalf .ctlist {
 	bottom: 30px;
 }
+
+.tophalf, .bottomhalf {
+	transition: height 1s;
+}
