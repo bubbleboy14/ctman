@@ -42,11 +42,16 @@ def pretex(doc, fname):
 			sym("../%s"%(doc.logo.path,), iname)
 	write(read("tex/pre.tex").replace("_CLIENT_LOGO_",
 		doc.logo and iname or "img/logo.jpg").replace("_SIGNUP_SHEET_",
-			doc.signup_sheet and SUSHEET or ""), pname)
+			doc.signup_sheet and SUSHEET or "").replace("_DOC_NAME_",
+			doc.name).replace("_DOC_REVISION_", str(doc.revision)), pname)
 	return pname
 
 def export(doc, data):
-	fname = "_".join(str(datetime.datetime.now()).split(".")[0].split(" "))
+	if doc.pretty_filenames:
+		fname = "%s_r%s"%(doc.name.replace(" ", "_").replace("(",
+			"").replace(")", ""), doc.revision)
+	else:
+		fname = "_".join(str(datetime.datetime.now()).split(".")[0].split(" "))
 	mdname = os.path.join("build", "%s.md"%(fname,))
 	write("\\newpage%s"%(data,), mdname)
 	bname = os.path.join("build", "%s.pdf"%(fname,))
@@ -58,6 +63,8 @@ def export(doc, data):
 	return bname
 
 def build(doc):
+	doc.revision += 1
+	doc.put()
 	afunc = doc.template and doc.template.get().content or assemble
 	tempbod = afunc(doc.assembly.get("sections"))
 	fulltemp = hazard(tempbod, doc.assembly.get("hazards", {}))
