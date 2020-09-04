@@ -98,18 +98,23 @@ man.browsers.Document = CT.Class({
 			n => this.swaptemp(d, n), _ => this.sections(d),
 			core.config.ctman.classes.document.template);
 	},
+	scheck: function(d, p, n) {
+		n = n || "include " + p.replace(/_/g, " ");
+		return CT.dom.checkboxAndLabel(n,
+			d[p], null, null, null, function(cb) {
+				var evars = { key: d.key };
+				evars[p] = cb.checked;
+				CT.db.put(evars);
+			});
+	},
 	settings: function(d) {
-		var _ = this._;
+		var scheck = this.scheck;
 		return CT.dom.div([
 			"settings",
 			["signup_sheet", "table_of_contents"].map(function(p) {
-				return CT.dom.checkboxAndLabel("include " + p.replace(/_/g, " "),
-					d[p], null, null, null, function(cb) {
-						var evars = { key: d.key };
-						evars[p] = cb.checked;
-						CT.db.put(evars);
-					});
-			})
+				return scheck(d, p);
+			}).concat([scheck(d, "pretty_filenames",
+				"use pretty (titled and revisioned) filenames")])
 		], core.config.ctman.classes.document.settings);
 	},
 	view: function(d) {
