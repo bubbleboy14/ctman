@@ -52,9 +52,10 @@ man.browsers.Section = CT.Class({
 		});
 	},
 	section: function(key, d) {
-		var n = CT.dom.div(null, "choice_cell", null, {
+		var oz = this.opts, n = CT.dom.div(null, "choice_cell", null, {
 			onclick: function() {
 				CT.dom.id("tl" + key).trigger();
+				oz.onsection && oz.onsection();
 			}
 		}), mover = this.move;
 		CT.db.one(key, function(s) { // meh shouldn't be necessary...
