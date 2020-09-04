@@ -53,6 +53,25 @@ man.util = {
 		}, "abs cbl");
 		return b;
 	},
+	minmax: function(top, bottom) {
+		var fullt = function() {
+			top.style.height = "90%";
+			bottom.style.height = "10%";
+		}, fullb = function() {
+			top.style.height = "10%";
+			bottom.style.height = "90%";
+		}, same = function() {
+			top.style.height = bottom.style.height = "50%";
+		}, n = CT.dom.div([
+			CT.dom.button("templates", fullt),
+			CT.dom.button("sections", fullb),
+			CT.dom.button("equal", same)
+		], "abs ctr");
+		n.top = fullt;
+		n.bottom = fullb;
+		n.same = same;
+		return n;
+	},
 	help: function() {
 		var hcfg = core.config.ctman.help,
 			pname = location.pathname.slice(5, -5) || "documents";
