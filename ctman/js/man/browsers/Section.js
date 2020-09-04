@@ -98,30 +98,6 @@ man.browsers.Section = CT.Class({
 			});
 		}, "right");
 	},
-	namer: function(d) {
-		var n = CT.dom.div(d.name, "bigger centered pointer");
-		n.onclick = function() {
-			var sf = CT.dom.smartField({
-				value: d.name,
-				cb: function(name) {
-					if (name == d.name) return;
-					CT.db.put({
-						key: d.key,
-						name: name
-					}, function(newd) {
-						d.name = newd.name;
-						d.label = newd.label;
-						CT.dom.setContent(n, d.name);
-						CT.dom.setContent(CT.dom.id("tl" + d.key).firstChild,
-							d.label);
-					});
-				}
-			});
-			CT.dom.setContent(n, sf);
-			sf.focus();
-		};
-		return n;
-	},
 	view: function(d) {
 		var _ = this._, mcfg = core.config.ctman, val;
 		CT.dom.setContent(_.nodes.content, [

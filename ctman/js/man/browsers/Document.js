@@ -118,7 +118,7 @@ man.browsers.Document = CT.Class({
 			classes = mcfg.classes.document,
 			view = this.view, bs = this.buildSecs;
 		CT.dom.setContent(_.nodes.content, [
-			CT.dom.div(d.name, classes.title),
+			this.namer(d, classes.title),
 			d.key && this.template(d),
 			CT.dom.div([
 				"hazards",
