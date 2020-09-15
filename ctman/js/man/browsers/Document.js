@@ -96,7 +96,7 @@ man.browsers.Document = CT.Class({
 	template: function(d) {
 		return man.util.refresher("template", "swap",
 			n => this.swaptemp(d, n), _ => this.sections(d),
-			core.config.ctman.classes.document.template);
+			core.config.ctman.classes.document.template, true);
 	},
 	scheck: function(d, p, n) {
 		n = n || "include " + p.replace(/_/g, " ");
@@ -110,7 +110,7 @@ man.browsers.Document = CT.Class({
 	settings: function(d) {
 		var scheck = this.scheck;
 		return CT.dom.div([
-			"settings",
+			man.util.collapser("settings"),
 			["signup_sheet", "table_of_contents"].map(function(p) {
 				return scheck(d, p);
 			}).concat([scheck(d, "pretty_filenames",
@@ -142,8 +142,9 @@ man.browsers.Document = CT.Class({
 					assembly: d.assembly,
 					injections: d.injections
 				} : d);
-			}, null, d.template && man.injections.fields(CT.data.get(d.template))),
-			d.key && man.util.image(d, "logo", "client logo"),
+			}, null, d.template && man.injections.fields(CT.data.get(d.template)),
+				true),
+			d.key && man.util.image(d, "logo", "client logo", true),
 			d.key && this.settings(d),
 			d.key && this.build(d)
 		]);
