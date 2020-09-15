@@ -1,7 +1,19 @@
 man.util = {
-	form: function(d, fname, cb, extra, items) {
+	collapser: function(title) {
+		var n = CT.dom.div(title, "pointer");
+		n.onclick = function() {
+			n._collapsed = !n._collapsed;
+			n.parentNode.classList[n._collapsed ? "add" : "remove"]("collapsed");
+		};
+		setTimeout(function() {
+			n.parentNode.classList.add("collapsible");
+		});
+		return n;
+	},
+	form: function(d, fname, cb, extra, items, collapsible) {
+		var title = d[fname] && fname;
 		return CT.dom.div([
-			d[fname] && fname,
+			collapsible ? man.util.collapser(title) : title,
 			CT.layout.form({
 				cb: cb,
 				extra: extra,
@@ -13,20 +25,20 @@ man.util = {
 			}),
 		], core.config.ctman.classes[d.modelName].form);
 	},
-	refresher: function(title, buttname, buttcb, bodgen, classes) {
+	refresher: function(title, buttname, buttcb, bodgen, classes, collapsible) {
 		var n = CT.dom.div(null, classes || "margined padded bordered round"),
 			section = this.section, asec = this.asec;
 		n.refresh = function() {
 			CT.dom.setContent(n, [
 				CT.dom.button(buttname, buttcb(n), "right"),
-				title,
+				collapsible ? man.util.collapser(title) : title,
 				bodgen()
 			]);
 		};
 		n.refresh();
 		return n;
 	},
-	image: function(d, iprop, title) {
+	image: function(d, iprop, title, collapsible) {
 		iprop = iprop || "image";
 		var inode = CT.dom.img(d[iprop], "w1"), dd = CT.file.dragdrop(function(ctfile) {
 			ctfile.upload("/_db", function(ilink) {
@@ -36,9 +48,9 @@ man.util = {
 				key: d.key,
 				property: iprop
 			});
-		});
+		}), name = title || iprop;
 		return CT.dom.div([
-			title || iprop,
+			collapsible ? man.util.collapser(name) : name,
 			inode,
 			dd
 		], core.config.ctman.classes[d.modelName].image);
