@@ -23,6 +23,16 @@
 	overflow-y: auto;
 }
 
+.collapsible {
+	overflow: hidden;
+	max-height: 1000px;
+	transition: max-height 500ms;
+}
+
+.collapsed {
+	max-height: 35px;
+}
+
 .ctlist > div:not(.browser_filter) {
 	width: 100%;
 	overflow-y: auto;
