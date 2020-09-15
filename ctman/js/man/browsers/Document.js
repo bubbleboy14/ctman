@@ -125,10 +125,10 @@ man.browsers.Document = CT.Class({
 		CT.dom.setContent(_.nodes.content, [
 			this.namer(d, classes.title),
 			d.key && this.template(d),
-			CT.dom.div([
-				"hazards",
-				haz
-			], classes.hazards),
+//			CT.dom.div([
+//				"hazards",
+//				haz
+//			], classes.hazards),
 			man.util.form(d, "injections", function(vals) {
 				d.injections = vals;
 				d.assembly = {
