@@ -19,7 +19,7 @@ man.browsers.Section = CT.Class({
 			}) : alert('click "new section" to create a new section');
 		};
 	},
-	move: function(key, d, shnode) {
+	move: function(key, d, shnode, e) {
 		var options = [], freshies = this.refreshers;
 		if (key != d.sections[0])
 			options.push("up");
@@ -50,6 +50,7 @@ man.browsers.Section = CT.Class({
 				});
 			}
 		});
+		e && e.stopPropagation();
 	},
 	section: function(key, d) {
 		var oz = this.opts, n = CT.dom.div(null, "choice_cell", null, {
@@ -60,7 +61,7 @@ man.browsers.Section = CT.Class({
 		}), mover = this.move;
 		CT.db.one(key, function(s) { // meh shouldn't be necessary...
 			CT.dom.setContent(n, [
-				CT.dom.button("move", _ => mover(key, d, n), "right"),
+				CT.dom.button("move", e => mover(key, d, n, e), "right"),
 				s.name
 			]);
 		});
