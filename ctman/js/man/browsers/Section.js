@@ -1,8 +1,12 @@
 man.browsers.Section = CT.Class({
 	CLASSNAME: "man.browsers.Section",
+	goodsecs: function(d, secs) {
+		return true;
+	},
 	asec: function(d, n) {
 		var sbro = this.opts.sections || this,
-			nonoz = [d.key].concat(d.sections);
+			nonoz = [d.key].concat(d.sections),
+			goodsecs = this.goodsecs;
 		return function() {
 			items = sbro._.items.filter(i => !nonoz.includes(i.key));
 			items.length ? CT.modal.choice({
@@ -10,6 +14,7 @@ man.browsers.Section = CT.Class({
 				data: items,
 				style: "multiple-choice",
 				cb: function(sz) {
+					if (!goodsecs(d, sz)) return;
 					d.sections = d.sections.concat(sz.map(s => s.key));
 					CT.db.put({
 						key: d.key,
