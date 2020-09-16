@@ -20,6 +20,9 @@ man.injections = {
 					});
 				}
 			})
+		},
+		d2iz: function(d) {
+			return d.split("{{").filter(p => p.includes("}}")).map(i => i.split("}}")[0]);
 		}
 	},
 	fields: function(template) {
@@ -68,6 +71,17 @@ man.injections = {
 						classes.injection);
 				});
 			}, classes.injections);
+	},
+	extract: function(secs) {
+		var injections = [], sec,
+			ex = man.injections.extract,
+			d2iz = man.injections._.d2iz;
+		for (sec of secs) {
+			injections = injections.concat(d2iz(sec.description));
+			if (sec.sections.length)
+				injections = injections.concat(ex(sec.sections));
+		}
+		return injections;
 	},
 	init: function() {
 		CT.db.get("injection", function(iz) {
