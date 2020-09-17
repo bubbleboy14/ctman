@@ -32,20 +32,28 @@ man.browsers.Document = CT.Class({
 		});
 		return cz;
 	},
+	seltemp: function(cb, cbstat) {
+		CT.modal.choice({
+			prompt: "please select a template",
+			data: ["default (static)"].concat(this._.templates),
+			cb: function(tmp) {
+				if (cbstat && tmp == "default (static)")
+					return cbstat();
+				cb(tmp);
+			}
+		});
+	},
 	swaptemp: function(d, n) {
-		var _ = this._, bs = this.buildSecs;
+		var _ = this._, bs = this.buildSecs, st = this.seltemp;
 		return function() {
-			_.templates.length ? CT.modal.choice({
-				prompt: "please select a template",
-				data: ["default (static)"].concat(_.templates),
-				cb: function(tmp) {
-					var upobj = { key: d.key };
-					d.template = (tmp == "default (static)") ? null : tmp.key;
-					bs(d);
-					upobj.template = d.template;
-					upobj.assembly = d.assembly;
-					CT.db.put(upobj, n.refresh);
-				}
+			_.templates.length ? st(function(tmp) {
+				d.template = (tmp == "default (static)") ? null : tmp.key;
+				bs(d);
+				CT.db.put({
+					key: d.key,
+					template: d.template,
+					assembly: d.assembly
+				}, n.refresh);
 			}) : alert("create a template on the templates page");
 		};
 	},
@@ -59,6 +67,8 @@ man.browsers.Document = CT.Class({
 		};
 	},
 	buildSecs: function(d) {
+		if (!d.assembly)
+			d.assembly = {};
 		if (!d.template) {
 			delete d.assembly.sections;
 			return;
@@ -117,8 +127,18 @@ man.browsers.Document = CT.Class({
 				"use pretty (titled and revisioned) filenames")])
 		], core.config.ctman.classes.document.settings);
 	},
+	firstview: function(d) {
+		var _ = this._, ed = _.edit, bs = this.buildSecs;
+		if (!_.templates.length)
+			return this.view(d);
+		this.seltemp(function(tmp) {
+			d.template = tmp.key;
+			bs(d);
+			ed(d);
+		}, v => this.view(d));
+	},
 	view: function(d) {
-		var _ = this._, haz = this.hazards(d),
+		var _ = this._,// haz = this.hazards(d),
 			mcfg = core.config.ctman,
 			classes = mcfg.classes.document,
 			view = this.view, bs = this.buildSecs;
@@ -131,11 +151,11 @@ man.browsers.Document = CT.Class({
 //			], classes.hazards),
 			man.util.form(d, "injections", function(vals) {
 				d.injections = vals;
-				d.assembly = {
-					hazards: {
-						chemical: haz.value.map(v => mcfg.hazards.chemical[v])
-					}
-				};
+//				d.assembly = {
+//					hazards: {
+//						chemical: haz.value.map(v => mcfg.hazards.chemical[v])
+//					}
+//				};
 				bs(d); // adds assembly.sections[]
 				_.edit(d.key ? {
 					key: d.key,
@@ -151,10 +171,11 @@ man.browsers.Document = CT.Class({
 	},
 	defaults: function() {
 		return {
+			injections: {},
 			assembly: {
-				hazards: {
-					chemical: []
-				}
+//				hazards: {
+//					chemical: []
+//				}
 			}
 		};
 	},
