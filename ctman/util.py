@@ -31,6 +31,11 @@ flags = {
 		"end": "</p>",
 		"tex": "\\begin{flushright}\n%s\n\\end{flushright}"
 	},
+	"underline": {
+		"start": '<span style="text-decoration: underline;">',
+		"end": "</span>",
+		"tex": "\\underline{%s}"
+	},
 	"color": {
 		"start": '<span style="color: #',
 		"end": "</span>",
