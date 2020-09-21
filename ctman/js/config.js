@@ -58,7 +58,7 @@
 	},
 	"template": [{
 		"isTA": true,
-		"wyz": "nonbsp restricted tables",
+		"wyz": "nonbsp restricted tables spellcheck",
 		"name": "description",
 		"blurs": ["please describe", "please expand", "tell all here"]
 	}],
