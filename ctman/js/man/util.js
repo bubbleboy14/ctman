@@ -1,7 +1,13 @@
 man.util = {
 	_: { parentage: {} },
 	ancestors: function(key) {
-
+		var p, pg = man.util._.parentage, az = [];
+		if (pg[key]) {
+			az = az.concat(pg[key]);
+			for (p of pg[key])
+				az = az.concat(man.util.ancestors(p));
+		}
+		return az;
 	},
 	geneologize: function(items) {
 		var par = man.util._.parentage, item, section;
