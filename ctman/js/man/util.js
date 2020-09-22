@@ -1,4 +1,19 @@
 man.util = {
+	_: { parentage: {} },
+	ancestors: function(key) {
+
+	},
+	geneologize: function(items) {
+		var par = man.util._.parentage, item, section;
+		for (item of items) {
+			for (section of item.sections) {
+				if (!par[section])
+					par[section] = [];
+				par[section].push(item.key);
+			}
+		}
+
+	},
 	collapser: function(title) {
 		var n = CT.dom.div(title, "pointer");
 		n.onclick = function() {
