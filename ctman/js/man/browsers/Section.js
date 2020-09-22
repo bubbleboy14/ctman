@@ -66,7 +66,15 @@ man.browsers.Section = CT.Class({
 		}), mover = this.move;
 		CT.db.one(key, function(s) { // meh shouldn't be necessary...
 			CT.dom.setContent(n, [
-				CT.dom.button("move", e => mover(key, d, n, e), "right"),
+//				CT.dom.button("move", e => mover(key, d, n, e), "right"),
+				CT.dom.button("remove", function() {
+					d.sections.splice(CT.dom.childNum(n), 1);
+					n.remove();
+					CT.db.put({
+						key: d.key,
+						sections: d.sections
+					});
+				}, "right"),
 				s.name
 			]);
 		});
@@ -76,7 +84,14 @@ man.browsers.Section = CT.Class({
 		var sec = this.section;
 		return man.util.refresher("sections", "add section",
 			n => this.asec(d, n), function() {
-				return d.sections.map(s => sec(s, d));
+//				return d.sections.map(s => sec(s, d));
+				return CT.dom.dragList(d.sections, k => sec(k, d), function(secs) {
+					d.sections = secs;
+					CT.db.put({
+						key: d.key,
+						sections: d.sections
+					});
+				});
 			}, core.config.ctman.classes[d.modelName].sections);
 	},
 	unheader: function(d) {
