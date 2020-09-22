@@ -147,6 +147,9 @@ man.browsers.Section = CT.Class({
 			sections: []
 		};
 	},
+	items: function(items) {
+		man.util.geneologize(items);
+	},
 	init: function(opts) {
 		this.opts = CT.merge(opts, {
 			owner: false,
