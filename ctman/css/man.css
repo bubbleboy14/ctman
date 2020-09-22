@@ -30,7 +30,20 @@
 }
 
 .collapsed {
-	max-height: 35px;
+	max-height: 40px;
+}
+
+.collapsible > .pointer::after {
+    content: "^";
+    margin: 5px;
+    font-size: 125%;
+    display: inline-block;
+    transform: rotate(180deg);
+    transition: transform 500ms;
+}
+
+.collapsible.collapsed > .pointer::after {
+    transform: rotate(90deg);
 }
 
 .ctlist > div:not(.browser_filter) {
