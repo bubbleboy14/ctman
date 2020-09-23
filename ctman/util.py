@@ -147,7 +147,7 @@ def trans(h, flag, rules=None):
 			mdblock = "\n".join([rules["liner"]%(s.split(">")[1].split("<")[0],) for s in lines])
 			tx = "\n%s\n"%(mdblock,)
 		elif "mid" in rules:
-			[c, t] = seg.split(rules["mid"])
+			[c, t] = seg.split(rules["mid"], 1)
 			tx = tex%(c, t)
 			if "alt" in rules:
 				alt = rules["alt"]
