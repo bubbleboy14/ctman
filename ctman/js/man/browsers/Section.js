@@ -7,7 +7,7 @@ man.browsers.Section = CT.Class({
 		var sbro = this.opts.sections || this,
 			nonoz = [d.key].concat(d.sections),
 			goodsecs = this.goodsecs;
-		nonoz = nonoz.concat(man.util.ancestors(d.key));
+		nonoz = nonoz.concat(man.relations.ancestors(d.key));
 		return function() {
 			items = sbro._.items.filter(i => !nonoz.includes(i.key));
 			items.length ? CT.modal.choice({
@@ -112,13 +112,20 @@ man.browsers.Section = CT.Class({
 			cb: cb
 		})
 	},
-	inject: function(ta, d) {
+	injectors: function(ta, d) {
 		var cvar = this.choosevar;
-		return CT.dom.button("inject variable", function() {
-			cvar(d, function(ivar) {
-				tinyMCE.activeEditor.selection.setContent("{{" + ivar + "}}");
-			});
-		}, "right");
+		return CT.dom.div([
+			CT.dom.button("inject variable", function() {
+				cvar(d, function(ivar) {
+					tinyMCE.activeEditor.selection.setContent("{{" + ivar + "}}");
+				});
+			}),
+			CT.dom.button("inject image", function() {
+				man.relations.images(function(img) {
+					tinyMCE.activeEditor.selection.setContent("<img style='display: block; max-width: 100%' src='" + img + "'>");
+				});
+			})
+		], "right");
 	},
 	view: function(d) {
 		var _ = this._, mcfg = core.config.ctman, val;
@@ -132,7 +139,7 @@ man.browsers.Section = CT.Class({
 					key: d.key
 				}, vals) : d);
 			}, {
-				description: ta => this.inject(ta, d)
+				description: ta => this.injectors(ta, d)
 			}),
 			this.extra(d)
 		]);
@@ -149,7 +156,8 @@ man.browsers.Section = CT.Class({
 		};
 	},
 	items: function(items) {
-		man.util.geneologize(items);
+		man.relations.geneologize(items);
+		man.relations.imaginate(items);
 	},
 	init: function(opts) {
 		this.opts = CT.merge(opts, {

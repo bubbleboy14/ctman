@@ -20,6 +20,9 @@ man.browsers.Template = CT.Class({
 			man.injections.editor(d)
 		];
 	},
+	items: function(items) {
+		man.relations.geneologize(items);
+	},
 	init: function(opts) { // requires opts.sections
 		this.opts = CT.merge(opts, {
 			owner: true,
