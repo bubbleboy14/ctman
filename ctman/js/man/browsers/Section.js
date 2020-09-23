@@ -112,13 +112,20 @@ man.browsers.Section = CT.Class({
 			cb: cb
 		})
 	},
-	inject: function(ta, d) {
+	injectors: function(ta, d) {
 		var cvar = this.choosevar;
-		return CT.dom.button("inject variable", function() {
-			cvar(d, function(ivar) {
-				tinyMCE.activeEditor.selection.setContent("{{" + ivar + "}}");
-			});
-		}, "right");
+		return CT.dom.div([
+			CT.dom.button("inject variable", function() {
+				cvar(d, function(ivar) {
+					tinyMCE.activeEditor.selection.setContent("{{" + ivar + "}}");
+				});
+			}),
+			CT.dom.button("inject image", function() {
+				man.relations.images(function(img) {
+					tinyMCE.activeEditor.selection.setContent("<img with=100% src='" + img + "'>");
+				});
+			})
+		], "right");
 	},
 	view: function(d) {
 		var _ = this._, mcfg = core.config.ctman, val;
@@ -132,7 +139,7 @@ man.browsers.Section = CT.Class({
 					key: d.key
 				}, vals) : d);
 			}, {
-				description: ta => this.inject(ta, d)
+				description: ta => this.injectors(ta, d)
 			}),
 			this.extra(d)
 		]);
