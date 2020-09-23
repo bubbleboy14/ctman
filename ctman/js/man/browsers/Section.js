@@ -149,7 +149,8 @@ man.browsers.Section = CT.Class({
 		};
 	},
 	items: function(items) {
-		man.util.geneologize(items);
+		man.relations.geneologize(items);
+		man.relations.imaginate(items);
 	},
 	init: function(opts) {
 		this.opts = CT.merge(opts, {
