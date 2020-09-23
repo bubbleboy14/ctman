@@ -19,7 +19,7 @@ man.relations = {
 		if (pg[key]) {
 			az = az.concat(pg[key]);
 			for (p of pg[key])
-				az = az.concat(man.util.ancestors(p));
+				az = az.concat(man.relations.ancestors(p));
 		}
 		return az;
 	},
