@@ -122,7 +122,7 @@ man.browsers.Section = CT.Class({
 			}),
 			CT.dom.button("inject image", function() {
 				man.relations.images(function(img) {
-					tinyMCE.activeEditor.selection.setContent("<img with=100% src='" + img + "'>");
+					tinyMCE.activeEditor.selection.setContent("<img style='display: block; max-width: 100%' src='" + img + "'>");
 				});
 			})
 		], "right");
