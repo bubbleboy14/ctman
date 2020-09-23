@@ -1,4 +1,6 @@
+import os
 from cantools import config
+from cantools.util import sym
 
 TSTART = '<table'
 TSTARTEND = '<tbody>'
@@ -61,6 +63,11 @@ flags = {
 	},
 	"em": {
 		"tex": "\\emph{%s}"
+	},
+	"img": {
+		"start": '<img style="display: block; max-width: 100%;" src="../',
+		"end": '" />',
+		"tex": "\\includegraphics[width=\\linewidth]{%s}"
 	}
 }
 
@@ -89,20 +96,41 @@ def clean(data):
 def row(chunk):
 	return [clean(part.split(">", 1)[1].split("</td>")[0]) for part in chunk.split('<td')[1:]]
 
+TBL = """\\begin{tabular}{%s}
+%s
+\\end{tabular}"""
+
 def table(seg):
 	rowz = map(row, seg.split(TSEP))
-	rowz = [rowz[0]] + [["-" * 30] * len(rowz[0])] + rowz[1:]
-	return "\n".join(["| %s |"%(" | ".join(r),) for r in rowz])
+	numcols = len(rowz[0])
+	if "img" in seg:
+		iorig = flags["img"]
+		seg = trans(seg, "img", {
+			"start": iorig["start"],
+			"end": iorig["end"],
+			"tex": "\\includegraphics[width=" + str(1.0 / numcols)[:3] + "\\linewidth]{%s}"
+		})
+		rowz = map(row, seg.split(TSEP))
+		return TBL%(numcols * "c", "\\\\\n\n".join(["&".join(r) for r in rowz]))
+	else:
+		rowz = [rowz[0]] + [["-" * 30] * numcols] + rowz[1:]
+		return "\n".join(["| %s |"%(" | ".join(r),) for r in rowz])
 
-flags["table"] = {
+TABLE_FLAGS = {
 	"start": TSTART,
 	"startend": TSTARTEND,
 	"end": TEND,
 	"handler": table
 }
 
-def trans(h, flag):
-	rules = flags[flag]
+def symage(path):
+	sname = "%s.jpg"%(path.replace("blob", "build"),)
+	if not os.path.exists(sname):
+		sym("../%s"%(path,), sname)
+	return sname
+
+def trans(h, flag, rules=None):
+	rules = rules or flags[flag]
 	sflag = rules.get("start", "<%s>"%(flag,))
 	seflag = rules.get("startend")
 	eflag = rules.get("end", "</%s>"%(flag,))
@@ -127,6 +155,8 @@ def trans(h, flag):
 					[fg, bg] = c.split(alt["split"])
 					tx = alt["tex"]%(bg, fg, t)
 		else:
+			if flag == "img":
+				seg = symage(seg)
 			tx = tex%(seg,)
 		h = h[:start] + tx + h[end + len(eflag):]
 	return h
@@ -164,6 +194,7 @@ def fixhead(h, depth):
 def h2l(h, depth=0):
 	for swap in swaps:
 		h = h.replace(swap, swaps[swap])
+	h = trans(h, "table", TABLE_FLAGS)
 	for flag in flags:
 		h = trans(h, flag)
 	return fixhead(h, depth)
