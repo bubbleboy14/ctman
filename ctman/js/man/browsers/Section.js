@@ -7,7 +7,7 @@ man.browsers.Section = CT.Class({
 		var sbro = this.opts.sections || this,
 			nonoz = [d.key].concat(d.sections),
 			goodsecs = this.goodsecs;
-		nonoz = nonoz.concat(man.util.ancestors(d.key));
+		nonoz = nonoz.concat(man.relations.ancestors(d.key));
 		return function() {
 			items = sbro._.items.filter(i => !nonoz.includes(i.key));
 			items.length ? CT.modal.choice({
