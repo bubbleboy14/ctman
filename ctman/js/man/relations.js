@@ -1,12 +1,14 @@
 man.relations = {
 	_: { parentage: {} },
 	images: function(cb) {
+		var iz = man.relations._.images;
+		if (!iz.length) return alert("no images uploaded yet!");
 		CT.modal.prompt({
 			prompt: "please select an image",
 			style: "icon",
 			recenter: true,
 			className: "basicpopup mosthight galimg",
-			data: man.relations._.images,
+			data: iz,
 			cb: cb
 		});
 	},
