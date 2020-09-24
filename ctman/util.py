@@ -167,8 +167,8 @@ def trans(h, flag, rules=None):
 		if "handler" in rules:
 			tx = rules["handler"](seg)
 		elif "liner" in rules:
-			lines = seg.strip().split("\n")
-			mdblock = "\n".join([rules["liner"]%(s.split(">")[1].split("<")[0],) for s in lines])
+			lines = seg.strip().split("</li>")[:-1]
+			mdblock = "\n".join([rules["liner"]%(s.split(">")[1],) for s in lines])
 			tx = "\n%s\n"%(mdblock,)
 		elif "mid" in rules:
 			[c, t] = seg.split(rules["mid"], 1)
