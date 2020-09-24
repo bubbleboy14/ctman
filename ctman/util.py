@@ -14,22 +14,13 @@ swaps = {
 	"&ndash;": "-",
 	"<br />": "\\hfill\\break\\hfill\\break ",
 	"&amp;": "\\&",
+	"&mu;": "$\\mu$",
 	"&ldquo;": '"',
 	"&rdquo;": '"',
 	"&bull;": "\\textbullet",
 	"text-align: left; ": ""
 }
 flags = {
-	"ol": {
-		"start": "<ol",
-		"startend": ">",
-		"liner": "1. %s"
-	},
-	"ul": {
-		"start": "<ul",
-		"startend": ">",
-		"liner": "- %s"
-	},
 	"center": {
 		"start": '<p style="text-align: center;">',
 		"end": "</p>",
@@ -43,9 +34,6 @@ flags = {
 	"underline": {
 		"start": '<span style="text-decoration: underline;">',
 		"end": "</span>",
-		"tex": "\\underline{%s}"
-	},
-	"u": {
 		"tex": "\\underline{%s}"
 	},
 	"color": {
@@ -74,6 +62,9 @@ flags = {
 	"em": {
 		"tex": "\\emph{%s}"
 	},
+	"u": {
+		"tex": "\\underline{%s}"
+	},
 	"p": {
 		"tex": "%s"
 	},
@@ -88,6 +79,18 @@ flags = {
 		"end": ' />',
 		"tex": "\\includegraphics[width=\\linewidth]{%s}"
 	}
+}
+liners = {
+	"ol": {
+		"start": "<ol",
+		"startend": ">",
+		"liner": "1. %s"
+	},
+	"ul": {
+		"start": "<ul",
+		"startend": ">",
+		"liner": "- %s"
+	},
 }
 
 for i in range(1, 7):
@@ -235,4 +238,6 @@ def h2l(h, depth=0):
 	h = trans(h, "table", TABLE_FLAGS)
 	for flag in flags:
 		h = trans(h, flag)
+	for flag in liners:
+		h = trans(h, flag, liners[flag])
 	return fixhead(h, depth)
