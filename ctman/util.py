@@ -11,7 +11,7 @@ swaps = {
 	"<p>|": "|",
 	"|</p>": "|",
 	"&ndash;": "-",
-	"<br />": "\n\n",
+	"<br />": "\\\\",
 	"&bull;": "\\textbullet",
 	"text-align: left; ": ""
 }
