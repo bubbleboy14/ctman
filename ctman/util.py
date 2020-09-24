@@ -146,7 +146,7 @@ def table(seg):
 		return TBL%(numcols * "c", "\\\\\n\n".join([" & ".join(r) for r in rowz]))
 	else:
 		rowz = [rowz[0]] + [["-" * 30] * numcols] + rowz[1:]
-		return "\n".join(["| %s |"%(" | ".join(r),) for r in rowz])
+		return "\n%s"%("\n".join(["| %s |"%(" | ".join(r),) for r in rowz]),)
 
 TABLE_FLAGS = {
 	"start": TSTART,
