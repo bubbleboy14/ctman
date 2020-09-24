@@ -144,6 +144,7 @@ def symage(path):
 		print "converting gif to png!"
 		cmd("convert %s %s.png"%(path, path))
 		cmd("mv %s.png %s"%(path, path))
+		ext = "png"
 	sname = "%s.%s"%(path.replace("blob", "build"), ext)
 	if not os.path.exists(sname):
 		sym("../%s"%(path,), sname)
