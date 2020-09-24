@@ -53,7 +53,7 @@ def export(doc, data):
 	else:
 		fname = "_".join(str(datetime.datetime.now()).split(".")[0].split(" "))
 	mdname = os.path.join("build", "%s.md"%(fname,))
-	write("\\newpage%s"%(data,), mdname)
+	write("\\newpage\n%s"%(data,), mdname)
 	bname = os.path.join("build", "%s.pdf"%(fname,))
 	pname = pretex(doc, fname)
 	pcmd = "pandoc %s -o %s -H tex/imps.tex -B %s -V geometry:margin=1in"%(mdname, bname, pname)
