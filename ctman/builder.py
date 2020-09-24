@@ -1,6 +1,7 @@
-import os, datetime, magic
-from cantools.util import cmd, read, write, sym
+import os, datetime
+from cantools.util import cmd, read, write
 from ctman.hazards import chemicals, chemprops
+from ctman.util import symage
 
 def part(fname):
 	return "# %s\n%s"%(fname.split(".")[0], read(os.path.join("templates", fname)))
@@ -37,10 +38,7 @@ Name & Signature & Company & Date \\\\ \\hline
 def pretex(doc, fname):
 	pname = os.path.join("build", "%s.tex"%(fname,))
 	if doc.logo:
-		iname = os.path.join("build", "%s.%s"%(doc.logo.value,
-			magic.from_file(doc.logo.path).split(" ").pop(0).lower()))
-		if not os.path.exists(iname):
-			sym("../%s"%(doc.logo.path,), iname)
+		iname = symage(doc.logo.path)
 	write(read("tex/pre.tex").replace("_CLIENT_LOGO_",
 		doc.logo and iname or "img/logo.jpg").replace("_SIGNUP_SHEET_",
 			doc.signup_sheet and SUSHEET or "").replace("_DOC_NAME_",
