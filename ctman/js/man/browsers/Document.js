@@ -80,7 +80,7 @@ man.browsers.Document = CT.Class({
 	upons: function(d) {
 		var s;
 		this._onmap[d.key] = d.sections.map(function(s, i) {
-			return i;
+			return s.key;
 		});
 		for (s of d.sections)
 			this.upons(s);
@@ -90,13 +90,15 @@ man.browsers.Document = CT.Class({
 			ons = this._onmap[d.key];
 		this._secmap[d.key] = cz;
 		ons && CT.dom.each(cz, function(sel, i) {
-			if (ons.includes(i))
+			if (ons.includes(sel._id))
 				sel.onclick();
 		});
-		return CT.dom.div([
+		var n = CT.dom.div([
 			d.name,
 			cz
 		]);
+		n._id = d.key;
+		return n;
 	},
 	sections: function(d) {
 		if (!d.template) return CT.dom.div("default (static)", "centered");
