@@ -206,7 +206,7 @@ def latline(line):
 	for i in range(6):
 		flag = hflags[i]
 		if line.startswith(flag):
-			return "%s %s\n\\normalsize\n"%(lahead[i], line[len(flag):])
+			return "%s{%s}"%(lahead[i], line[len(flag):])
 	return line
 
 def lhead(h):
