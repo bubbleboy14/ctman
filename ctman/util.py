@@ -213,9 +213,9 @@ def lhead(h):
 	return "\n".join(map(latline, h.split("\n")))
 
 def fixhead(h, depth):
-	if config.ctman.toc.secheaders:
-		return dhead(h, depth)
-	return lhead(h)
+	if not (config.ctman and config.ctman.toc.secheaders):
+		return lhead(h)
+	return dhead(h, depth)
 
 def h2l(h, depth=0):
 	for swap in swaps:
