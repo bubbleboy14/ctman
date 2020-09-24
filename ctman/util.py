@@ -10,6 +10,7 @@ TSEP = '</tr>'
 swaps = {
 	"<p>|": "|",
 	"|</p>": "|",
+	"<br />": "\n\n",
 	"text-align: left; ": ""
 }
 flags = {
@@ -64,6 +65,9 @@ flags = {
 	"em": {
 		"tex": "\\emph{%s}"
 	},
+	"p": {
+		"tex": "%s"
+	},
 	"img": {
 		"start": '<img style="display: block; max-width: 100%;" src="../',
 		"endstart": '" ',
@@ -92,14 +96,23 @@ def clean(data):
 		se = data.index(">", s)
 		e = data.index("</div>", s)
 		data = data[:s] + data[se + 1 : e] + data[e + len("</div>"):]
-	return data.replace("\n", "").replace("<p>", "").replace("</p>", "")
+	data = data.replace("\n", "")
+	if "<p" in data:
+		return trans(data, "p", {
+			"start": "<p",
+			"startend": ">",
+			"tex": "%s"
+		})
+	return data
 
 def row(chunk):
 	return [clean(part.split(">", 1)[1].split("</td>")[0]) for part in chunk.split('<td')[1:]]
 
-TBL = """\\begin{tabular}{%s}
+TBL = """\\begin{center}
+\\begin{tabular}{%s}
 %s
-\\end{tabular}"""
+\\end{tabular}
+\\end{center}"""
 
 def table(seg):
 	rowz = map(row, seg.split(TSEP))
