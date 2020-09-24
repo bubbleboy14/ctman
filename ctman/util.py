@@ -1,6 +1,6 @@
 import os, magic
 from cantools import config
-from cantools.util import sym
+from cantools.util import sym, cmd
 
 TSTART = '<table'
 TSTARTEND = '<tbody>'
@@ -139,8 +139,12 @@ TABLE_FLAGS = {
 }
 
 def symage(path):
-	sname = "%s.%s"%(path.replace("blob", "build"),
-		magic.from_file(path).split(" ").pop(0).lower())
+	ext = magic.from_file(path).split(" ").pop(0).lower()
+	if ext == "gif":
+		print "converting gif to png!"
+		cmd("convert %s %s.png"%(path, path))
+		cmd("mv %s.png %s"%(path, path))
+	sname = "%s.%s"%(path.replace("blob", "build"), ext)
 	if not os.path.exists(sname):
 		sym("../%s"%(path,), sname)
 	return sname
