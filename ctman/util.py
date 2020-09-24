@@ -10,7 +10,9 @@ TSEP = '</tr>'
 swaps = {
 	"<p>|": "|",
 	"|</p>": "|",
+	"&ndash;": "-",
 	"<br />": "\n\n",
+	"&bull;": "\\textbullet",
 	"text-align: left; ": ""
 }
 flags = {
