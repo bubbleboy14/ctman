@@ -140,8 +140,8 @@ TABLE_FLAGS = {
 
 def symage(path):
 	ext = magic.from_file(path).split(" ").pop(0).lower()
-	if ext == "gif":
-		log("converting gif to png!")
+	if not ext in ["png", "jpeg"]:
+		log("converting %s to png!"%(ext,))
 		cmd("convert %s %s.png"%(path, path))
 		cmd("mv %s.png %s"%(path, path))
 		ext = "png"
