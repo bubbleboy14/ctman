@@ -2,7 +2,7 @@ from cantools import db
 from cantools.util import log
 from ctuser.model import *
 from ctedit.model import PageEdit, Style
-from ctman.util import h2l
+from ctman.util import h2l, symage
 
 class SecBase(db.TimeStampedBase):
 	name = db.String()
@@ -55,7 +55,7 @@ class Section(SecBase):
 		d = self.fixed_desc(depth)
 		if not self.image:
 			return d
-		return "%s\r\n\r\n![](%s)"%(d, self.image.path)
+		return "%s\r\n\r\n![](%s)"%(d, symage(self.image.path))
 
 class Injection(db.TimeStampedBase):
 	name = db.String()
