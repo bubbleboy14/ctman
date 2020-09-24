@@ -1,4 +1,4 @@
-import os, datetime
+import os, datetime, magic
 from cantools.util import cmd, read, write, sym
 from ctman.hazards import chemicals, chemprops
 
@@ -37,7 +37,8 @@ Name & Signature & Company & Date \\\\ \\hline
 def pretex(doc, fname):
 	pname = os.path.join("build", "%s.tex"%(fname,))
 	if doc.logo:
-		iname = os.path.join("build", "%s.jpg"%(doc.logo.value,))
+		iname = os.path.join("build", "%s.%s"%(doc.logo.value,
+			magic.from_file(doc.logo.path).split(" ").pop(0).lower()))
 		if not os.path.exists(iname):
 			sym("../%s"%(doc.logo.path,), iname)
 	write(read("tex/pre.tex").replace("_CLIENT_LOGO_",

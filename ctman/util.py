@@ -1,4 +1,4 @@
-import os
+import os, magic
 from cantools import config
 from cantools.util import sym
 
@@ -139,7 +139,8 @@ TABLE_FLAGS = {
 }
 
 def symage(path):
-	sname = "%s.jpg"%(path.replace("blob", "build"),)
+	sname = "%s.%s"%(path.replace("blob", "build"),
+		magic.from_file(path).split(" ").pop(0).lower())
 	if not os.path.exists(sname):
 		sym("../%s"%(path,), sname)
 	return sname
