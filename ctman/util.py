@@ -12,6 +12,9 @@ swaps = {
 	"|</p>": "|",
 	"&ndash;": "-",
 	"<br />": "\\hfill\\break\\hfill\\break ",
+	"&amp;": "\\&",
+	"&ldquo;": '"',
+	"&rdquo;": '"',
 	"&bull;": "\\textbullet",
 	"text-align: left; ": ""
 }
@@ -39,6 +42,9 @@ flags = {
 	"underline": {
 		"start": '<span style="text-decoration: underline;">',
 		"end": "</span>",
+		"tex": "\\underline{%s}"
+	},
+	"u": {
 		"tex": "\\underline{%s}"
 	},
 	"color": {
