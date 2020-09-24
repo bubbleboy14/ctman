@@ -8,6 +8,7 @@ TEND = '\n</tr>\n</tbody>\n</table>'
 TSEP = '</tr>'
 
 swaps = {
+	"_": "\\_",
 	"<p>|": "|",
 	"|</p>": "|",
 	"&ndash;": "-",
