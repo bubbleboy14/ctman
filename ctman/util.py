@@ -140,7 +140,7 @@ TABLE_FLAGS = {
 
 def symage(path):
 	ext = magic.from_file(path).split(" ").pop(0).lower()
-	if not ext in ["png", "jpeg"]:
+	if ext not in ["png", "jpeg"]:
 		log("converting %s to png!"%(ext,))
 		cmd("convert -append -alpha off %s %s.png"%(path, path))
 		cmd("mv %s.png %s"%(path, path))
