@@ -66,7 +66,8 @@ flags = {
 	},
 	"img": {
 		"start": '<img style="display: block; max-width: 100%;" src="../',
-		"end": '" />',
+		"endstart": '" ',
+		"end": ' />',
 		"tex": "\\includegraphics[width=\\linewidth]{%s}"
 	}
 }
@@ -107,6 +108,7 @@ def table(seg):
 		iorig = flags["img"]
 		seg = trans(seg, "img", {
 			"start": iorig["start"],
+			"endstart": iorig["endstart"],
 			"end": iorig["end"],
 			"tex": "\\includegraphics[width=" + str(1.0 / numcols)[:3] + "\\linewidth]{%s}"
 		})
@@ -133,13 +135,16 @@ def trans(h, flag, rules=None):
 	rules = rules or flags[flag]
 	sflag = rules.get("start", "<%s>"%(flag,))
 	seflag = rules.get("startend")
+	esflag = rules.get("endstart")
 	eflag = rules.get("end", "</%s>"%(flag,))
 	tex = rules.get("tex")
 	while sflag in h:
 		start = h.index(sflag)
 		startend = seflag and h.index(seflag, start)
-		end = h.index(eflag, start)
-		seg = h[(startend or start) + len(seflag or sflag):end]
+		startender = (startend or start) + len(seflag or sflag)
+		endstart = esflag and h.index(esflag, startender)
+		end = h.index(eflag, startender or start)
+		seg = h[startender : (endstart or end)]
 		if "handler" in rules:
 			tx = rules["handler"](seg)
 		elif "liner" in rules:
