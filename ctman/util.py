@@ -11,7 +11,7 @@ swaps = {
 	"<p>|": "|",
 	"|</p>": "|",
 	"&ndash;": "-",
-	"<br />": "\\\\",
+	"<br />": "\\hfill\\break\\hfill\\break ",
 	"&bull;": "\\textbullet",
 	"text-align: left; ": ""
 }
@@ -68,6 +68,11 @@ flags = {
 		"tex": "\\emph{%s}"
 	},
 	"p": {
+		"tex": "%s"
+	},
+	"a": {
+		"start": "<a",
+		"startend": ">",
 		"tex": "%s"
 	},
 	"img": {
@@ -206,7 +211,7 @@ def latline(line):
 	for i in range(6):
 		flag = hflags[i]
 		if line.startswith(flag):
-			return "%s{%s}"%(lahead[i], line[len(flag):])
+			return "%s{%s}\\normalsize"%(lahead[i], line[len(flag):])
 	return line
 
 def lhead(h):
