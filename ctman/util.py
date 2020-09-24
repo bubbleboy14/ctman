@@ -98,11 +98,11 @@ def clean(data):
 		data = data[:s] + data[se + 1 : e] + data[e + len("</div>"):]
 	data = data.replace("\n", "")
 	if "<p" in data:
-		return trans(data, "p", {
+		return "\\Centerstack{%s}"%(trans(trans(data, "p"), "p", {
 			"start": "<p",
 			"startend": ">",
-			"tex": "%s"
-		})
+			"tex": " \\\\ %s"
+		}),)
 	return data
 
 def row(chunk):
@@ -126,7 +126,7 @@ def table(seg):
 			"tex": "\\includegraphics[width=" + str(1.0 / numcols)[:3] + "\\linewidth]{%s}"
 		})
 		rowz = map(row, seg.split(TSEP))
-		return TBL%(numcols * "c", "\\\\\n\n".join(["&".join(r) for r in rowz]))
+		return TBL%(numcols * "c", "\\\\\n\n".join([" & ".join(r) for r in rowz]))
 	else:
 		rowz = [rowz[0]] + [["-" * 30] * numcols] + rowz[1:]
 		return "\n".join(["| %s |"%(" | ".join(r),) for r in rowz])
