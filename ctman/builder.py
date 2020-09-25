@@ -66,6 +66,6 @@ def build(doc):
 	doc.put()
 	afunc = doc.template and doc.template.get().content or assemble
 	tempbod = afunc(doc.assembly.get("sections"))
-	fulltemp = hazard(tempbod, doc.assembly.get("hazards", {}))
-	data = inject(fulltemp, doc.injections)
+	#fulltemp = hazard(tempbod, doc.assembly.get("hazards", {}))
+	data = inject(tempbod, doc.injections)
 	return export(doc, data)
