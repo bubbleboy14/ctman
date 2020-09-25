@@ -105,7 +105,7 @@ for i in range(1, 4):
 	flags["t%s"%(i,)] = {
 		"start": '<p style="padding-left: %spx;">'%(i * 30,),
 		"end": "</p>",
-		"tex": "|" + "    " * i + " %s"
+		"tex": "\n|" + "    " * i + " %s"
 	}
 
 def clean(data):
