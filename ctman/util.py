@@ -12,7 +12,7 @@ swaps = {
 	"<p>|": "|",
 	"|</p>": "|",
 	"&ndash;": "-",
-	"<br />": "\\hfill\\break\\hfill\\break ",
+	"<br />": " \\\\ ",
 	"&amp;": "\\&",
 	"&mu;": "$\\mu$",
 	"&ldquo;": '"',
