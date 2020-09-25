@@ -66,7 +66,7 @@ flags = {
 		"tex": "\\underline{%s}"
 	},
 	"p": {
-		"tex": "%s"
+		"tex": "\\hfill\\break %s \\hfill\\break"
 	},
 	"a": {
 		"start": "<a",
