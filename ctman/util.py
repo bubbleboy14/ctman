@@ -18,7 +18,8 @@ swaps = {
 	"&ldquo;": '"',
 	"&rdquo;": '"',
 	"&bull;": "\\textbullet",
-	"text-align: left; ": ""
+	"text-align: left; ": "",
+	"padding-left: 60px; text-align: center;": "text-align: center;"
 }
 flags = {
 	"center": {
