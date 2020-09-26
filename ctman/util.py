@@ -155,17 +155,21 @@ def rowsets(rows):
 		item = rows.pop(0)
 		if curnum != len(item):
 			curnum = len(item)
-			curset = []
+			if curnum == 1:
+				curset = []
+			else:
+				curset = [["   "] * curnum]
 			sets.append(curset)
 		curset.append(item)
+	if len(sets) == 1:
+		sets[0].pop(0)
 	return sets
 
 def bartable(rowz):
 	numcols = len(rowz[0])
 	if numcols == 1 and len(rowz) == 1:
 		return "\\begin{center}\n%s\n\\end{center}"%(rowz[0][0],)
-#	rowz = [rowz[0]] + [["-" * 30] * numcols] + rowz[1:]
-	rowz = [["   "] * numcols] + [["-" * 30] * numcols] + rowz
+	rowz = [rowz[0]] + [["-" * 30] * numcols] + rowz[1:]
 	return "\n%s"%("\n".join(["| %s |"%(" | ".join(r),) for r in rowz]),)
 
 TABLE_FLAGS = {
