@@ -146,7 +146,7 @@ def table(seg):
 		rowz = map(row, seg.split(TSEP))
 		return TBL%(numcols * "c", "\\\\\n\n".join([" & ".join(r) for r in rowz]))
 	else:
-		return "\n\n".join(map(bartable, rowsets(rowz)))
+		return "\n".join(map(bartable, rowsets(rowz)))
 
 def rowsets(rows):
 	sets = []
