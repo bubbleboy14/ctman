@@ -146,8 +146,27 @@ def table(seg):
 		rowz = map(row, seg.split(TSEP))
 		return TBL%(numcols * "c", "\\\\\n\n".join([" & ".join(r) for r in rowz]))
 	else:
-		rowz = [rowz[0]] + [["-" * 30] * numcols] + rowz[1:]
-		return "\n%s"%("\n".join(["| %s |"%(" | ".join(r),) for r in rowz]),)
+		return "\n\n".join(map(bartable, rowsets(rowz)))
+
+def rowsets(rows):
+	sets = []
+	curnum = None
+	while len(rows):
+		item = rows.pop(0)
+		if curnum != len(item):
+			curnum = len(item)
+			curset = []
+			sets.append(curset)
+		curset.append(item)
+	return sets
+
+def bartable(rowz):
+	numcols = len(rowz[0])
+	if numcols == 1 and len(rowz) == 1:
+		return "\\begin{center}\n%s\n\\end{center}"%(rowz[0][0],)
+#	rowz = [rowz[0]] + [["-" * 30] * numcols] + rowz[1:]
+	rowz = [["   "] * numcols] + [["-" * 30] * numcols] + rowz
+	return "\n%s"%("\n".join(["| %s |"%(" | ".join(r),) for r in rowz]),)
 
 TABLE_FLAGS = {
 	"start": TSTART,
