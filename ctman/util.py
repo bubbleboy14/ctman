@@ -91,7 +91,7 @@ liners = {
 		"start": "<ul",
 		"startend": ">",
 		"liner": "- %s"
-	},
+	}
 }
 
 for i in range(1, 7):
@@ -191,6 +191,23 @@ def symage(path):
 		sym("../%s"%(path,), sname)
 	return sname
 
+def getstart(h, sflag):
+	i = h.find(sflag)
+	while h.find(sflag, i + 1) != -1:
+		i = h.find(sflag, i + 1)
+	return i
+
+def nextlast(h, flagz):
+	f = None
+	i = 0
+	for flag in flagz:
+		sflag = flagz[flag].get("start", "<%s>"%(flag,))
+		fi = getstart(h, sflag)
+		if fi > i:
+			i = fi
+			f = flag
+	return f
+
 def trans(h, flag, rules=None):
 	rules = rules or flags[flag]
 	sflag = rules.get("start", "<%s>"%(flag,))
@@ -199,7 +216,7 @@ def trans(h, flag, rules=None):
 	eflag = rules.get("end", "</%s>"%(flag,))
 	tex = rules.get("tex")
 	while sflag in h:
-		start = h.index(sflag)
+		start = getstart(h, sflag)
 		startend = seflag and h.index(seflag, start)
 		startender = (startend or start) + len(seflag or sflag)
 		endstart = esflag and h.index(esflag, startender)
@@ -208,9 +225,10 @@ def trans(h, flag, rules=None):
 		if "handler" in rules:
 			tx = rules["handler"](seg)
 		elif "liner" in rules:
-			lines = seg.strip().split("</li>")[:-1]
-			mdblock = "\n".join([rules["liner"]%(s.split(">")[1],) for s in lines])
-			tx = "\n%s\n"%(mdblock,)
+			lines = seg.strip().split("</li>")
+			epart = lines.pop().replace("-", "  -")
+			mdblock = "\n".join([rules["liner"]%(s.split(">", 1)[1],) for s in lines])
+			tx = "\n%s\n%s\n"%(mdblock, epart)
 		elif "mid" in rules:
 			[c, t] = seg.split(rules["mid"], 1)
 			tx = tex%(c, t)
@@ -256,12 +274,20 @@ def fixhead(h, depth):
 		return lhead(h)
 	return dhead(h, depth)
 
+def b2t(h):
+	flag = nextlast(h, flags)
+	while flag:
+		h = trans(h, flag)
+		flag = nextlast(h, flags)
+	flag = nextlast(h, liners)
+	while flag:
+		h = trans(h, flag, liners[flag])
+		flag = nextlast(h, liners)
+	return h
+
 def h2l(h, depth=0):
 	for swap in swaps:
 		h = h.replace(swap, swaps[swap])
 	h = trans(h, "table", TABLE_FLAGS)
-	for flag in flags:
-		h = trans(h, flag)
-	for flag in liners:
-		h = trans(h, flag, liners[flag])
+	h = b2t(h)
 	return fixhead(h, depth)
