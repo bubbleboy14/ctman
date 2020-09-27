@@ -66,7 +66,7 @@ def export(doc, data):
 	bname = os.path.join("build", "%s.pdf"%(fname,))
 	pname = pretex(doc, fname)
 	fcfg = config.ctman.font
-	pcmd = "pandoc %s -o %s -H tex/imps.tex -B %s -V geometry:margin=1in --pdf-engine=xelatex"%(mdname,
+	pcmd = "pandoc %s -o %s --pdf-engine=xelatex -H tex/imps.tex -B %s -V geometry:margin=1in"%(mdname,
 		bname, pname)
 	if fcfg.size:
 		pcmd += " -V fontsize:%s"%(fcfg.size,)
