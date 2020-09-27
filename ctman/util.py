@@ -166,6 +166,8 @@ def rowsets(rows):
 	return sets
 
 def bartable(rowz):
+	if not rowz:
+		return ""
 	numcols = len(rowz[0])
 	if numcols == 1 and len(rowz) == 1:
 		return "\\begin{center}\n%s\n\\end{center}"%(rowz[0][0],)
