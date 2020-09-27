@@ -36,14 +36,23 @@ Name & Signature & Company & Date \\\\ \\hline
 \\end{center}
 """%("\\\\ \\hline\r\n".join([" & & & " for i in range(40)]),)
 
+FONTFAM = """\\setmainfont[Path = fonts/%s/,
+Extension=.ttf,
+UprightFont=Regular,
+ItalicFont=Italic,
+BoldFont=Bold,
+BoldItalicFont=BoldItalic]{%s}"""
+
 def pretex(doc, fname):
+	fcfg = config.ctman.font
 	pname = os.path.join("build", "%s.tex"%(fname,))
 	if doc.logo:
 		iname = symage(doc.logo.path)
 	write(read("tex/pre.tex").replace("_CLIENT_LOGO_",
 		doc.logo and iname or "img/logo.jpg").replace("_SIGNUP_SHEET_",
 			doc.signup_sheet and SUSHEET or "").replace("_DOC_NAME_",
-			doc.name).replace("_DOC_REVISION_", str(doc.revision)), pname)
+			doc.name).replace("_DOC_REVISION_", str(doc.revision)).replace("_DOC_FONT_",
+			fcfg.family and FONTFAM%(fcfg.family, fcfg.family) or ""), pname)
 	return pname
 
 def export(doc, data):
@@ -57,7 +66,8 @@ def export(doc, data):
 	bname = os.path.join("build", "%s.pdf"%(fname,))
 	pname = pretex(doc, fname)
 	fcfg = config.ctman.font
-	pcmd = "pandoc %s -o %s -H tex/imps.tex -B %s -V geometry:margin=1in"%(mdname, bname, pname)
+	pcmd = "pandoc %s -o %s -H tex/imps.tex -B %s -V geometry:margin=1in --pdf-engine=xelatex"%(mdname,
+		bname, pname)
 	if fcfg.size:
 		pcmd += " -V fontsize:%s"%(fcfg.size,)
 	if doc.table_of_contents:
