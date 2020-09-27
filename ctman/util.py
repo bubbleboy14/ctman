@@ -12,7 +12,7 @@ swaps = {
 	"<p>|": "|",
 	"|</p>": "|",
 	"&ndash;": "-",
-	"<br />": " \\\\ ",
+	"<br />": " \\hfill\\break ",
 	"&amp;": "\\&",
 	"&mu;": "$\\mu$",
 	"&ldquo;": '"',
@@ -287,14 +287,10 @@ def b2t(h):
 		flag = nextlast(h, liners)
 	return h
 
-def unbreak(h):
-	return h.replace("{ \\\\  \\\\", "{ ").replace("{ \\\\", "{ ")
-
 def h2l(h, depth=0):
 	for swap in swaps:
 		h = h.replace(swap, swaps[swap])
 	h = trans(h, "table", TABLE_FLAGS)
 	h = b2t(h)
 	h = fixhead(h, depth)
-	h = unbreak(h)
 	return h
