@@ -17,6 +17,10 @@ routes = {
 }
 requires = ["ctuser"]
 cfg = {
+	"font": {
+		"family": None,
+		"size": "12pt"
+	},
 	"toc": {
 		"secheaders": False
 	}
