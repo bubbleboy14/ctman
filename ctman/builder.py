@@ -2,6 +2,7 @@ import os, datetime
 from cantools.util import cmd, read, write
 from ctman.hazards import chemicals, chemprops
 from ctman.util import symage
+from cantools import config
 
 def part(fname):
 	return "# %s\n%s"%(fname.split(".")[0], read(os.path.join("templates", fname)))
@@ -55,7 +56,10 @@ def export(doc, data):
 	write("\\newpage\n%s"%(data,), mdname)
 	bname = os.path.join("build", "%s.pdf"%(fname,))
 	pname = pretex(doc, fname)
+	fcfg = config.ctman.font
 	pcmd = "pandoc %s -o %s -H tex/imps.tex -B %s -V geometry:margin=1in"%(mdname, bname, pname)
+	if fcfg.size:
+		pcmd += " -V fontsize:%s"%(fcfg.size,)
 	if doc.table_of_contents:
 		pcmd += " --toc -N"
 	cmd(pcmd)
