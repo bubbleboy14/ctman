@@ -226,7 +226,7 @@ def trans(h, flag, rules=None):
 			tx = rules["handler"](seg)
 		elif "liner" in rules:
 			lines = seg.strip().split("</li>")
-			epart = lines.pop().replace("-", "  -")
+			epart = lines.pop().replace("-", "    -")
 			mdblock = "\n".join([rules["liner"]%(s.split(">", 1)[1],) for s in lines])
 			tx = "\n%s\n%s\n"%(mdblock, epart)
 		elif "mid" in rules:
