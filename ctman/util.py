@@ -1,3 +1,5 @@
+# -*- coding: UTF-8 -*-
+
 import os, magic
 from cantools import config
 from cantools.util import sym, cmd, log
@@ -11,6 +13,7 @@ swaps = {
 	"_": "\\_",
 	"<p>|": "|",
 	"|</p>": "|",
+	"&sect;": "§",
 	"&ndash;": "-",
 	"<br />": " \\hfill\\break ",
 	"&amp;": "\\&",
@@ -93,12 +96,27 @@ liners = {
 		"liner": "- %s"
 	}
 }
+lahead = [ "\\large", "\\large", "\\Large", "\\LARGE", "\\huge", "\\Huge" ]
+hflags = ["%s "%("#" * i,) for i in range(1, 7)]
+hflags.reverse()
+tflags = {
+	"p": {
+		"start": "<p",
+		"startend": ">",
+		"tex": " \\\\ %s"
+	}
+}
 
 for i in range(1, 7):
 	flags["h%s"%(i,)] = {
 		"start": "<h%s"%(i,),
 		"startend": ">",
 		"tex": "#" * i + " %s"
+	}
+	tflags["h%s"%(i,)] = {
+		"start": "<h%s"%(i,),
+		"startend": ">",
+		"tex": lahead[6 - i] + "{%s}\\normalsize "
 	}
 
 for i in range(1, 4):
@@ -115,12 +133,11 @@ def clean(data):
 		e = data.index("</div>", s)
 		data = data[:s] + data[se + 1 : e] + data[e + len("</div>"):]
 	data = data.replace("\n", "")
-	if "<p" in data:
-		return "\\Centerstack{%s}"%(trans(trans(data, "p"), "p", {
-			"start": "<p",
-			"startend": ">",
-			"tex": " \\\\ %s"
-		}),)
+	if "<p" in data or "<h" in data:
+		data = trans(data, "p")
+		for flag in tflags:
+			data = trans(data, flag, tflags[flag])
+		data = "\\Centerstack{%s}"%(data,)
 	return data
 
 def row(chunk):
@@ -246,10 +263,6 @@ def trans(h, flag, rules=None):
 		h = h[:start] + tx + h[end + len(eflag):]
 	return h
 
-lahead = [ "\\large", "\\large", "\\Large", "\\LARGE", "\\huge", "\\Huge" ]
-hflags = ["%s "%("#" * i,) for i in range(1, 7)]
-hflags.reverse()
-
 def pline(line, dpref):
 	for flag in hflags:
 		if line.startswith(flag):
@@ -287,10 +300,14 @@ def b2t(h):
 		flag = nextlast(h, liners)
 	return h
 
+def cleanup(h):
+	return h.replace("{#}", "{\\#}")
+
 def h2l(h, depth=0):
 	for swap in swaps:
 		h = h.replace(swap, swaps[swap])
 	h = trans(h, "table", TABLE_FLAGS)
 	h = b2t(h)
 	h = fixhead(h, depth)
+	h = cleanup(h)
 	return h
