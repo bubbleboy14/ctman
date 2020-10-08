@@ -25,7 +25,7 @@ class SecBase(db.TimeStampedBase):
 
 	def body(self, depth):
 		tline = "%s %s"%("#" * depth, self.header())
-		if depth == 1:
+		if False:#depth == 1: # configurize!
 			tline = "\\newpage%s"%(tline,)
 		return "%s\r\n\r\n%s"%(tline, self.desc(depth))
 
