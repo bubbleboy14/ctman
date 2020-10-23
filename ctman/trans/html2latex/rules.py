@@ -64,10 +64,8 @@ flags = {
 
 tflags = {
 	"p": {
-		"tex": " \\\\ %s \\\\ "
-	},
-	"div": {
-		"tex": " \\\\ %s \\\\ "
+		"nostyle": True,
+		"tex": " \\\\ %s "
 	}
 }
 
