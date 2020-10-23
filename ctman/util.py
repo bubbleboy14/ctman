@@ -1,7 +1,6 @@
 import os, magic
 from cantools import config
 from cantools.util import sym, cmd, log
-from ctman import trans
 
 def symage(path):
 	ext = magic.from_file(path).split(" ").pop(0).lower()
@@ -22,6 +21,7 @@ def getstart(h, sflag):
 	return i
 
 def h2l(h, depth=0):
-	if config.ctman and config.ctman.legacyh2l:
+	from ctman import trans
+	if True:#config.ctman and config.ctman.legacyh2l:
 		return trans.legacy.h2l(h, depth)
 	return trans.html2latex.H2L(h, depth).translate()
