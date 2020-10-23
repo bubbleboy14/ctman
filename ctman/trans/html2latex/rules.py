@@ -44,6 +44,7 @@ flags = {
 		"tex": "\\emph{%s}"
 	},
 	"u": {
+		"start": "<u>",
 		"tex": "\\underline{%s}"
 	},
 	"img": {
