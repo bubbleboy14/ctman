@@ -8,6 +8,8 @@ class Fragment(object):
 		self.rules = rules
 
 	def style(self, tx):
+		if self.rules.get("nostyle"):
+			return tx
 		if "style" not in self.starter:
 			return tx
 		start = self.starter.index('style="') + 7
