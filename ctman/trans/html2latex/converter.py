@@ -1,5 +1,5 @@
 from cantools import config
-from .util import swaps
+from .util import TABLE_FLAGS, trans, swaps, nextlast
 from .header import Header
 from .fragment import Fragment
 
@@ -11,7 +11,7 @@ class H2L(object):
 
 	def translate(self):
 		self.swaps()
-		self.trans("table", TABLE_FLAGS)
+		self.translation = trans(self.translation, "table", TABLE_FLAGS)
 		self.bottomsup()
 		self.translation = self.header(self.translation, self.depth)
 		self.cleanup()
@@ -29,10 +29,6 @@ class H2L(object):
 		while flag:
 			h = trans(h, flag)
 			flag = nextlast(h, flags)
-		flag = nextlast(h, liners)
-		while flag:
-			h = trans(h, flag, liners[flag])
-			flag = nextlast(h, liners)
 		self.translation = h
 
 	def cleanup(self):
