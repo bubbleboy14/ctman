@@ -1,7 +1,7 @@
 import os, magic
 from cantools import config
 from cantools.util import sym, cmd, log
-from ctman.trans.html2latex import H2L
+from ctman import trans
 
 def symage(path):
 	ext = magic.from_file(path).split(" ").pop(0).lower()
