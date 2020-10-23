@@ -3,6 +3,7 @@
 import os, magic
 from cantools import config
 from cantools.util import sym, cmd, log
+from ctman.trans.html2latex import H2L
 
 TSTART = '<table'
 TSTARTEND = '<tbody>'
@@ -305,10 +306,12 @@ def cleanup(h):
 	return h.replace("{#}", "{\\#}")
 
 def h2l(h, depth=0):
-	for swap in swaps:
-		h = h.replace(swap, swaps[swap])
-	h = trans(h, "table", TABLE_FLAGS)
-	h = b2t(h)
-	h = fixhead(h, depth)
-	h = cleanup(h)
-	return h
+	if config.ctman and config.ctman.legacyh2l:
+		for swap in swaps:
+			h = h.replace(swap, swaps[swap])
+		h = trans(h, "table", TABLE_FLAGS)
+		h = b2t(h)
+		h = fixhead(h, depth)
+		h = cleanup(h)
+		return h
+	return H2L(h, depth).translate()
