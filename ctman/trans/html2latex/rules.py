@@ -1,3 +1,5 @@
+# -*- coding: UTF-8 -*-
+
 headers = {
 	"latex": [ "\\large", "\\large", "\\Large", "\\LARGE", "\\huge", "\\Huge" ],
 	"section": ["%s "%("#" * i,) for i in range(1, 7)]
