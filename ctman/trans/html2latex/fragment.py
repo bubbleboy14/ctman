@@ -26,13 +26,13 @@ class Fragment(object):
 		seg = self.fragment
 		if "handler" in self.rules:
 			tx = self.rules["handler"](seg)
-		elif "liner" in rules:
+		elif "liner" in self.rules:
 			lines = seg.strip().split("</li>")
 			epart = lines.pop().replace("-", "    -")
 			mdblock = "\n".join([self.rules["liner"]%(s.split(">", 1)[1],) for s in lines])
 			tx = "\n%s\n%s\n"%(mdblock, epart)
 		else:
-			if flag == "img":
+			if self.rules.get("sym"):
 				seg = symage(seg)
 			tx = self.rules.get("tex")%(seg,)
 		return self.style(tx)

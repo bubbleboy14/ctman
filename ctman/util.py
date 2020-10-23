@@ -22,6 +22,6 @@ def getstart(h, sflag):
 
 def h2l(h, depth=0):
 	from ctman import trans
-	if True:#config.ctman and config.ctman.legacyh2l:
+	if config.ctman and config.ctman.legacyh2l:
 		return trans.legacy.h2l(h, depth)
 	return trans.html2latex.H2L(h, depth).translate()

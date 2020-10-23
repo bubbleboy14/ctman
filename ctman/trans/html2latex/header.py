@@ -1,3 +1,4 @@
+from cantools import config
 from .util import headers
 
 class Header(object):

@@ -50,7 +50,8 @@ flags = {
 		"start": '<img style="display: block; max-width: 100%;" src="../',
 		"endstart": '" ',
 		"end": ' />',
-		"tex": "\\includegraphics[width=\\linewidth]{%s}"
+		"tex": "\\includegraphics[width=\\linewidth]{%s}",
+		"sym": True
 	},
 	"ol": {
 		"liner": "1. %s"

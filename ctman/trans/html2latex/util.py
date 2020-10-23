@@ -39,6 +39,7 @@ def trans(h, flag, rules=None):
 # tables
 #
 
+TSEP = '</tr>'
 TBL = """\\begin{center}
 \\begin{tabular}{%s}
 %s

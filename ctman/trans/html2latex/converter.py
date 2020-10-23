@@ -1,5 +1,5 @@
 from cantools import config
-from .util import TABLE_FLAGS, trans, swaps, nextlast
+from .util import TABLE_FLAGS, flags, swaps, trans, nextlast
 from .header import Header
 from .fragment import Fragment
 
