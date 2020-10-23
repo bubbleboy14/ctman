@@ -1,4 +1,5 @@
 from cantools import config
+from .util import swaps
 from .header import Header
 from .fragment import Fragment
 
@@ -15,6 +16,12 @@ class H2L(object):
 		self.translation = self.header(self.translation, self.depth)
 		self.cleanup()
 		return self.translation
+
+	def swaps(self):
+		h = self.fragment
+		for swap in swaps:
+			h = h.replace(swap, swaps[swap])
+		self.translation = h
 
 	def bottomsup(self):
 		h = self.translation
