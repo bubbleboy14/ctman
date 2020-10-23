@@ -1,126 +1,10 @@
-# -*- coding: UTF-8 -*-
-
-import os, magic
-from cantools.util import sym, cmd, log
-
-headers = {
-	"latex": [ "\\large", "\\large", "\\Large", "\\LARGE", "\\huge", "\\Huge" ],
-	"section": ["%s "%("#" * i,) for i in range(1, 7)]
-}
-headers["section"].reverse()
-
-# maybe rm some swaps???
-swaps = {
-	"_": "\\_",
-	"<p>|": "|",
-	"|</p>": "|",
-	"&sect;": "§",
-	"&ndash;": "-",
-	"<br />": " \\hfill\\break ",
-	"&amp;": "\\&",
-	"&mu;": "$\\mu$",
-	"&ldquo;": '"',
-	"&rdquo;": '"',
-	"&bull;": "\\textbullet",
-	"text-align: left; ": "",
-	"padding-left: 60px; text-align: center;": "text-align: center;",
-	'<span style="text-align: center; ': '<span style="'
-}
-
-flags = {
-	"p": {
-		"tex": "\\hfill\\break %s \\hfill\\break"
-	},
-	"div": {
-		"tex": "\\hfill\\break %s \\hfill\\break"
-	},
-	"span": {
-		"tex": " %s "
-	},
-	"a": {
-		"tex": " %s "
-	},
-	"strong": {
-		"tex": "\\textbf{%s}"
-	},
-	"em": {
-		"tex": "\\emph{%s}"
-	},
-	"u": {
-		"tex": "\\underline{%s}"
-	},
-	"img": {
-		"start": '<img style="display: block; max-width: 100%;" src="../',
-		"endstart": '" ',
-		"end": ' />',
-		"tex": "\\includegraphics[width=\\linewidth]{%s}"
-	},
-	"ol": {
-		"liner": "1. %s"
-	},
-	"ul": {
-		"liner": "- %s"
-	}
-}
-
-tflags = {
-	"p": {
-		"tex": " \\\\ %s \\\\ "
-	},
-	"div": {
-		"tex": " \\\\ %s \\\\ "
-	}
-}
-
-for i in range(1, 7):
-	flags["h%s"%(i,)] = {
-		"tex": "#" * i + " %s"
-	}
-	tflags["h%s"%(i,)] = {
-		"tex": headers["latex"][6 - i] + "{%s}\\normalsize "
-	}
-
-styles = {
-	"text-align": {
-		"center": "\\begin{center}\n%s\n\\end{center}",
-		"right": "\\begin{flushright}\n%s\n\\end{flushright}",
-		"left": "\\begin{flushleft}\n%s\n\\end{flushleft}"
-	},
-	"text-decoration": {
-		"underline": "\\underline{%s}"
-	},
-	"padding-left": {}
-}
-
-for i in range(1, 4):
-	styles["padding-left"]["%spx"%(i * 30,)] = "\\begin{addmargin}[" + str(i) + "cm]{0cm}\n%s\n\\end{addmargin}"
-
-cstyles = {
-	"background-color": "\\colorbox[HTML]{%s}{%s}",
-	"color": "\\textcolor[HTML]{%s}{%s}"
-}
+from ctman.util import getstart
+from .fragment import Fragment
+from .rules import *
 
 #
 # misc
 #
-
-def symage(path):
-	ext = magic.from_file(path).split(" ").pop(0).lower()
-	if ext not in ["png", "jpeg"]:
-		log("converting %s to png!"%(ext,))
-		cmd("convert -append -alpha off %s %s.png"%(path, path))
-		cmd("mv %s.png %s"%(path, path))
-		ext = "png"
-	sname = "%s.%s"%(path.replace("blob", "build"), ext)
-	if not os.path.exists(sname):
-		sym("../%s"%(path,), sname)
-	return sname
-
-def getstart(h, sflag):
-	i = h.find(sflag)
-	while h.find(sflag, i + 1) != -1:
-		i = h.find(sflag, i + 1)
-	return i
 
 def nextlast(h, flagz):
 	f = None
@@ -146,27 +30,9 @@ def trans(h, flag, rules=None):
 		startender = (startend or start) + len(seflag or sflag)
 		endstart = esflag and h.index(esflag, startender)
 		end = h.index(eflag, startender or start)
+		starter = h[start : startender]
 		seg = h[startender : (endstart or end)]
-		if "handler" in rules:
-			tx = rules["handler"](seg)
-		elif "liner" in rules:
-			lines = seg.strip().split("</li>")
-			epart = lines.pop().replace("-", "    -")
-			mdblock = "\n".join([rules["liner"]%(s.split(">", 1)[1],) for s in lines])
-			tx = "\n%s\n%s\n"%(mdblock, epart)
-		elif "mid" in rules:
-			[c, t] = seg.split(rules["mid"], 1)
-			tx = tex%(c, t)
-			if "alt" in rules:
-				alt = rules["alt"]
-				if alt["split"] in c:
-					[fg, bg] = c.split(alt["split"])
-					tx = alt["tex"]%(bg, fg, t)
-		else:
-			if flag == "img":
-				seg = symage(seg)
-			tx = tex%(seg,)
-		h = h[:start] + tx + h[end + len(eflag):]
+		h = h[:start] + Fragment(seg, starter, rules).translate() + h[end + len(eflag):]
 	return h
 
 #
