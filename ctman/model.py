@@ -86,3 +86,7 @@ class Document(db.TimeStampedBase):
 	signup_sheet = db.Boolean(default=True)
 	table_of_contents = db.Boolean(default=True)
 	pretty_filenames = db.Boolean(default=True)
+
+class Table(db.TimeStampedBase):
+	name = db.String()
+	csv = db.Binary()
