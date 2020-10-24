@@ -9,29 +9,32 @@ class SecBase(db.TimeStampedBase):
 	description = db.Text()
 	sections = db.ForeignKey(kind="section", repeated=True)
 
-	def secs(self, sections=None, depth=0):
+	def secs(self, sections=None, depth=0, novars=False):
 		return "\r\n\r\n".join(sections and [
-			db.get(s['key']).content(s['sections'], depth) for s in sections
-		] or [s.content(depth=depth) for s in db.get_multi(self.sections)])
+			db.get(s['key']).content(s['sections'], depth, novars) for s in sections
+		] or [
+			s.content(depth=depth, novars=novars) for s in db.get_multi(self.sections)
+		])
 
-	def fixed_desc(self, depth=0):
-		return h2l(self.description, depth)
+	def fixed_desc(self, depth=0, novars=False):
+		d = self.description
+		return h2l(novars and d.replace("{{", "(").replace("}}", ")") or d, depth)
 
-	def desc(self, depth=0):
-		return self.fixed_desc(depth)
+	def desc(self, depth=0, novars=False):
+		return self.fixed_desc(depth, novars)
 
 	def header(self):
 		return self.name
 
-	def body(self, depth):
+	def body(self, depth, novars=False):
 		tline = "%s %s"%("#" * depth, self.header())
 		if False:#depth == 1: # configurize!
 			tline = "\\newpage%s"%(tline,)
-		return "%s\r\n\r\n%s"%(tline, self.desc(depth))
+		return "%s\r\n\r\n%s"%(tline, self.desc(depth, novars))
 
-	def content(self, sections=None, depth=0):
-		body = self.body(depth)
-		secs = self.sections and self.secs(sections, depth + 1) or ""
+	def content(self, sections=None, depth=0, novars=False):
+		body = self.body(depth, novars)
+		secs = self.sections and self.secs(sections, depth + 1, novars) or ""
 		cont = "%s\r\n\r\n%s"%(body, secs)
 		log(cont)
 		return cont
@@ -51,8 +54,8 @@ class Section(SecBase):
 	def header(self):
 		return self.headerless and " " or self.name
 
-	def desc(self, depth=0):
-		d = self.fixed_desc(depth)
+	def desc(self, depth=0, novars=False):
+		d = self.fixed_desc(depth, novars)
 		if not self.image:
 			return d
 		return "%s\r\n\r\n![](%s)"%(d, symage(self.image.path))
@@ -68,8 +71,8 @@ class Template(SecBase):
 	owner = db.ForeignKey(kind=CTUser)
 	injections = db.ForeignKey(kind=Injection, repeated=True)
 
-	def body(self, depth):
-		return self.desc(depth)
+	def body(self, depth, novars=False):
+		return self.desc(depth, novars)
 
 class Document(db.TimeStampedBase):
 	owner = db.ForeignKey(kind=CTUser)

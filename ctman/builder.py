@@ -57,37 +57,44 @@ def pretex(doc, fname):
 
 PDINFO = {}
 
-def export(doc, data):
-	if doc.pretty_filenames:
-		fname = "%s_r%s"%(doc.name.replace(" ", "_").replace("(",
-			"").replace(")", ""), doc.revision)
+def export(doc, data=None):
+	fname = doc.name.replace(" ",
+		"_").replace("(", "").replace(")", "")
+	if doc.polytype == "document":
+		if doc.pretty_filenames:
+			fname = "%s_r%s"%(fname, doc.revision)
+		else:
+			fname = "_".join(str(datetime.datetime.now()).split(".")[0].split(" "))
+		data = "\\newpage\n%s"%(data,)
+		pname = pretex(doc, fname)
 	else:
-		fname = "_".join(str(datetime.datetime.now()).split(".")[0].split(" "))
+		data = doc.content(novars=True)
+		pname = None
 	mdname = os.path.join("build", "%s.md"%(fname,))
-	write("\\newpage\n%s"%(data,), mdname)
+	write(data, mdname)
 	bname = os.path.join("build", "%s.pdf"%(fname,))
-	pname = pretex(doc, fname)
-	md2pdf(mdname, bname, pname, doc)
+	md2pdf(doc, mdname, bname, pname)
 	return bname
 
 def initpandoc():
 	if "version" not in PDINFO:
 		PDINFO['version'] = int(output("pandoc --version").split("\n").pop(0).split(" ").pop().split(".").pop(0))
 
-def md2pdf(mdname, bname, pname, doc):
+def md2pdf(doc, mdname, bname, pname=None):
 	initpandoc()
 	fcfg = config.ctman.font
-	pcmd = "pandoc %s -o %s --%s-engine=xelatex -H tex/imps.tex -B %s -V geometry:margin=1in"%(mdname,
-		bname, PDINFO['version'] == 1 and "latex" or "pdf", pname)
+	pcmd = "pandoc %s -o %s --%s-engine=xelatex -H tex/imps.tex -V geometry:margin=1in"%(mdname,
+		bname, PDINFO['version'] == 1 and "latex" or "pdf")
 	if fcfg.size:
 		pcmd += " -V fontsize:%s"%(fcfg.size,)
-	if doc.table_of_contents:
+	if pname:
+		pcmd += " -B %s"%(pname,)
+	if doc.polytype == "document" and doc.table_of_contents:
 		pcmd += " --toc -N"
 	cmd(pcmd)
 
 def build(doc):
 	doc.revision += 1
-	doc.put()
 	afunc = doc.template and doc.template.get().content or assemble
 	tempbod = afunc(doc.assembly.get("sections"))
 	#fulltemp = hazard(tempbod, doc.assembly.get("hazards", {}))

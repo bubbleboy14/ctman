@@ -95,16 +95,35 @@ man.browsers.Section = CT.Class({
 				});
 			}, core.config.ctman.classes[d.modelName].sections);
 	},
-	unheader: function(d) {
+	secbutts: function(d) {
 		var _ = this._;
-		if (!d.key || !this.opts.headerlessness) return;
-		return CT.dom.checkboxAndLabel("headerless", d.headerless,
-			null, null, "abs ctr bordered round shiftup", function(cb) {
-				_.edit({
-					key: d.key,
-					headerless: cb.checked
+		if (!d.key || !this.opts.secbutts) return;
+		return CT.dom.div([
+			CT.dom.checkboxAndLabel("headerless", d.headerless,
+				null, null, "inline rmargined", function(cb) {
+					_.edit({
+						key: d.key,
+						headerless: cb.checked
+					});
+				}
+			),
+			CT.dom.button("preview", function() {
+				CT.net.post({
+					spinner: true,
+					path: "/_man",
+					params: {
+						key: d.key
+					},
+					cb: function(pdfurl) {
+						CT.modal.modal([
+							"your preview is ready!",
+							CT.dom.link("click here to view", null,
+								"/" + pdfurl, "centered block", null, null, true)
+						]);
+					}
 				});
-			});
+			})
+		], "abs ctr bordered round shiftup");
 	},
 	choosevar: function(d, cb) {
 		CT.modal.prompt({
@@ -130,7 +149,7 @@ man.browsers.Section = CT.Class({
 	view: function(d) {
 		var _ = this._, mcfg = core.config.ctman, val;
 		CT.dom.setContent(_.nodes.content, [
-			this.unheader(d),
+			this.secbutts(d),
 			this.namer(d),
 			man.util.form(d, "template", function(vals) {
 				for (val in vals)
@@ -162,7 +181,7 @@ man.browsers.Section = CT.Class({
 	init: function(opts) {
 		this.opts = CT.merge(opts, {
 			owner: false,
-			headerlessness: true,
+			secbutts: true,
 			modelName: "section",
 			blurs: ["section name", "section title", "name that section"]
 		}, this.opts);
