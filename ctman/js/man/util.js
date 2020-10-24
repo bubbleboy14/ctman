@@ -91,5 +91,8 @@ man.util = {
 			CT.dom.div(pname + " page", "biggest centered"),
 			CT.dom.div(hcfg[pname], "kidvp")
 		]);
+	},
+	inject: function(content) {
+		tinyMCE.activeEditor.selection.setContent(content);
 	}
 };

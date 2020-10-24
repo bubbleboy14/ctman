@@ -131,19 +131,20 @@ man.browsers.Section = CT.Class({
 			cb: cb
 		})
 	},
-	injectors: function(ta, d) {
+	injectors: function(d) {
 		var cvar = this.choosevar;
 		return CT.dom.div([
 			CT.dom.button("inject variable", function() {
 				cvar(d, function(ivar) {
-					tinyMCE.activeEditor.selection.setContent("{{" + ivar + "}}");
+					man.util.inject("{{" + ivar + "}}");
 				});
 			}),
 			CT.dom.button("inject image", function() {
 				man.relations.images(function(img) {
-					tinyMCE.activeEditor.selection.setContent("<img style='display: block; max-width: 100%' src='" + img + "'>");
+					man.util.inject("<img style='display: block; max-width: 100%' src='" + img + "'>");
 				});
-			})
+			}),
+			man.tables.button()
 		], "right");
 	},
 	view: function(d) {
@@ -158,7 +159,7 @@ man.browsers.Section = CT.Class({
 					key: d.key
 				}, vals) : d);
 			}, {
-				description: ta => this.injectors(ta, d)
+				description: ta => this.injectors(d)
 			}),
 			this.extra(d)
 		]);
@@ -185,5 +186,6 @@ man.browsers.Section = CT.Class({
 			modelName: "section",
 			blurs: ["section name", "section title", "name that section"]
 		}, this.opts);
+		man.tables.init();
 	}
 }, CT.Browser);
