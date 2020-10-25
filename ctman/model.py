@@ -9,11 +9,13 @@ class SecBase(db.TimeStampedBase):
 	description = db.Text()
 	sections = db.ForeignKey(kind="section", repeated=True)
 
-	def secs(self, sections=None, depth=0, novars=False):
+	def secs(self, sections=None, depth=0, novars=False, page_breaks=False):
 		return "\r\n\r\n".join(sections and [
-			db.get(s['key']).content(s['sections'], depth, novars) for s in sections
+			db.get(s['key']).content(s['sections'],
+				depth, novars, page_breaks) for s in sections
 		] or [
-			s.content(depth=depth, novars=novars) for s in db.get_multi(self.sections)
+			s.content(depth=depth, novars=novars,
+				page_breaks=page_breaks) for s in db.get_multi(self.sections)
 		])
 
 	def fixed_desc(self, depth=0, novars=False):
@@ -26,15 +28,16 @@ class SecBase(db.TimeStampedBase):
 	def header(self):
 		return self.name
 
-	def body(self, depth, novars=False):
+	def body(self, depth, novars=False, page_breaks=False):
 		tline = "%s %s"%("#" * depth, self.header())
-		if False:#depth == 1: # configurize!
+		if page_breaks and depth == 1:
 			tline = "\\newpage%s"%(tline,)
 		return "%s\r\n\r\n%s"%(tline, self.desc(depth, novars))
 
-	def content(self, sections=None, depth=0, novars=False):
-		body = self.body(depth, novars)
-		secs = self.sections and self.secs(sections, depth + 1, novars) or ""
+	def content(self, sections=None, depth=0, novars=False, page_breaks=False):
+		body = self.body(depth, novars, page_breaks)
+		secs = self.sections and self.secs(sections,
+			depth + 1, novars, page_breaks) or ""
 		cont = "%s\r\n\r\n%s"%(body, secs)
 		log(cont)
 		return cont
@@ -71,7 +74,7 @@ class Template(SecBase):
 	owner = db.ForeignKey(kind=CTUser)
 	injections = db.ForeignKey(kind=Injection, repeated=True)
 
-	def body(self, depth, novars=False):
+	def body(self, depth, novars=False, page_breaks=False):
 		return self.desc(depth, novars)
 
 class Document(db.TimeStampedBase):
@@ -86,6 +89,11 @@ class Document(db.TimeStampedBase):
 	signup_sheet = db.Boolean(default=True)
 	table_of_contents = db.Boolean(default=True)
 	pretty_filenames = db.Boolean(default=True)
+	section_page_breaks = db.Boolean(default=False)
+
+	def content(self, sections=None):
+		return self.template.get().content(sections,
+			page_breaks=self.section_page_breaks)
 
 class Table(db.TimeStampedBase):
 	name = db.String()
