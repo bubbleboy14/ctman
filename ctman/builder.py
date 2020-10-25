@@ -95,7 +95,7 @@ def md2pdf(doc, mdname, bname, pname=None):
 
 def build(doc):
 	doc.revision += 1
-	afunc = doc.template and doc.template.get().content or assemble
+	afunc = doc.template and doc.content or assemble
 	tempbod = afunc(doc.assembly.get("sections"))
 	#fulltemp = hazard(tempbod, doc.assembly.get("hazards", {}))
 	data = inject(tempbod, doc.injections)
