@@ -3,6 +3,7 @@ from cantools.web import fetch
 from cantools.util import log, mkdir, read, write
 
 IURL = "https://www.cdc.gov/niosh/npg/npgsyn-%s.html"
+CURL = "https://www.cdc.gov/niosh/npg/npgd%s.html"
 NDIR = os.path.join("scrape", "niosh")
 FULL = os.path.join(NDIR, "full")
 INDEX = os.path.join(FULL, "index")
@@ -33,9 +34,13 @@ class Scraper(object):
 		for letter in string.lowercase:
 			self.pages["index"].append(self.acquire(IURL%(letter,), INDEX))
 
+	def clist(self, page):
+		return [CURL%(p.split("'")[0],) for p in page.split("href='npgd")[1:]]
+
 	def chems(self):
 		for page in self.pages["index"]:
-			pass # derive chem pages from index pages
+			for url in self.clist(page):
+				self.pages["chems"].append(self.acquire(url, CHEMS))
 
 	def download(self):
 		self.index()
