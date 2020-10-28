@@ -11,6 +11,7 @@ CHEMS = os.path.join(FULL, "chems")
 
 class Scraper(object):
 	def __init__(self):
+		log("initializing niosh scraper")
 		for p in [NDIR, FULL, INDEX, CHEMS]:
 			if not os.path.isdir(p):
 				mkdir(p)
@@ -20,12 +21,14 @@ class Scraper(object):
 		}
 		self.download()
 		self.process()
+		log("scrape complete - goodbye")
 
 	def acquire(self, url, path):
 		fname = url.split("/").pop()
 		fpath = os.path.join(path, fname)
 		if os.path.exists(fpath):
 			return read(fpath)
+		log("acquiring: %s"%(url,))
 		data = fetch(url)
 		write(data, fpath)
 		return data
@@ -39,7 +42,9 @@ class Scraper(object):
 
 	def chems(self):
 		for page in self.pages["index"]:
-			for url in self.clist(page):
+			chemurls = self.clist(page)
+			log("found %s chem pages"%(len(chemurls),))
+			for url in chemurls:
 				self.pages["chems"].append(self.acquire(url, CHEMS))
 
 	def download(self):
