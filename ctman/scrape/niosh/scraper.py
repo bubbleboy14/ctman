@@ -70,6 +70,11 @@ class Scraper(object):
 	def process(self):
 		pages = self.pages["chems"]
 		lp = len(pages)
-		log("processing %s chemical pages"%(lp,), important=True)
+		log("building %s Chem processors"%(lp,), important=True)
 		for i in range(lp):
 			self.chemicals.append(Chem(self.chemcodes[i], pages[i]))
+		log("clearing processed pages from memory", important=True)
+		self.pages["index"] = self.pages["chems"] = None # for memory
+		log("scraping %s chemical pages"%(lp,), important=True)
+		for chem in self.chemicals:
+			chem.scrape()
