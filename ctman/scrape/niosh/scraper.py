@@ -31,7 +31,7 @@ class Scraper(object):
 		log("creating %s Chemical records"%(len(self.chemicals),))
 		puts = []
 		for chem in self.chemicals:
-			puts.append(Chemical(**chem.data))
+			puts.append(Chemical(**chem))
 		log("saving %s Chemical records"%(len(puts),))
 		db.put_multi(puts)
 
@@ -70,11 +70,6 @@ class Scraper(object):
 	def process(self):
 		pages = self.pages["chems"]
 		lp = len(pages)
-		log("building %s Chem processors"%(lp,), important=True)
+		log("processing %s chemical pages"%(lp,), important=True)
 		for i in range(lp):
-			self.chemicals.append(Chem(self.chemcodes[i], pages[i]))
-		log("clearing processed pages from memory", important=True)
-		self.pages["index"] = self.pages["chems"] = None # for memory
-		log("scraping %s chemical pages"%(lp,), important=True)
-		for chem in self.chemicals:
-			chem.scrape()
+			self.chemicals.append(Chem(self.chemcodes[i], pages[i]).data)

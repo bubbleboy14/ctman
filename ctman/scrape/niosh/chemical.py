@@ -22,6 +22,7 @@ class Chem(object):
 		self.code = code
 		self.page = page.decode()
 		self.data = { "code": code }
+		self.scrape()
 
 	def getstart(self, f, start=None):
 		i = self.page.find(f, start)
