@@ -1,4 +1,4 @@
-dirs = ["build", "templates", "tex"]
+dirs = ["build", "templates", "tex", "scrape"]
 copies = {
 	"tex": ["imps.tex", "pre.tex"]
 }
