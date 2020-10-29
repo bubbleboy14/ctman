@@ -21,7 +21,7 @@ class Chem(object):
 	def __init__(self, code, page):
 		self.code = code
 		self.page = page
-		self.data = {}
+		self.data = { "code": code }
 		self.scrape()
 
 	def extract(self, f, start=None, t="</div>", unquote=True):
