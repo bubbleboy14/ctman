@@ -11,8 +11,8 @@ TCARDS = ["synonyms_and_trade_names", "formula", "conversion",
 	"freezing_point", "solubility", "vapor_pressure",
 	"ionization_potential", "specific_gravity", "flash_point",
 	"upper_explosive_limit", "lower_explosive_limit",
-	"incompatibilities_and_reactivities",
-	"exposure_routes", "symptoms", "target_organs"]
+	"incompatibilities_and_reactivities", "exposure_routes",
+	"symptoms", "target_organs", "cancer_site"]
 HCARDS = ["exposure_limits", "measurement_methods"]
 BCARDS = ["Respirator Recommendations", "First Aid",
 	"Personal Protection/Sanitation"]
