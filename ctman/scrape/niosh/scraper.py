@@ -2,6 +2,7 @@ import os, string
 from cantools.web import fetch
 from cantools.util import log, mkdir, read, write
 from ctman.scrape.niosh.chemical import Chem
+from model import db, Chemical
 
 IURL = "https://www.cdc.gov/niosh/npg/npgsyn-%s.html"
 CURL = "https://www.cdc.gov/niosh/npg/npgd%s.html"
@@ -23,7 +24,16 @@ class Scraper(object):
 		self.chemicals = []
 		self.download()
 		self.process()
+		self.save()
 		log("scrape complete")
+
+	def save(self):
+		log("creating %s Chemical records"%(len(self.chemicals),))
+		puts = []
+		for chem in self.chemicals:
+			puts.append(Chemical(**chem.data))
+		log("saving %s Chemical records"%(len(puts),))
+		db.put_multi(puts)
 
 	def acquire(self, url, path):
 		fname = url.split("/").pop()
@@ -43,16 +53,21 @@ class Scraper(object):
 		return [CURL%(p.split("'")[0],) for p in page.split("href='npgd")[1:]]
 
 	def chems(self):
-		for page in self.pages["index"]:
+		pages = self.pages["index"]
+		log("scanning %s index pages"%(len(pages),), important=True)
+		for page in pages:
 			chemurls = self.clist(page)
 			log("found %s chem pages"%(len(chemurls),))
 			for url in chemurls:
 				self.pages["chems"].append(self.acquire(url, CHEMS))
 
 	def download(self):
+		log("downloading", important=True)
 		self.index()
 		self.chems()
 
 	def process(self):
-		for page in self.pages["chems"]:
+		pages = self.pages["chems"]
+		log("processing %s chemical pages"%(len(pages),), important=True)
+		for page in pages:
 			self.chemicals.append(Chem(page))
