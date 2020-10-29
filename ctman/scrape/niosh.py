@@ -1,6 +1,7 @@
 import os, string
 from cantools.web import fetch
 from cantools.util import log, mkdir, read, write
+from ctman.scrape.niosh.chemical import Chem
 
 IURL = "https://www.cdc.gov/niosh/npg/npgsyn-%s.html"
 CURL = "https://www.cdc.gov/niosh/npg/npgd%s.html"
@@ -19,9 +20,10 @@ class Scraper(object):
 			"index": [],
 			"chems": []
 		}
+		self.chemicals = []
 		self.download()
 		self.process()
-		log("scrape complete - goodbye")
+		log("scrape complete")
 
 	def acquire(self, url, path):
 		fname = url.split("/").pop()
@@ -51,9 +53,6 @@ class Scraper(object):
 		self.index()
 		self.chems()
 
-	def chem(self, page):
-		pass # process chem page
-
 	def process(self):
 		for page in self.pages["chems"]:
-			self.chem(page)
+			self.chemicals.append(Chem(page))
