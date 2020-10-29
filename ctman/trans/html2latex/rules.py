@@ -18,6 +18,7 @@ swaps = {
 	"&mu;": "$\\mu$",
 	"&ldquo;": '"',
 	"&rdquo;": '"',
+	"&mdash;": "---",
 	"&bull;": "\\textbullet",
 	"text-align: left; ": "",
 	"padding-left: 60px; text-align: center;": "text-align: center;",
