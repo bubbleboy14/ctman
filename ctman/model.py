@@ -101,6 +101,7 @@ class Table(db.TimeStampedBase):
 
 class Chemical(db.TimeStampedBase):
 	classification = db.String()
+	code = db.String()
 	name = db.String()
 	cas = db.String()
 	rtecs = db.String()
