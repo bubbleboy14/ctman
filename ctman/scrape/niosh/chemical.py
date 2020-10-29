@@ -20,7 +20,7 @@ BCARDS = ["Respirator Recommendations", "First Aid",
 class Chem(object):
 	def __init__(self, code, page):
 		self.code = code
-		self.page = page
+		self.page = page.decode()
 		self.data = { "code": code }
 		self.scrape()
 
