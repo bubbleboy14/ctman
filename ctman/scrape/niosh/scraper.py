@@ -7,14 +7,13 @@ from model import db, Chemical
 IURL = "https://www.cdc.gov/niosh/npg/npgsyn-%s.html"
 CURL = "https://www.cdc.gov/niosh/npg/npgd%s.html"
 NDIR = os.path.join("scrape", "niosh")
-FULL = os.path.join(NDIR, "full")
-INDEX = os.path.join(FULL, "index")
-CHEMS = os.path.join(FULL, "chems")
+INDEX = os.path.join(NDIR, "index")
+CHEMS = os.path.join(NDIR, "chems")
 
 class Scraper(object):
 	def __init__(self):
 		log("initializing niosh scraper")
-		for p in [NDIR, FULL, INDEX, CHEMS]:
+		for p in [NDIR, INDEX, CHEMS]:
 			if not os.path.isdir(p):
 				mkdir(p)
 		self.pages = {
