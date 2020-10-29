@@ -6,7 +6,7 @@ EXTRACTS = {
 CARDS = {
 	"cas": "CAS No.",
 	"rtecs": "RTECS No.",
-	"dot": "DOT ID & Guide",
+	"dot": "DOT ID &amp; Guide",
 	"idlh": "IDLH"
 }
 TCARDS = ["synonyms_and_trade_names", "formula", "conversion",
