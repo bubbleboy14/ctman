@@ -1,4 +1,4 @@
-from cantools.util import log
+from cantools.util import log, error
 
 CARDS = {
 	"cas": "CAS No.",
@@ -24,8 +24,22 @@ class Chem(object):
 		self.data = { "code": code }
 		self.scrape()
 
+	def getstart(self, f, start=None):
+		i = self.page.find(f, start)
+		i2 = None
+		if '"' in f:
+			i2 = self.page.find(f.replace('"', "'"), start)
+		elif "'" in f:
+			i2 = self.page.find(f.replace("'", '"'), start)
+		if i2 and i2 != -1:
+			if i == -1 or i > i2:
+				i = i2
+		if i == -1:
+			error("can't find %s"%(f,))
+		return i
+
 	def extract(self, f, start=None, t="</div>", unquote=True):
-		s = self.page.index(f, start) + len(f)
+		s = self.getstart(f, start) + len(f)
 		bit = self.page[s : self.page.index(t, s)]
 		if unquote and '"' in bit:
 			bit = bit.split('"')[1]
