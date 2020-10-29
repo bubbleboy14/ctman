@@ -20,6 +20,7 @@ class Scraper(object):
 			"index": [],
 			"chems": []
 		}
+		self.chemcodes = []
 		self.chemicals = []
 		self.download()
 		self.process()
@@ -49,16 +50,17 @@ class Scraper(object):
 			self.pages["index"].append(self.acquire(IURL%(letter,), INDEX))
 
 	def clist(self, page):
-		return [CURL%(p.split(".")[0],) for p in page.split("href='npgd")[1:]]
+		return [p.split(".")[0] for p in page.split("href='npgd")[1:]]
 
 	def chems(self):
 		pages = self.pages["index"]
 		log("scanning %s index pages"%(len(pages),), important=True)
 		for page in pages:
-			chemurls = self.clist(page)
-			log("found %s chem pages"%(len(chemurls),))
-			for url in chemurls:
-				self.pages["chems"].append(self.acquire(url, CHEMS))
+			chemcodes = self.clist(page)
+			self.chemcodes += chemcodes
+			log("found %s chem pages"%(len(chemcodes),))
+			for code in chemcodes:
+				self.pages["chems"].append(self.acquire(CURL%(code,), CHEMS))
 
 	def download(self):
 		log("downloading", important=True)
@@ -67,6 +69,7 @@ class Scraper(object):
 
 	def process(self):
 		pages = self.pages["chems"]
-		log("processing %s chemical pages"%(len(pages),), important=True)
-		for page in pages:
-			self.chemicals.append(Chem(page))
+		lp = len(pages)
+		log("processing %s chemical pages"%(lp,), important=True)
+		for i in range(lp):
+			self.chemicals.append(Chem(self.chemcodes[i], pages[i]))

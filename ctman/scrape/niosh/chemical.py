@@ -1,3 +1,5 @@
+from cantools.util import log
+
 EXTRACTS = {
 	"name": 'mobile-title">'
 }
@@ -18,7 +20,8 @@ TCARDS = ["synonyms_and_trade_names", "formula", "conversion",
 HCARDS = ["exposure_limits", "measurement_methods", "first_aid"]
 
 class Chem(object):
-	def __init__(self, page):
+	def __init__(self, code, page):
+		self.code = code
 		self.page = page
 		self.data = {}
 		self.scrape()
@@ -31,6 +34,7 @@ class Chem(object):
 		return bit.strip()
 
 	def card(self, flag, unquote=True):
+		log(flag)
 		return self.extract('card-text">',
 			self.page.index(flag), unquote=unquote)
 
@@ -46,6 +50,7 @@ class Chem(object):
 	def scrape(self):
 		for name, flag in EXTRACTS.items():
 			self.data[name] = self.extract(flag, t="<")
+		log("%s %s"%(self.code, self.data["name"]), important=True)
 		for name, flag in CARDS.items():
 			self.data[name] = self.card(flag)
 		for name in TCARDS:
