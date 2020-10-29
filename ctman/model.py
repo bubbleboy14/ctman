@@ -112,6 +112,7 @@ class Chemical(db.TimeStampedBase):
 	physical_description = db.String()
 	molecular_weight = db.String()
 	boiling_point = db.String()
+	melting_point = db.String()
 	freezing_point = db.String()
 	solubility = db.String()
 	vapor_pressure = db.String()
