@@ -16,7 +16,6 @@ TCARDS = ["synonyms_and_trade_names", "formula", "conversion",
 	"exposure_routes", "symptoms", "target_organs",
 	"respirator_recommendations"]
 HCARDS = ["exposure_limits", "measurement_methods", "first_aid"]
-# needs: Classification
 
 class Chem(object):
 	def __init__(self, page):
@@ -39,9 +38,14 @@ class Chem(object):
 		flag = flag.replace("_and_", " & ").replace("_", " ")
 		return self.card(flag.title(), unquote=unquote)
 
+	def classification(self):
+		previtem = self.page.index("Lower Explosive Limit")
+		classrow = self.page.index('class="row"', previtem)
+		return self.extract('card-text">', classrow)
+
 	def scrape(self):
 		for name, flag in EXTRACTS.items():
-			self.data[name] = self.extract(flag)
+			self.data[name] = self.extract(flag, t="<")
 		for name, flag in CARDS.items():
 			self.data[name] = self.card(flag)
 		for name in TCARDS:
@@ -49,3 +53,4 @@ class Chem(object):
 		for name in HCARDS:
 			self.data[name] = self.tcard(name, False)
 		self.data["personal_protection_sanitation"] = self.card("Personal Protection/Sanitation", False)
+		self.data["classification"] = self.classification()
