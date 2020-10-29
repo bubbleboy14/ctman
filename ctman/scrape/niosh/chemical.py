@@ -31,6 +31,9 @@ class Chem(object):
 		return bit.strip()
 
 	def card(self, flag, unquote=True, cflag='card-text">'):
+		if flag not in self.page:
+			log("%s - skipping!"%(flag,))
+			return ""
 		log(flag)
 		return self.extract(cflag, self.page.index(flag), unquote=unquote)
 
