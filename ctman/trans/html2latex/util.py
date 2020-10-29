@@ -26,7 +26,7 @@ def trans(h, flag, rules=None):
 	tex = rules.get("tex")
 	while sflag in h:
 		start = getstart(h, sflag)
-		startend = h.index(seflag, start)
+		startend = seflag and h.index(seflag, start)
 		startender = (startend or start) + len(seflag or sflag)
 		endstart = esflag and h.index(esflag, startender)
 		end = h.index(eflag, startender or start)
@@ -63,8 +63,10 @@ def table(seg):
 	if "img" in seg:
 		iorig = flags["img"]
 		seg = trans(seg, "img", {
+			"sym": iorig["sym"],
 			"start": iorig["start"],
 			"endstart": iorig["endstart"],
+			"startend": iorig["startend"],
 			"end": iorig["end"],
 			"tex": "\\includegraphics[width=" + str(1.0 / numcols)[:3] + "\\linewidth]{%s}"
 		})

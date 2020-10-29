@@ -53,7 +53,8 @@ flags = {
 		"endstart": '" ',
 		"end": ' />',
 		"tex": "\\includegraphics[width=\\linewidth]{%s}",
-		"sym": True
+		"sym": True,
+		"startend": None
 	},
 	"ol": {
 		"liner": "1. %s"
