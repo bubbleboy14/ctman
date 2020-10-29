@@ -30,10 +30,9 @@ class Chem(object):
 			bit = bit.split('"')[1]
 		return bit.strip()
 
-	def card(self, flag, unquote=True):
+	def card(self, flag, unquote=True, cflag='card-text">'):
 		log(flag)
-		return self.extract('card-text">',
-			self.page.index(flag), unquote=unquote)
+		return self.extract(cflag, self.page.index(flag), unquote=unquote)
 
 	def tcard(self, flag, unquote=True):
 		flag = flag.replace("_", " ").title()
@@ -49,7 +48,8 @@ class Chem(object):
 		self.data["name"] = self.extract("<h1>", t="<")
 		log("%s %s"%(self.code, self.data["name"]), important=True)
 		self.data["classification"] = self.classification()
-		self.data["personal_protection_sanitation"] = self.card("Personal Protection/Sanitation", False)
+		self.data["personal_protection_sanitation"] = self.card("Personal Protection/Sanitation",
+			False, 'card-body">')
 		for name, flag in CARDS.items():
 			self.data[name] = self.card(flag)
 		for name in TCARDS:
