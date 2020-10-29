@@ -39,8 +39,9 @@ class Chem(object):
 			self.page.index(flag), unquote=unquote)
 
 	def tcard(self, flag, unquote=True):
-		flag = flag.replace("_and_", " &amp; ").replace("_", " ")
-		return self.card(flag.title(), unquote=unquote)
+		flag = flag.replace("_", " ").title()
+		flag = flag.replace(" And ", " &amp; ")
+		return self.card(flag, unquote=unquote)
 
 	def classification(self):
 		previtem = self.page.index("Lower Explosive Limit")
