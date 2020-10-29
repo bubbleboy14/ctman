@@ -1,8 +1,5 @@
 from cantools.util import log
 
-EXTRACTS = {
-	"name": 'mobile-title">'
-}
 CARDS = {
 	"cas": "CAS No.",
 	"rtecs": "RTECS No.",
@@ -49,14 +46,13 @@ class Chem(object):
 		return self.extract('card-text">', classrow)
 
 	def scrape(self):
-		for name, flag in EXTRACTS.items():
-			self.data[name] = self.extract(flag, t="<")
+		self.data["name"] = self.extract("<h1>", t="<")
 		log("%s %s"%(self.code, self.data["name"]), important=True)
+		self.data["classification"] = self.classification()
+		self.data["personal_protection_sanitation"] = self.card("Personal Protection/Sanitation", False)
 		for name, flag in CARDS.items():
 			self.data[name] = self.card(flag)
 		for name in TCARDS:
 			self.data[name] = self.tcard(name)
 		for name in HCARDS:
 			self.data[name] = self.tcard(name, False)
-		self.data["personal_protection_sanitation"] = self.card("Personal Protection/Sanitation", False)
-		self.data["classification"] = self.classification()
