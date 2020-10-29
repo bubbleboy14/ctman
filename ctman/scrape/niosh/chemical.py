@@ -2,7 +2,7 @@ EXTRACTS = {
 	"name": 'mobile-title">'
 }
 CARDS = {
-	"cas": "CAS No."
+	"cas": "CAS No.",
 	"rtecs": "RTECS No.",
 	"dot": "DOT ID & Guide",
 	"idlh": "IDLH"
