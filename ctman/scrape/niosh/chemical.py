@@ -16,7 +16,7 @@ TCARDS = ["synonyms_and_trade_names", "formula", "conversion",
 	"exposure_routes", "symptoms", "target_organs",
 	"respirator_recommendations"]
 HCARDS = ["exposure_limits", "measurement_methods", "first_aid"]
-# needs: Personal Protection/Sanitation, Classification
+# needs: Classification
 
 class Chem(object):
 	def __init__(self, page):
@@ -48,3 +48,4 @@ class Chem(object):
 			self.data[name] = self.tcard(name)
 		for name in HCARDS:
 			self.data[name] = self.tcard(name, False)
+		self.data["personal_protection_sanitation"] = self.card("Personal Protection/Sanitation", False)
