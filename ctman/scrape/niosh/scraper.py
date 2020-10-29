@@ -50,7 +50,7 @@ class Scraper(object):
 			self.pages["index"].append(self.acquire(IURL%(letter,), INDEX))
 
 	def clist(self, page):
-		return [CURL%(p.split("'")[0],) for p in page.split("href='npgd")[1:]]
+		return [CURL%(p.split(".")[0],) for p in page.split("href='npgd")[1:]]
 
 	def chems(self):
 		pages = self.pages["index"]
