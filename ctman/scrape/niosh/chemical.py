@@ -39,7 +39,7 @@ class Chem(object):
 			self.page.index(flag), unquote=unquote)
 
 	def tcard(self, flag, unquote=True):
-		flag = flag.replace("_and_", " & ").replace("_", " ")
+		flag = flag.replace("_and_", " &amp; ").replace("_", " ")
 		return self.card(flag.title(), unquote=unquote)
 
 	def classification(self):
