@@ -13,8 +13,9 @@ TCARDS = ["synonyms_and_trade_names", "formula", "conversion",
 	"upper_explosive_limit", "lower_explosive_limit",
 	"incompatibilities_and_reactivities",
 	"exposure_routes", "symptoms", "target_organs"]
-HCARDS = ["exposure_limits", "measurement_methods", "first_aid"]
-BCARDS = ["Personal Protection/Sanitation", "Respirator Recommendations"]
+HCARDS = ["exposure_limits", "measurement_methods"]
+BCARDS = ["Respirator Recommendations", "First Aid",
+	"Personal Protection/Sanitation"]
 
 class Chem(object):
 	def __init__(self, code, page):
@@ -58,5 +59,5 @@ class Chem(object):
 		for name in HCARDS:
 			self.data[name] = self.tcard(name, False)
 		for name in BCARDS:
-			self.data[name.replace("/", " ").replace(" ",
+			self.data[name.lower().replace("/", " ").replace(" ",
 				"_")] = self.card(name, False, 'card-body">')
