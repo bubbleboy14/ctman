@@ -58,7 +58,10 @@ class Chem(object):
 		return self.card(flag, unquote=unquote)
 
 	def classification(self):
-		previtem = self.page.index("Lower Explosive Limit")
+		previtem = self.page.find("Lower Explosive Limit")
+		if previtem == -1:
+			mw = self.page.index("Molecular Weight")
+			previtem = self.page.index('class="row"', mw) + 1
 		classrow = self.page.index('class="row"', previtem)
 		return self.extract('card-text">', classrow)
 
