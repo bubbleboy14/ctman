@@ -4,7 +4,7 @@ Manual generation framework.
 
 # Back (Init Config)
 
-    dirs = ["build", "templates", "tex"]
+    dirs = ["build", "templates", "tex", "scrape"]
     copies = {
     	"tex": ["imps.tex", "pre.tex"]
     }
@@ -23,6 +23,10 @@ Manual generation framework.
     }
     requires = ["ctuser"]
     cfg = {
+    	"font": {
+    		"family": None,
+    		"size": "12pt"
+    	},
     	"toc": {
     		"secheaders": False
     	}
@@ -92,7 +96,7 @@ Manual generation framework.
     	},
     	"template": [{
     		"isTA": true,
-    		"wyz": "nonbsp restricted tables",
+    		"wyz": "nonbsp restricted tables spellcheck fullscreen",
     		"name": "description",
     		"blurs": ["please describe", "please expand", "tell all here"]
     	}],
