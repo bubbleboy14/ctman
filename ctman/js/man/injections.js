@@ -79,7 +79,7 @@ man.injections = {
 		for (sec of secs) {
 			injections = injections.concat(d2iz(sec.description));
 			if (sec.sections.length)
-				injections = injections.concat(ex(sec.sections));
+				injections = injections.concat(ex(CT.data.getSet(sec.sections)));
 		}
 		return injections;
 	},
