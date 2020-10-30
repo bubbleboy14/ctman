@@ -8,7 +8,7 @@ from .rules import *
 
 def nextlast(h, flagz):
 	f = None
-	i = 0
+	i = -1
 	for flag in flagz:
 		sflag = flagz[flag].get("start", "<%s"%(flag,))
 		fi = getstart(h, sflag)
