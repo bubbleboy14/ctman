@@ -26,7 +26,7 @@ man.browsers.Template = CT.Class({
 	init: function(opts) { // requires opts.sections
 		this.opts = CT.merge(opts, {
 			owner: true,
-			headerlessness: false,
+			secbutts: false,
 			modelName: "template",
 			blurs: ["template name", "template title", "name that template"]
 		}, this.opts);
