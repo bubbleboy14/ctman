@@ -58,8 +58,8 @@ def pretex(doc, fname):
 PDINFO = {}
 
 def export(doc, data=None):
-	fname = doc.name.replace(" ",
-		"_").replace("(", "").replace(")", "")
+	fname = doc.name.replace(" ", "_").replace("(",
+		"").replace(")", "").replace("/", "")
 	if doc.polytype == "document":
 		if doc.pretty_filenames:
 			fname = "%s_r%s"%(fname, doc.revision)
