@@ -25,7 +25,7 @@ class Fragment(object):
 		return tx
 
 	def translate(self):
-		seg = self.fragment
+		seg = self.style(self.fragment)
 		if "handler" in self.rules:
 			tx = self.rules["handler"](seg)
 		elif "liner" in self.rules:
@@ -37,4 +37,4 @@ class Fragment(object):
 			if self.rules.get("sym"):
 				seg = symage(seg)
 			tx = self.rules.get("tex")%(seg,)
-		return self.style(tx)
+		return tx
