@@ -92,12 +92,19 @@ class Document(db.TimeStampedBase):
 	section_page_breaks = db.Boolean(default=False)
 
 	def summary(self):
-		return {
+		d = {
 			"key": self.id(),
 			"name": self.name,
 			"revision": self.revision,
-			"template": self.template and self.template.get().name or "(none)"
+			"pdf": self.pdf
 		}
+		if self.template:
+			t = self.template.get()
+			d["template"] = {
+				"key": t.id(),
+				"name": t.name
+			}
+		return d
 
 	def content(self, sections=None):
 		return self.template.get().content(sections,
