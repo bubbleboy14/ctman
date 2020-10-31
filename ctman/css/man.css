@@ -68,3 +68,9 @@
 .tophalf, .bottomhalf {
 	transition: height 1s;
 }
+
+.jccenter div {
+    width: 30%;
+    padding: 10px;
+    border: 1px solid black;
+}
