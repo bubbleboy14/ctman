@@ -4,7 +4,10 @@ man.dash = {
 			CT.dom.flex(["name", "template", "revision"],
 				"row jccenter big bold")
 		].concat(dox.map(d => CT.dom.flex([
-			d.name, d.template, d.revision
+			CT.dom.link(d.name, null, "/man#" + d.key),
+			d.template ? CT.dom.link(d.template.name, null,
+				"/man/templates.html#" + d.template.key) : "(none)",
+			CT.dom.link(d.revision, null, "/" + d.pdf, null, null, null, true)
 		], "row jccenter"))), "col margined"));
 	},
 	init: function() {
