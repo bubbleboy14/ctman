@@ -69,7 +69,7 @@
 	transition: height 1s;
 }
 
-.jccenter div {
+.jccenter div, .jccenter a {
     width: 30%;
     padding: 10px;
     border: 1px solid black;
