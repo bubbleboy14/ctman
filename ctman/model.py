@@ -91,6 +91,14 @@ class Document(db.TimeStampedBase):
 	pretty_filenames = db.Boolean(default=True)
 	section_page_breaks = db.Boolean(default=False)
 
+	def summary(self):
+		return {
+			"key": self.id(),
+			"name": self.name,
+			"revision": self.revision,
+			"template": self.template and self.template.get().name or "(none)"
+		}
+
 	def content(self, sections=None):
 		return self.template.get().content(sections,
 			page_breaks=self.section_page_breaks)
