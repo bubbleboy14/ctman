@@ -12,7 +12,7 @@ swaps = {
 	"&amp;": "\\&",
 	"&mu;": "$\\mu$",
 	"&shy;": "\\-",
-	"&cent;": "\\textcent"
+	"&cent;": "\\textcent",
 	"&euro;": "\\texteuro",
 	"&pound;": "\\textsterling",
 	"&yen;": "\\textyen",
@@ -45,7 +45,7 @@ swaps = {
 	"&ndash;": "\\textendash",
 	"&mdash;": "\\textemdash",
 	"&macr;": "\\textasciimacron",
-	"&oline;"
+	"&oline;": "\\overline",
 	"&curren;": "\\textcurrency",
 	"&brvbar;": "\\textbrokenbar",
 	"&uml;": "\\textasciidieresis",
@@ -65,7 +65,7 @@ swaps = {
 	"&sup3;": "$^3$",
 	"&frac14;": "\\textonequarter",
 	"&frac12;": "\\textonehalf",
-	"&frac34;": "\\textthreequarters"
+	"&frac34;": "\\textthreequarters",
 	"&fnof;": "$f$",
 	"&int;": "\\int_{}^{}",
 	"&sum;": "\\Sigma",
@@ -89,7 +89,7 @@ swaps = {
 	"&part;": "\\partial",
 	"&forall;": "\\forall",
 	"&exist;": "\\exists",
-	"&empty;", "\\varnothing",
+	"&empty;": "\\varnothing",
 	"&nabla;": "\\nabla",
 	"&lowast;": "\\ast",
 	"&prop;": "\\propto",
