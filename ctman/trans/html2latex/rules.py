@@ -228,9 +228,9 @@ for i in range(1, 7):
 
 styles = {
 	"text-align": {
-		"center": "\\begin{center}\n%s\n\\end{center}",
-		"right": "\\begin{flushright}\n%s\n\\end{flushright}",
-		"left": "\\begin{flushleft}\n%s\n\\end{flushleft}"
+		"center": "\\begin{center}%s\\end{center}",
+		"right": "\\begin{flushright}%s\\end{flushright}",
+		"left": "\\begin{flushleft}%s\\end{flushleft}"
 	},
 	"text-decoration": {
 		"underline": "\\underline{%s}"
