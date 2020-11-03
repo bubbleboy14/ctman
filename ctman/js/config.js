@@ -58,7 +58,7 @@
 	},
 	"template": [{
 		"isTA": true,
-		"wyz": "nonbsp restricted tables spellcheck fullscreen",
+		"wyz": "nonbsp restricted tables spellcheck fullscreen charmap",
 		"name": "description",
 		"blurs": ["please describe", "please expand", "tell all here"]
 	}],
