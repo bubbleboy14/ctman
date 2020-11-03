@@ -30,8 +30,9 @@ class Fragment(object):
 			return self.rules["handler"](seg)
 		if "liner" in self.rules:
 			lines = seg.strip().split("</li>")
-			epart = lines.pop().replace("-", "    -")
-			mdblock = "\n".join([self.rules["liner"]%(s.split(">", 1)[1],) for s in lines])
+			epart = lines.pop().replace("- ", "    - ")
+			mdblock = "\n".join([self.rules["liner"]%(s.split(">", 1)[1].replace("- ",
+				"    - "),) for s in lines])
 			return "\n%s\n%s\n"%(mdblock, epart)
 		if self.rules.get("sym"):
 			seg = symage(seg)
