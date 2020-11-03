@@ -115,10 +115,11 @@ man.browsers.Section = CT.Class({
 						key: d.key
 					},
 					cb: function(pdfurl) {
+						pdfurl = "/" + pdfurl;
 						CT.modal.modal([
-							"your preview is ready!",
-							CT.dom.link("click here to view", null,
-								"/" + pdfurl, "centered block", null, null, true)
+							CT.dom.iframe(pdfurl),
+							CT.dom.link("click here to open in a new tab",
+								null, pdfurl, "centered block", null, null, true)
 						]);
 					}
 				});
