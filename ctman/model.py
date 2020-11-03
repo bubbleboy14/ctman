@@ -96,7 +96,9 @@ class Document(db.TimeStampedBase):
 			"key": self.id(),
 			"name": self.name,
 			"revision": self.revision,
-			"pdf": self.pdf
+			"pdf": self.pdf,
+			"created": str(self.created)[:19],
+			"modified": str(self.modified)[:19]
 		}
 		if self.template:
 			t = self.template.get()
