@@ -40,15 +40,19 @@ swaps = {
 	"&ndash;": "\\textendash",
 	"&mdash;": "\\textemdash",
 	"&macr;": "\\textasciimacron",
+	"&oline;": "\\textasciimacron",
 	"&curren;": "\\textcurrency",
 	"&brvbar;": "\\textbrokenbar",
 	"&uml;": "\\textasciidieresis",
 	"&iexcl;": "\\textexclamdown",
 	"&iquest;": "\\textquestiondown",
-	"&circ;": "\\circ",
-	"&tilde;": "\\texttildelow",
+	"&tilde;": "\\~{}",
+	"&deg;": "\\textdegree",
 	"&minus;": "-",
 	"&frasl;": "/",
+	"&cedil;": ",",
+	"&ordf;": "\\textordfeminine",
+	"&ordm;": "\\textordmasculine",
 
 	"&times;": "\\texttimes",
 	"&frac14;": "\\textonequarter",
@@ -57,6 +61,7 @@ swaps = {
 
 	"&dagger;": "\\textdagger",
 	"&Dagger;": "\\textdaggerdbl",
+
 	"&Agrave;": "\\`{A}",
 	"&Aacute;": "\\'{A}",
 	"&Acirc;": "\\^{A}",
@@ -129,9 +134,9 @@ swaps = {
 
 	# mathy
 
+	"&circ;": "$\\circ$",
 	"&le;": "$\\leq$",
 	"&ge;": "$\\geq$",
-	"&deg;": "$\\textdegree$",
 	"&micro;": "$\\mu$",
 	"&prime;": "$\\prime$",
 	"&Prime;": "$\\prime\\prime$",
@@ -169,14 +174,9 @@ swaps = {
 	"&prop;": "$\\propto$",
 	"&ang;": "$\\angle$",
 	"&acute;": "$\\textasciiacute$",
-	"&cedil;": "$\\c{}$",
-	"&ordf;": "$\\textordfeminine$",
-	"&ordm;": "$\\textordmasculine$",
-	"&oline;": "$\\overline{}$",
 
 	"&mu;": "$\\mu$",
 	"&sigmaf;": "$\\varsigma$",
-
 	"&alefsym;": "$\\aleph$",
 	"&piv;": "$\\varpi$",
 	"&real;": "$\\Re$",
