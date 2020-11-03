@@ -62,8 +62,10 @@ swaps = {
 	"&dagger;": "\\textdagger",
 	"&Dagger;": "\\textdaggerdbl",
 
-	"&Agrave;": "\\`{A}",
-	"&Aacute;": "\\'{A}",
+	# accents
+
+	"&Agrave;": "\\‘{A}",
+	"&Aacute;": "\\’{A}",
 	"&Acirc;": "\\^{A}",
 	"&Atilde;": "\\~{A}",
 	"&Auml;": '\\"{A}',
