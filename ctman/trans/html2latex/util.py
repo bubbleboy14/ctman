@@ -48,6 +48,8 @@ TBL = """\\begin{center}
 
 def clean(data):
 	data = data.replace("\n", " ")
+	for c in "#$%^":
+		data = data.replace(c, "\\%s"%(c,))
 	if "<" in data:
 		for flag in tflags:
 			data = trans(data, flag, tflags[flag])
