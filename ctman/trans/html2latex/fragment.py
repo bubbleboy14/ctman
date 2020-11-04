@@ -21,7 +21,7 @@ class Fragment(object):
 				if val in styles[key]:
 					tx = styles[key][val]%(tx,)
 			elif key in cstyles:
-				tx = cstyles[key]%(val[1:], tx)
+				tx = cstyles[key]%(val[-6:], tx)
 		return tx
 
 	def translate(self):
