@@ -19,13 +19,20 @@ def nextlast(h, flagz):
 
 def trans(h, flag, rules=None):
 	rules = rules or flags[flag]
-	sflag = rules.get("start", "<%s"%(flag,))
+#	sflag = rules.get("start", "<%s"%(flag,))
+	sflag = rules.get("start")
+	altstart = None
+	if not sflag:
+		sflag = "<%s>"%(flag,)
+		altstart = "<%s "%(flag,)
 	seflag = rules.get("startend", ">")
 	esflag = rules.get("endstart")
 	eflag = rules.get("end", "</%s>"%(flag,))
 	tex = rules.get("tex")
-	while sflag in h:
+	while sflag in h or altstart and altstart in h:
 		start = getstart(h, sflag)
+		if altstart:
+			start = max(start, getstart(h, altstart))
 		startend = seflag and h.index(seflag, start)
 		startender = (startend or start) + len(seflag or sflag)
 		endstart = esflag and h.index(esflag, startender)
