@@ -48,8 +48,16 @@ man.util = {
 				key: d.key,
 				property: iprop
 			});
-		}), name = title || iprop;
+		}), name = title || iprop, dbutt = CT.dom.button("remove",
+			function() {
+				var edata = { key: d.key };
+				d[iprop] = edata[iprop] = null;
+				CT.db.put(edata, function(newd) {
+					inode.src = "";
+				});
+			}, "right");
 		return CT.dom.div([
+			dbutt,
 			collapsible ? man.util.collapser(name) : name,
 			inode,
 			dd
