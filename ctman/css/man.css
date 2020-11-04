@@ -75,6 +75,11 @@
     border: 1px solid black;
 }
 
+.jccenter div:nth-child(3), .jccenter a:nth-child(3),
+.jccenter div:nth-child(6), .jccenter a:nth-child(6) {
+    width: 10%;
+}
+
 .basicpopup iframe {
 	border: none;
 	width: 800px;
