@@ -176,6 +176,9 @@ flags = {
 	"p": {
 		"tex": "\\hfill\\break %s \\hfill\\break"
 	},
+	"pre": {
+		"tex": "\\hfill\\break %s \\hfill\\break"
+	},
 	"div": {
 		"tex": "\\hfill\\break %s \\hfill\\break"
 	},
@@ -192,7 +195,6 @@ flags = {
 		"tex": "\\emph{%s}"
 	},
 	"u": {
-		"start": "<u>",
 		"tex": "\\underline{%s}"
 	},
 	"img": {
