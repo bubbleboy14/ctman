@@ -68,13 +68,14 @@ man.browsers.Section = CT.Class({
 		CT.db.one(key, function(s) { // meh shouldn't be necessary...
 			CT.dom.setContent(n, [
 //				CT.dom.button("move", e => mover(key, d, n, e), "right"),
-				CT.dom.button("remove", function() {
+				CT.dom.button("remove", function(e) {
 					d.sections.splice(CT.dom.childNum(n), 1);
 					n.remove();
 					CT.db.put({
 						key: d.key,
 						sections: d.sections
 					});
+					e.stopPropagation();
 				}, "right"),
 				s.name
 			]);
