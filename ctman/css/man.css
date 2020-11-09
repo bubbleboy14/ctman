@@ -86,3 +86,7 @@
 	height: 730px;
 	max-width: 100%;
 }
+
+.document_template button {
+	display: none;
+}
