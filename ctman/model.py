@@ -88,6 +88,7 @@ class Document(db.TimeStampedBase):
 	revision = db.Integer(default=0)
 	signup_sheet = db.Boolean(default=True)
 	table_of_contents = db.Boolean(default=True)
+	variable_declaration_page = db.Boolean(default=True)
 	pretty_filenames = db.Boolean(default=True)
 	section_page_breaks = db.Boolean(default=False)
 
