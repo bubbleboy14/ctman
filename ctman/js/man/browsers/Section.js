@@ -160,7 +160,7 @@ man.browsers.Section = CT.Class({
 					d[val] = vals[val];
 				_.edit(d.key ? CT.merge({
 					key: d.key
-				}, vals) : d);
+				}, vals) : d, true);
 			}, {
 				description: ta => this.injectors(d)
 			}),
