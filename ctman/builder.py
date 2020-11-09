@@ -43,16 +43,17 @@ ItalicFont=Italic,
 BoldFont=Bold,
 BoldItalicFont=BoldItalic]{%s}"""
 
-def pretex(doc, fname):
+def pretex(doc, fname, fontonly=False):
 	fcfg = config.ctman.font
 	pname = os.path.join("build", "%s.tex"%(fname,))
-	if doc.logo:
+	if not fontonly and doc.logo:
 		iname = symage(doc.logo.path)
-	write(read("tex/pre.tex").replace("_CLIENT_LOGO_",
+	fontdesc = fcfg.family and FONTFAM%(fcfg.family, fcfg.family) or ""
+	write(fontonly and fontdesc or read("tex/pre.tex").replace("_CLIENT_LOGO_",
 		doc.logo and iname or "img/logo.jpg").replace("_SIGNUP_SHEET_",
 			doc.signup_sheet and SUSHEET or "").replace("_DOC_NAME_",
-			doc.name).replace("_DOC_REVISION_", str(doc.revision)).replace("_DOC_FONT_",
-			fcfg.family and FONTFAM%(fcfg.family, fcfg.family) or ""), pname)
+			doc.name).replace("_DOC_REVISION_",
+			str(doc.revision)).replace("_DOC_FONT_", fontdesc), pname)
 	return pname
 
 PDINFO = {}
@@ -69,7 +70,7 @@ def export(doc, data=None):
 		pname = pretex(doc, fname)
 	else:
 		data = doc.content(novars=True)
-		pname = None
+		pname = pretex(doc, fname, True)
 	mdname = os.path.join("build", "%s.md"%(fname,))
 	write(data, mdname)
 	bname = os.path.join("build", "%s.pdf"%(fname,))
