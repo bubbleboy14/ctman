@@ -97,8 +97,25 @@ man.browsers.Section = CT.Class({
 			}, core.config.ctman.classes[d.modelName].sections);
 	},
 	secbutts: function(d) {
-		var _ = this._;
 		if (!d.key || !this.opts.secbutts) return;
+		var _ = this._, pbutt = CT.dom.button("preview", function() {
+			pbutt.disabled = true;
+			CT.net.post({
+				spinner: true,
+				path: "/_man",
+				params: {
+					key: d.key
+				},
+				cb: function(pdfurl) {
+					pdfurl = "/" + pdfurl;
+					CT.modal.modal([
+						CT.dom.iframe(pdfurl),
+						CT.dom.link("click here to open in a new tab",
+							null, pdfurl, "centered block", null, null, true)
+					], function() { pbutt.disabled = false; });
+				}
+			});
+		});
 		return CT.dom.div([
 			CT.dom.checkboxAndLabel("headerless", d.headerless,
 				null, null, "inline rmargined", function(cb) {
@@ -108,23 +125,7 @@ man.browsers.Section = CT.Class({
 					});
 				}
 			),
-			CT.dom.button("preview", function() {
-				CT.net.post({
-					spinner: true,
-					path: "/_man",
-					params: {
-						key: d.key
-					},
-					cb: function(pdfurl) {
-						pdfurl = "/" + pdfurl;
-						CT.modal.modal([
-							CT.dom.iframe(pdfurl),
-							CT.dom.link("click here to open in a new tab",
-								null, pdfurl, "centered block", null, null, true)
-						]);
-					}
-				});
-			})
+			pbutt
 		], "abs ctr bordered round shiftup");
 	},
 	choosevar: function(d, cb) {
