@@ -1,6 +1,9 @@
 man.tables = {
 	_: {
-		chemicals: {},
+		chemicals: {
+			presels: ["name", "classification", "synonyms_and_trade_names", "idlh", "physical_description",
+				"symptoms", "first_aid", "exposure_routes", "exposure_limits", "target_organs"]
+		},
 		entable: function(contents) {
 			return "<table><tbody><tr><td>" + contents + "</td></tr></tbody></table>";
 		},
@@ -61,23 +64,24 @@ man.tables = {
 
 	},
 	chemsel: function(cols) {
-		var _ = man.tables._, proc = this.chemproc;
 		CT.modal.choice({
 			prompt: "please select chems",
 			style: "multiple-choice",
 			data: man.tables._.chemicals.names,
 			cb: function(chems) {
 				CT.db.multi(chems.map(c => c.key),
-					cz => proc(cz, cols), null, "code");
+					cz => man.tables.chemproc(cz, cols), null, "code");
 			}
 		});
 	},
 	chemcols: function() {
+		var _ = man.tables._;
 		CT.modal.choice({
 			prompt: "please select columns",
 			style: "multiple-choice",
-			data: man.tables._.chemicals.schema,
-			cb: this.chemsel
+			data: _.chemicals.schema,
+			selections: _.chemicals.presels,
+			cb: man.tables.chemsel
 		});
 	},
 	button: function() {
