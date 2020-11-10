@@ -1,5 +1,7 @@
 man.tables = {
-	_: {},
+	_: {
+		chemicals: {}
+	},
 	upload: function(name) {
 		CT.modal.modal(CT.file.dragdrop(function(ctfile) {
 			CT.db.put({
@@ -50,8 +52,17 @@ man.tables = {
 			man.tables.selector);
 	},
 	init: function() {
+		var _ = man.tables._;
 		CT.db.get("table", function(tz) {
-			man.tables._.tables = tz;
+			_.tables = tz;
 		});
+		CT.db.withSchema(function(schema) {
+			_.chemicals.schema = Object.keys(schema.chemical).filter(function(k) {
+				return ["string", "text"].includes(schema.chemical[k]);
+			});
+		});
+		CT.db.get("chemical", function(cz) {
+			_.chemicals.names = cz;
+		}, null, null, null, null, null, null, "basic");
 	}
 };
