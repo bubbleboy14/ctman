@@ -123,7 +123,7 @@ man.browsers.Document = CT.Class({
 		var scheck = this.scheck;
 		return CT.dom.div([
 			man.util.collapser("settings"),
-			["signup_sheet", "table_of_contents", "variable_declaration_page", "section_page_breaks"].map(function(p) {
+			["signup_sheet", "table_of_contents", "declaration_page", "section_page_breaks"].map(function(p) {
 				return scheck(d, p);
 			}).concat([scheck(d, "pretty_filenames",
 				"use pretty (titled and revisioned) filenames")])
