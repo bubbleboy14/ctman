@@ -123,21 +123,36 @@ man.browsers.Document = CT.Class({
 		var scheck = this.scheck;
 		return CT.dom.div([
 			man.util.collapser("settings"),
-			["signup_sheet", "table_of_contents", "section_page_breaks"].map(function(p) {
+			["signup_sheet", "table_of_contents", "declaration_page", "section_page_breaks"].map(function(p) {
 				return scheck(d, p);
 			}).concat([scheck(d, "pretty_filenames",
 				"use pretty (titled and revisioned) filenames")])
 		], core.config.ctman.classes.document.settings);
 	},
+	declarations: function(d, cb) {
+		CT.modal.prompt({
+			prompt: "please provide the following information",
+			style: "form",
+			labels: true,
+			data: core.config.ctman.declarations,
+			cb: function(data) {
+				d.declarations = data;
+				cb();
+			}
+		});
+	},
 	firstview: function(d) {
-		var _ = this._, ed = _.edit, bs = this.buildSecs;
-		if (!_.templates.length)
-			return this.view(d);
-		this.seltemp(function(tmp) {
-			d.template = tmp.key;
-			bs(d);
-			ed(d);
-		}, v => this.view(d));
+		var _ = this._, view = this.view, ed = _.edit,
+			bs = this.buildSecs, st = this.seltemp;
+		this.declarations(d, function() {
+			if (!_.templates.length)
+				return view(d);
+			st(function(tmp) {
+				d.template = tmp.key;
+				bs(d);
+				ed(d);
+			}, v => view(d));
+		});
 	},
 	view: function(d) {
 		var _ = this._,// haz = this.hazards(d),

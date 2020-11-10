@@ -56,6 +56,14 @@
 			"Terry Note: currently, injections and hazards are defined in the configuration - would you like to provide us with appropriate lists, or would you prefer a away to define these yourself on the fly? We may, for instance, consider creating an interface for defining table-ish (hazard-like) categories and populating them with data."
 		]
 	},
+	"declarations": [{
+		"name": "CLIENT"
+	}, {
+		"isTA": true,
+		"name": "SITE"
+	}, {
+		"name": "ICS PROJECT NO."
+	}],
 	"template": [{
 		"isTA": true,
 		"wyz": "nonbsp restricted tables spellcheck fullscreen charmap",

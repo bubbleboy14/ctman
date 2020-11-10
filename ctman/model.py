@@ -84,10 +84,12 @@ class Document(db.TimeStampedBase):
 	name = db.String()
 	injections = db.JSON()
 	assembly = db.JSON()
+	declarations = db.JSON()
 	pdf = db.String()
 	revision = db.Integer(default=0)
 	signup_sheet = db.Boolean(default=True)
 	table_of_contents = db.Boolean(default=True)
+	declaration_page = db.Boolean(default=True)
 	pretty_filenames = db.Boolean(default=True)
 	section_page_breaks = db.Boolean(default=False)
 
@@ -98,7 +100,8 @@ class Document(db.TimeStampedBase):
 			"revision": self.revision,
 			"pdf": self.pdf,
 			"created": str(self.created)[:19],
-			"modified": str(self.modified)[:19]
+			"modified": str(self.modified)[:19],
+			"declarations": self.declarations
 		}
 		if self.template:
 			t = self.template.get()

@@ -43,6 +43,32 @@ ItalicFont=Italic,
 BoldFont=Bold,
 BoldItalicFont=BoldItalic]{%s}"""
 
+DEX = """\\newpage
+SITE-SPECIFIC HEALTH AND SAFETY PLAN
+\\begin{flushright}(HASP)\\end{flushright}
+
+\\begin{tabular}{ p{6cm} p{6cm} }
+%s
+\\end{tabular}
+"""
+
+def drow(k, v):
+	return "%s: & %s \\\\ \\\\"%(k, v.replace("\n", "\\hfill\\break"))
+
+def tsrow(k, v):
+	return drow(k, v.strftime("%B %d, %Y"))
+
+def dex(doc):
+	rows = []
+	for k, v in doc.declarations.items():
+		rows.append(drow(k, v))
+	rows.append(tsrow("DATE PREPARED", doc.created))
+	rows.append(tsrow("DATE REVISED", doc.modified))
+	rows.append(tsrow("DATE EXPIRES",
+		datetime.datetime(doc.modified.year + 1,
+		doc.modified.month, doc.modified.day)))
+	return DEX%("\n".join(rows),)
+
 def pretex(doc, fname, fontonly=False):
 	fcfg = config.ctman.font
 	pname = os.path.join("build", "%s.tex"%(fname,))
@@ -50,7 +76,8 @@ def pretex(doc, fname, fontonly=False):
 		iname = symage(doc.logo.path)
 	fontdesc = fcfg.family and FONTFAM%(fcfg.family, fcfg.family) or ""
 	write(fontonly and fontdesc or read("tex/pre.tex").replace("_CLIENT_LOGO_",
-		doc.logo and iname or "img/logo.jpg").replace("_SIGNUP_SHEET_",
+		doc.logo and iname or "img/logo.jpg").replace("_DECLARATION_PAGE_",
+			doc.declaration_page and dex(doc) or "").replace("_SIGNUP_SHEET_",
 			doc.signup_sheet and SUSHEET or "").replace("_DOC_NAME_",
 			doc.name).replace("_DOC_REVISION_",
 			str(doc.revision)).replace("_DOC_FONT_", fontdesc), pname)
