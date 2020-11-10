@@ -70,21 +70,28 @@
 }
 
 .jccenter div, .jccenter a {
-    width: 20%;
+    /*width: 20%;*/
+    width: 12%;
     padding: 10px;
     border: 1px solid black;
 }
 
-.jccenter div:nth-child(4), .jccenter a:nth-child(4),
-.jccenter div:nth-child(5), .jccenter a:nth-child(5),
-.jccenter div:nth-child(6), .jccenter a:nth-child(6) {
+.jccenter :nth-child(6), .jccenter :nth-child(7),
+.jccenter :nth-child(8), .jccenter :nth-child(9),
+.jccenter :nth-child(10) {
+	width: 8%;
+}
+
+/*.jccenter div:nth-child(7), .jccenter a:nth-child(7),
+.jccenter div:nth-child(8), .jccenter a:nth-child(8),
+.jccenter div:nth-child(9), .jccenter a:nth-child(9) {
     width: 13%;
 }
 
-.jccenter div:nth-child(3), .jccenter a:nth-child(3),
-.jccenter div:nth-child(7), .jccenter a:nth-child(7) {
+.jccenter div:nth-child(6), .jccenter a:nth-child(6),
+.jccenter div:nth-child(10), .jccenter a:nth-child(10) {
     width: 9%;
-}
+}*/
 
 .basicpopup iframe {
 	border: none;
