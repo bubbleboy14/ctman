@@ -133,6 +133,7 @@ man.browsers.Document = CT.Class({
 		CT.modal.prompt({
 			prompt: "please provide the following information",
 			style: "form",
+			labels: true,
 			data: core.config.ctman.declarations,
 			cb: function(data) {
 				d.declarations = data;
