@@ -1,6 +1,16 @@
 man.tables = {
 	_: {
-		chemicals: {}
+		chemicals: {},
+		entable: function(contents) {
+			return "<table><tbody><tr><td>" + contents + "</td></tr></tbody></table>";
+		},
+		jrows: function(rows) {
+			return rows.join("</td></tr><tr><td>");
+		},
+		r2t: function(rows) {
+			var _ = man.tables._;
+			return _.entable(_.jrows(rows));
+		}
 	},
 	upload: function(name) {
 		CT.modal.modal(CT.file.dragdrop(function(ctfile) {
@@ -28,8 +38,8 @@ man.tables = {
 	},
 	transform: function(t) {
 		var csv = CT.net.get(t.csv), rows = csv.split("\n"),
-			d = rows.map(r => r.split(", ").join("</td><td>")).join("</td></tr><tr><td>");
-		return "<table><tbody><tr><td>" + d + "</td></tr></tbody></table>";
+			d = rows.map(r => r.split(", ").join("</td><td>"));
+		return man.tables._.r2t(d);
 	},
 	inject: function(t) {
 		man.util.inject(man.tables.transform(t));
@@ -47,9 +57,36 @@ man.tables = {
 			}
 		});
 	},
+	chemproc: function(chems, cols) {
+
+	},
+	chemsel: function(cols) {
+		var _ = man.tables._, proc = this.chemproc;
+		CT.modal.choice({
+			prompt: "please select chems",
+			style: "multiple-choice",
+			data: man.tables._.chemicals.names,
+			cb: function(chems) {
+				CT.db.multi(chems.map(c => c.key),
+					cz => proc(cz, cols), null, "code");
+			}
+		});
+	},
+	chemcols: function() {
+		CT.modal.choice({
+			prompt: "please select columns",
+			style: "multiple-choice",
+			data: man.tables._.chemicals.schema,
+			cb: this.chemsel
+		});
+	},
 	button: function() {
 		return CT.dom.button("inject table",
 			man.tables.selector);
+	},
+	chembutt: function() {
+		return CT.dom.button("inject chem table",
+			man.tables.chemcols);
 	},
 	init: function() {
 		var _ = man.tables._;
