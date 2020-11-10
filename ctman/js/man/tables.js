@@ -10,9 +10,12 @@ man.tables = {
 		jrows: function(rows) {
 			return rows.join("</td></tr><tr><td>");
 		},
+		jcells: function(row) {
+			return row.join("</td><td>");
+		},
 		r2t: function(rows) {
 			var _ = man.tables._;
-			return _.entable(_.jrows(rows));
+			return _.entable(_.jrows(rows.map(_.jcells)));
 		}
 	},
 	upload: function(name) {
@@ -41,7 +44,7 @@ man.tables = {
 	},
 	transform: function(t) {
 		var csv = CT.net.get(t.csv), rows = csv.split("\n"),
-			d = rows.map(r => r.split(", ").join("</td><td>"));
+			d = rows.map(r => r.split(", "));
 		return man.tables._.r2t(d);
 	},
 	inject: function(t) {
@@ -61,7 +64,8 @@ man.tables = {
 		});
 	},
 	chemproc: function(chems, cols) {
-
+		var rows = [cols].concat(chems.map(c => cols.map(col => c[col])));
+		man.util.inject(man.tables._.r2t(rows));
 	},
 	chemsel: function(cols) {
 		CT.modal.choice({
