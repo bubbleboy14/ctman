@@ -152,3 +152,9 @@ class Chemical(db.TimeStampedBase):
 	measurement_methods = db.Text()
 	first_aid = db.Text()
 	personal_protection_sanitation = db.Text()
+
+	def basic(self):
+		return {
+			"key": self.id(),
+			"name": self.name
+		}

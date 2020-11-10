@@ -147,7 +147,8 @@ man.browsers.Section = CT.Class({
 					man.util.inject("<img style='display: block; max-width: 100%' src='" + img + "'>");
 				});
 			}),
-			man.tables.button()
+			man.tables.button(),
+			man.tables.chembutt()
 		], "right");
 	},
 	view: function(d) {
