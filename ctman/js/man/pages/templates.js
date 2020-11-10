@@ -11,7 +11,7 @@ CT.require("man.browsers.Template");
 
 CT.onload(function() {
 	CT.initCore();
-	CT.db.setLimit(1000);
+	CT.db.setLimit(5000);
 	var tophalf = CT.dom.div(null, "abs tophalf"),
 		bottomhalf = CT.dom.div(null, "abs bottomhalf"),
 		minmax = man.util.minmax(tophalf, bottomhalf);
