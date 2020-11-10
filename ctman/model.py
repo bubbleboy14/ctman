@@ -4,6 +4,9 @@ from ctuser.model import *
 from ctedit.model import PageEdit, Style
 from ctman.util import h2l, symage
 
+class Member(CTUser):
+	expiration = db.DateTime()
+
 class SecBase(db.TimeStampedBase):
 	name = db.String()
 	description = db.Text()
@@ -71,14 +74,14 @@ class Injection(db.TimeStampedBase):
 		return "%s (%s)"%(self.name, self.variety)
 
 class Template(SecBase):
-	owner = db.ForeignKey(kind=CTUser)
+	owner = db.ForeignKey(kind=Member)
 	injections = db.ForeignKey(kind=Injection, repeated=True)
 
 	def body(self, depth, novars=False, page_breaks=False):
 		return self.desc(depth, novars)
 
 class Document(db.TimeStampedBase):
-	owner = db.ForeignKey(kind=CTUser)
+	owner = db.ForeignKey(kind=Member)
 	logo = db.Binary()
 	template = db.ForeignKey(kind=Template)
 	name = db.String()
