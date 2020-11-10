@@ -64,7 +64,8 @@ def dex(doc):
 		rows.append(drow(k, v))
 	rows.append(tsrow("DATE PREPARED", doc.created))
 	rows.append(tsrow("DATE REVISED", doc.modified))
-	rows.append(tsrow("DATE EXPIRES", datetime(doc.modified.year + 1,
+	rows.append(tsrow("DATE EXPIRES",
+		datetime.datetime(doc.modified.year + 1,
 		doc.modified.month, doc.modified.day)))
 	return DEX%("\n".join(rows),)
 
