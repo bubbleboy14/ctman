@@ -100,7 +100,8 @@ class Document(db.TimeStampedBase):
 			"revision": self.revision,
 			"pdf": self.pdf,
 			"created": str(self.created)[:19],
-			"modified": str(self.modified)[:19]
+			"modified": str(self.modified)[:19],
+			"declarations": self.declarations
 		}
 		if self.template:
 			t = self.template.get()
