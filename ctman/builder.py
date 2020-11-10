@@ -46,14 +46,14 @@ BoldItalicFont=BoldItalic]{%s}"""
 DEX = """\\newpage
 SITE-SPECIFIC HEALTH AND SAFETY PLAN
 \\begin{flushright}(HASP)\\end{flushright}
-\\hfill\\break
-|     |     |
-| --- | --- |
+
+\\begin{tabular}{ p{6cm} p{6cm} }
 %s
+\\end{tabular}
 """
 
 def drow(k, v):
-	return "| %s: | %s |"%(k, v)
+	return "%s: & %s \\\\ \\\\"%(k, v.replace("\n", "\\hfill\\break"))
 
 def tsrow(k, v):
 	return drow(k, v.strftime("%B %d, %Y"))
