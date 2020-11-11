@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-from cantools.web import respond, send_email
+from cantools.web import respond, send_mail
 from cantools.util import log
 from model import *
 
@@ -29,10 +29,10 @@ def response():
 	log("%s expired"%(len(expired),))
 	log("%s almost exired"%(len(almost),))
 	for mem in expired:
-		send_email(to=mem.email, subject="your subscription",
+		send_mail(to=mem.email, subject="your subscription",
 			body=EMSG%("just",))
 	for mem in almost:
-		send_email(to=mem.email, subject="your subscription",
+		send_mail(to=mem.email, subject="your subscription",
 			body=EMSG%("almost",))
 	log("goodbye")
 
