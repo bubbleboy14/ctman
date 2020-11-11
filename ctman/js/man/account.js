@@ -53,8 +53,14 @@ man.account = {
 		});
 		_.ifresh();
 		CT.dom.setMain([
-			"Hello " + user.core.get("firstName"),
-			nz.info, nz.options, nz.payform
+			CT.dom.div([
+				"Hello " + user.core.get("firstName"),
+				nz.info
+			], "subpadded"),
+			CT.dom.div([
+				CT.dom.div("extend your subscription", "biggest"),
+				nz.options, nz.payform
+			], "bordered padded margined round centered")
 		]);
 	}
 };
