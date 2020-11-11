@@ -1,4 +1,5 @@
-from cantools import db
+from datetime import datetime, timedelta
+from cantools import db, config
 from cantools.util import log
 from ctuser.model import *
 from ctedit.model import PageEdit, Style
@@ -6,6 +7,14 @@ from ctman.util import h2l, symage
 
 class Member(CTUser):
 	expiration = db.DateTime()
+
+	def onsale(self, amount):
+		days = config.ctman.subs[amount]
+		if not self.expiration:
+			self.expiration = datetime.now()
+		self.expiration += timedelta(days)
+		self.put()
+		return str(self.expiration)[:19]
 
 class SecBase(db.TimeStampedBase):
 	name = db.String()
