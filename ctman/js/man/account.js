@@ -3,7 +3,9 @@ man.account = {
 		nodes: {
 			payform: CT.dom.div(),
 			options: CT.dom.div(),
-			info: CT.dom.div()
+			info: CT.dom.div(),
+			phbutt: CT.dom.button("payment history",
+				e => man.account._.history(), "right")
 		},
 		refresh: function(expiration) {
 			user.core.update({
@@ -16,7 +18,7 @@ man.account = {
 			CT.dom.setContent(man.account._.nodes.info,
 				man.account._.info());
 		},
-		info: function() { // TODO: payment history etc
+		info: function() {
 			var u = user.core.get();
 			if (u.admin) return "you're an admin";
 			if (!u.expiration) return "you haven't finished your registration";
@@ -39,6 +41,26 @@ man.account = {
 			var _ = man.account._, butt = CT.dom.button(item + " for " + amount,
 				e => _.form(item, amount));
 			_.nodes.options.appendChild(butt);
+		},
+		payment: function(p) {
+			return [p.created, p.amount, p.duration, p.successful, p.message];
+		},
+		history: function() {
+			var _ = man.account._, butt = _.nodes.phbutt;
+			butt.disabled = true;
+			CT.db.get("payment", function(pz) {
+				CT.modal.modal([
+					"your payment history",
+					pz.length ? CT.dom.flex([
+						CT.dom.flex(["date", "amount", "duration",
+							"successful", "message"], "row jccenter big bold")
+					].concat(pz.map(_.payment)), "col margined") : "nothing yet!"
+				], function() {
+					butt.disabled = false;
+				});
+			}, null, null, null, {
+				member: user.core.get("key")
+			});
 		}
 	},
 	init: function() {
@@ -54,6 +76,7 @@ man.account = {
 		_.ifresh();
 		CT.dom.setMain([
 			CT.dom.div([
+				nz.phbutt,
 				"Hello " + user.core.get("firstName"),
 				nz.info
 			], "subpadded"),
