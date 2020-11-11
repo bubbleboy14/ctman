@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 from cantools import db, config
 from cantools.util import log
+from cantools.web import send_mail, email_admins
 from ctuser.model import *
 from ctedit.model import PageEdit, Style
 from ctman.util import h2l, symage
@@ -14,7 +15,15 @@ class Member(CTUser):
 			self.expiration = datetime.now()
 		self.expiration += timedelta(days)
 		self.put()
-		return str(self.expiration)[:19]
+		exp = str(self.expiration)[:19]
+		send_mail(to=self.email, subject="your subscription",
+			body="your subscription is good until %s"%(exp,))
+		email_admins("new subscription", "\n".join([
+			"member: " + self.email,
+			"amount: " + amount,
+			"expires: " + exp
+		]))
+		return exp
 
 class SecBase(db.TimeStampedBase):
 	name = db.String()
