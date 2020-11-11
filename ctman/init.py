@@ -3,7 +3,7 @@ copies = {
 	"tex": ["imps.tex", "pre.tex"]
 }
 syms = {
-	".": ["_man.py"],
+	".": ["_man.py", "memscan.py"],
 	"css": ["man.css"],
 	"html": ["man"],
 	"js": ["man"]
