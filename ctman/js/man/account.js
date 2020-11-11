@@ -2,6 +2,7 @@ man.account = {
 	info: function() { // TODO: payment history etc
 		var u = user.core.get();
 		if (u.admin) return "you're an admin";
+		if (!u.expiration) return "you haven't finished your registration";
 		var n = new Date(), e = new Date(u.expiration),
 			ex = u.expiration.split(" ").shift();
 		return "your account " + ((n > e) ?
