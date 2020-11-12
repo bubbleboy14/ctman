@@ -25,15 +25,15 @@ man.account = {
 			var n = new Date(), e = new Date(u.expiration),
 				ex = u.expiration.split(" ").shift();
 			return "your account " + ((n > e) ?
-				"expires" : "expired") + " on " + ex;
+				"expired" : "expires") + " on " + ex;
 		},
 		form: function(item, amount) {
 			var _ = man.account._, pf = _.nodes.payform;
 			CT.dom.clear(pf);
 			new CT.pay.Form({
 				parent: pf,
-				item: "one month",
-				amount: "$10.00",
+				item: item,
+				amount: amount,
 				onpaid: _.refresh
 			});
 		},
