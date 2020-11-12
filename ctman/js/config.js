@@ -85,7 +85,7 @@
 		"chemical": ["Arsenic", "Lead", "4,4 DDE"]
 	},
 	"subs": {
-		"one month": "$10.00",
-		"one year": "$100.00"
+		"one month": "10.00",
+		"one year": "100.00"
 	}
 }
