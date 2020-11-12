@@ -3,7 +3,7 @@ copies = {
 	"tex": ["imps.tex", "pre.tex"]
 }
 syms = {
-	".": ["_man.py"],
+	".": ["_man.py", "memscan.py"],
 	"css": ["man.css"],
 	"html": ["man"],
 	"js": ["man"]
@@ -23,5 +23,9 @@ cfg = {
 	},
 	"toc": {
 		"secheaders": False
+	},
+	"subs": {
+		"10.00": 30,
+		"100.00": 365
 	}
 }

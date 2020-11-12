@@ -1,8 +1,42 @@
-from cantools import db
+from datetime import datetime, timedelta
+from cantools import db, config
 from cantools.util import log
+from cantools.web import send_mail, email_admins
 from ctuser.model import *
 from ctedit.model import PageEdit, Style
 from ctman.util import h2l, symage
+
+class Member(CTUser):
+	expiration = db.DateTime()
+
+	def onsale(self, amount, errmsg=None):
+		days = config.ctman.subs[amount]
+		payment = Payment(member=self.key,
+			amount=amount, duration=days)
+		if errmsg:
+			payment.message = errmsg
+			return payment.put()
+		payment.successful = True
+		if not self.expiration:
+			self.expiration = datetime.now()
+		self.expiration += timedelta(days)
+		db.put_multi([self, payment])
+		exp = str(self.expiration)[:19]
+		send_mail(to=self.email, subject="your subscription",
+			body="your subscription is good until %s"%(exp,))
+		email_admins("new subscription", "\n".join([
+			"member: " + self.email,
+			"amount: " + amount,
+			"expires: " + exp
+		]))
+		return exp
+
+class Payment(db.TimeStampedBase):
+	member = db.ForeignKey(kind=Member)
+	successful = db.Boolean(default=False)
+	amount = db.String()
+	duration = db.Integer() # days
+	message = db.Text()
 
 class SecBase(db.TimeStampedBase):
 	name = db.String()
@@ -71,14 +105,14 @@ class Injection(db.TimeStampedBase):
 		return "%s (%s)"%(self.name, self.variety)
 
 class Template(SecBase):
-	owner = db.ForeignKey(kind=CTUser)
+	owner = db.ForeignKey(kind=Member)
 	injections = db.ForeignKey(kind=Injection, repeated=True)
 
 	def body(self, depth, novars=False, page_breaks=False):
 		return self.desc(depth, novars)
 
 class Document(db.TimeStampedBase):
-	owner = db.ForeignKey(kind=CTUser)
+	owner = db.ForeignKey(kind=Member)
 	logo = db.Binary()
 	template = db.ForeignKey(kind=Template)
 	name = db.String()

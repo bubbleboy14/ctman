@@ -1,0 +1,3 @@
+- description: mem scan
+  url: /memscan
+  schedule: every 1 days
