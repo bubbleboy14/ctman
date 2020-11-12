@@ -93,6 +93,12 @@
     width: 9%;
 }*/
 
+.phist .row > div {
+	width: 20%;
+	padding: 10px;
+	border: 1px solid black;
+}
+
 .basicpopup iframe {
 	border: none;
 	width: 800px;
