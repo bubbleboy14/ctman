@@ -43,19 +43,21 @@ man.account = {
 			_.nodes.options.appendChild(butt);
 		},
 		payment: function(p) {
-			return [p.created, p.amount, p.duration, p.successful, p.message];
+			return CT.dom.flex([p.created, "$" + p.amount,
+				p.duration + " days",
+				p.successful.toString(), p.message], "row")
 		},
 		history: function() {
 			var _ = man.account._, butt = _.nodes.phbutt;
 			butt.disabled = true;
 			CT.db.get("payment", function(pz) {
-				CT.modal.modal([
+				CT.modal.modal(CT.dom.div([
 					"your payment history",
 					pz.length ? CT.dom.flex([
 						CT.dom.flex(["date", "amount", "duration",
-							"successful", "message"], "row jccenter big bold")
+							"successful", "message"], "row big bold")
 					].concat(pz.map(_.payment)), "col margined") : "nothing yet!"
-				], function() {
+				], "phist"), function() {
 					butt.disabled = false;
 				});
 			}, null, null, null, {
