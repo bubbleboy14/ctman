@@ -67,7 +67,7 @@ def row(chunk):
 	return [clean(part.split(">", 1)[1].split("</td>")[0]) for part in chunk.split('<td')[1:]]
 
 def table(seg):
-	rowz = map(row, seg.split(TSEP))
+	rowz = list(map(row, seg.split(TSEP)))
 	numcols = len(rowz[0])
 	if "img" in seg:
 		iorig = flags["img"]
