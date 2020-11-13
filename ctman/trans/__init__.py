@@ -1,2 +1,1 @@
-import legacy
-import html2latex
+from . import legacy, html2latex
