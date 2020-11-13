@@ -68,7 +68,7 @@ man.account = {
 	init: function() {
 		var _ = man.account._, nz = _.nodes,
 			cfg = core.config.ctman, i;
-		CT.pay.init({
+		user.core.get("admin") || CT.pay.init({
 			mode: "braintree",
 			cb: function() {
 				for (i in cfg.subs)
