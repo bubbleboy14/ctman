@@ -78,6 +78,14 @@ man.tables = {
 			}
 		});
 	},
+	chemord: function(cols) {
+		CT.modal.choice({
+			prompt: "reorder columns as necessary",
+			style: "reorder",
+			data: cols,
+			cb: man.tables.chemsel
+		})
+	},
 	chemcols: function() {
 		var _ = man.tables._;
 		CT.modal.choice({
@@ -85,7 +93,7 @@ man.tables = {
 			style: "multiple-choice",
 			data: _.chemicals.schema,
 			selections: _.chemicals.presels,
-			cb: man.tables.chemsel
+			cb: man.tables.chemord
 		});
 	},
 	button: function() {
