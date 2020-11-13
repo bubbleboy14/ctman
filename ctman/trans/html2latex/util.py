@@ -10,11 +10,16 @@ def nextlast(h, flagz):
 	f = None
 	i = -1
 	for flag in flagz:
-		sflag = flagz[flag].get("start", "<%s"%(flag,))
-		fi = getstart(h, sflag)
-		if fi > i:
-			i = fi
-			f = flag
+		startflag = flagz[flag].get("start")
+		if startflag:
+			sflags = [startflag]
+		else:
+			sflags = ["<%s "%(flag,), "<%s>"%(flag,)]
+		for sflag in sflags:
+			fi = getstart(h, sflag)
+			if fi > i:
+				i = fi
+				f = flag
 	return f
 
 def trans(h, flag, rules=None):
