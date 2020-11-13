@@ -10,11 +10,16 @@ def nextlast(h, flagz):
 	f = None
 	i = -1
 	for flag in flagz:
-		sflag = flagz[flag].get("start", "<%s"%(flag,))
-		fi = getstart(h, sflag)
-		if fi > i:
-			i = fi
-			f = flag
+		startflag = flagz[flag].get("start")
+		if startflag:
+			sflags = [startflag]
+		else:
+			sflags = ["<%s "%(flag,), "<%s>"%(flag,)]
+		for sflag in sflags:
+			fi = getstart(h, sflag)
+			if fi > i:
+				i = fi
+				f = flag
 	return f
 
 def trans(h, flag, rules=None):
@@ -67,7 +72,7 @@ def row(chunk):
 	return [clean(part.split(">", 1)[1].split("</td>")[0]) for part in chunk.split('<td')[1:]]
 
 def table(seg):
-	rowz = map(row, seg.split(TSEP))
+	rowz = list(map(row, seg.split(TSEP)))
 	numcols = len(rowz[0])
 	if "img" in seg:
 		iorig = flags["img"]
@@ -79,7 +84,7 @@ def table(seg):
 			"end": iorig["end"],
 			"tex": "\\includegraphics[width=" + str(1.0 / numcols)[:3] + "\\linewidth]{%s}"
 		})
-		rowz = map(row, seg.split(TSEP))
+		rowz = list(map(row, seg.split(TSEP)))
 		return TBL%(numcols * "c", "\\\\\n\n".join([" & ".join(r) for r in rowz]))
 	else:
 		return "\n".join(map(bartable, rowsets(rowz)))

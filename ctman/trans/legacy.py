@@ -150,7 +150,7 @@ TBL = """\\begin{center}
 \\end{center}"""
 
 def table(seg):
-	rowz = map(row, seg.split(TSEP))
+	rowz = list(map(row, seg.split(TSEP)))
 	numcols = len(rowz[0])
 	if "img" in seg:
 		iorig = flags["img"]
@@ -160,7 +160,7 @@ def table(seg):
 			"end": iorig["end"],
 			"tex": "\\includegraphics[width=" + str(1.0 / numcols)[:3] + "\\linewidth]{%s}"
 		})
-		rowz = map(row, seg.split(TSEP))
+		rowz = list(map(row, seg.split(TSEP)))
 		return TBL%(numcols * "c", "\\\\\n\n".join([" & ".join(r) for r in rowz]))
 	else:
 		return "\n".join(map(bartable, rowsets(rowz)))
@@ -254,7 +254,7 @@ def pline(line, dpref):
 def dhead(h, depth):
 	dpref = depth * "#"
 	lines = h.split("\n")
-	return "\n".join(map(lambda line : pline(line, dpref), lines))
+	return "\n".join([pline(line, dpref) for line in lines])
 
 def latline(line):
 	for i in range(6):

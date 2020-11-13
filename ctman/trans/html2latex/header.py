@@ -11,7 +11,7 @@ class Header(object):
 	def section(self, h, depth):
 		dpref = depth * "#"
 		lines = h.split("\n")
-		return "\n".join(map(lambda line : self.sectionize(line, dpref), lines))
+		return "\n".join([self.sectionize(line, dpref) for line in lines])
 
 	def biggerize(self, line):
 		hflags = headers["section"]
