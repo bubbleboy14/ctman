@@ -69,7 +69,7 @@ class Chem(object):
 		self.data["name"] = self.extract("<h1>", t="<")
 		log("%s %s"%(self.code, self.data["name"]), important=True)
 		self.data["classification"] = self.classification()
-		for name, flag in CARDS.items():
+		for name, flag in list(CARDS.items()):
 			self.data[name] = self.card(flag)
 		for name in TCARDS:
 			self.data[name] = self.tcard(name)

@@ -18,7 +18,7 @@ def hazard(template, arules): # do non-chems as well
 	for chem in chems:
 		chart.append([chemicals[chem][p] for p in chemprops])
 	return "%s\n\n# Hazards - Chemical\n\n| %s |"%(template,
-		" |\n| ".join(map(lambda r : " | ".join(r), chart)))
+		" |\n| ".join([" | ".join(r) for r in chart]))
 
 def inject(data, injects):
 	for i in injects:
@@ -60,7 +60,7 @@ def tsrow(k, v):
 
 def dex(doc):
 	rows = []
-	for k, v in doc.declarations.items():
+	for k, v in list(doc.declarations.items()):
 		rows.append(drow(k, v))
 	rows.append(tsrow("DATE PREPARED", doc.created))
 	rows.append(tsrow("DATE REVISED", doc.modified))
