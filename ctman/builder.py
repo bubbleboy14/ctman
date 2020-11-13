@@ -111,7 +111,7 @@ def initpandoc():
 def md2pdf(doc, mdname, bname, pname=None):
 	initpandoc()
 	fcfg = config.ctman.font
-	pcmd = "pandoc %s -o %s --%s-engine=xelatex -H tex/imps.tex -V geometry:margin=1in"%(mdname,
+	pcmd = "pandoc %s -o %s --%s-engine=xelatex -H tex/imps.tex -V geometry:margin=0.8in"%(mdname,
 		bname, PDINFO['version'] == 1 and "latex" or "pdf")
 	if fcfg.size:
 		pcmd += " -V fontsize:%s"%(fcfg.size,)
