@@ -5,14 +5,14 @@ man.browsers.Template = CT.Class({
 			sinjs = man.injections.extract(newsecs),
 			tinjs = CT.data.getSet(d.injections).map(i => i.name),
 			bads = sinjs.filter(i => !tinjs.includes(i));
-		return bads.length ? alert("For these Sections to render properly you will need to define injection variables for the following: " + bads.join(", ")) : true;
+		return bads.length ? alert("For these Sections to render properly you will need to define insertion variables for the following: " + bads.join(", ")) : true;
 	},
 	choosevar: function(d, cb) {
 		d.injections.length ? CT.modal.choice({
-			prompt: "choose an injection variable",
+			prompt: "choose an insertion variable",
 			data: d.injections.map(i => CT.data.get(i).name),
 			cb: cb
-		}) : alert("no injection variables defined! please define some :)");
+		}) : alert("no insertion variables defined! please define some :)");
 	},
 	extra: function(d) {
 		return d.key && [
