@@ -97,11 +97,11 @@ man.tables = {
 		});
 	},
 	button: function() {
-		return CT.dom.button("inject table",
+		return CT.dom.button("insert table",
 			man.tables.selector);
 	},
 	chembutt: function() {
-		return CT.dom.button("inject chem table",
+		return CT.dom.button("insert chem table",
 			man.tables.chemcols);
 	},
 	init: function() {
