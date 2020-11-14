@@ -57,12 +57,12 @@
 		]
 	},
 	"declarations": [{
-		"name": "CLIENT"
+		"name": "client"
 	}, {
 		"isTA": true,
-		"name": "SITE"
+		"name": "site"
 	}, {
-		"name": "ICS PROJECT NO."
+		"name": "project no."
 	}],
 	"template": [{
 		"isTA": true,
