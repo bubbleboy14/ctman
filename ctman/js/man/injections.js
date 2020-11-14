@@ -2,7 +2,7 @@ man.injections = {
 	_: {
 		inew: function(cb) {
 			CT.modal.prompt({
-				prompt: "what's the new injection variable's name?",
+				prompt: "what's the new insertion variable's name?",
 				cb: function(name) {
 					CT.modal.choice({
 						prompt: "what kind of variable is it?",
@@ -42,7 +42,7 @@ man.injections = {
 				key: d.key,
 				injections: d.injections
 			}, n.refresh);
-		}, niv = "new injection variable";
+		}, niv = "new insertion variable";
 		return function() {
 			CT.modal.choice({
 				style: "multiple-choice",
@@ -63,7 +63,7 @@ man.injections = {
 	},
 	editor: function(d) {
 		var classes = core.config.ctman.classes.template;
-		return man.util.refresher("injections", "edit injection variables",
+		return man.util.refresher("injections", "edit insertion variables",
 			n => this.button(d, n), function() {
 				return d.injections.map(function(ikey) {
 					var i = CT.data.get(ikey);
