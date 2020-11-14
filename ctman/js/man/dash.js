@@ -2,7 +2,7 @@ var DEX = core.config.ctman.declarations.map(v => v.name);
 
 man.dash = {
 	_: {
-		cols: ["name", "template"].concat(DEX).concat(["revision",
+		cols: ["HASP name", "template"].concat(DEX).concat(["revision",
 			"created", "revised", "expires", "delete"])
 	},
 	doc: function(d) {
