@@ -200,6 +200,7 @@ man.browsers.Document = CT.Class({
 		var _ = this._;
 		this.opts = CT.merge(opts, {
 			modelName: "document",
+			opener: "Step 1. Start New HASP Here",
 			blurs: ["project name", "document title", "project/document name"]
 		}, this.opts);
 		CT.db.get("template", function(tz) {
