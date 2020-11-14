@@ -181,7 +181,6 @@ man.browsers.Section = CT.Class({
 	},
 	items: function(items) {
 		man.relations.geneologize(items);
-		man.relations.imaginate(items);
 	},
 	init: function(opts) {
 		this.opts = CT.merge(opts, {
@@ -191,5 +190,6 @@ man.browsers.Section = CT.Class({
 			blurs: ["section name", "section title", "name that section"]
 		}, this.opts);
 		man.tables.init();
+		man.relations.init();
 	}
 }, CT.Browser);

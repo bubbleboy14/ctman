@@ -12,10 +12,6 @@ man.relations = {
 			cb: cb
 		});
 	},
-	imaginate: function(items) {
-		var _ = man.relations._;
-		_.images = items.filter(i => i.image).map(i => i.image);
-	},
 	ancestors: function(key) {
 		var p, pg = man.relations._.parentage, az = [];
 		if (pg[key]) {
@@ -34,5 +30,10 @@ man.relations = {
 				par[section].push(item.key);
 			}
 		}
+	},
+	init: function() {
+		CT.db.blobs("image", function(iz) {
+			man.relations._.images = iz;
+		});
 	}
 };
