@@ -96,7 +96,7 @@ def export(doc, data=None):
 		data = "\\newpage\n%s"%(data,)
 		pname = pretex(doc, fname)
 	else:
-		data = doc.content(novars=True)
+		data = doc.content(depth=1, novars=True)
 		pname = pretex(doc, fname, True)
 	mdname = os.path.join("build", "%s.md"%(fname,))
 	write(data, mdname)
