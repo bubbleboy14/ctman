@@ -19,7 +19,7 @@ man.dash = {
 		content = content.concat([
 			CT.dom.link(d.revision, null, "/" + d.pdf, null, null, null, true),
 			cre, rev, exp, CT.dom.link("delete", function() {
-				if (!(confirm("are you sure you want to delete this section?")
+				if (!(confirm("are you sure you want to delete this HASP?")
 					&& confirm("really? no takebacks!")))
 					return;
 				CT.db.put(d.key, function() {
