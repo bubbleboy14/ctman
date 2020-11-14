@@ -187,6 +187,7 @@ man.browsers.Section = CT.Class({
 			owner: false,
 			secbutts: true,
 			modelName: "section",
+			saveMessage: "you saved!",
 			blurs: ["section name", "section title", "name that section"]
 		}, this.opts);
 		man.tables.init();
