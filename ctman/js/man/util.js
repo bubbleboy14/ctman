@@ -83,9 +83,9 @@ man.util = {
 		}, same = function() {
 			top.style.height = bottom.style.height = "50%";
 		}, n = CT.dom.div([
-			CT.dom.button("templates", fullt),
-			CT.dom.button("sections", fullb),
-			CT.dom.button("equal", same)
+			CT.dom.button("Template Screen", fullt),
+			CT.dom.button("Section Screen", fullb),
+			CT.dom.button("Split Screen", same)
 		], "abs ctr");
 		n.top = fullt;
 		n.bottom = fullb;
