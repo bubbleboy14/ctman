@@ -1,15 +1,44 @@
 man.relations = {
-	_: { parentage: {} },
+	_: {
+		parentage: {},
+		selector: function(cb) {
+			var iz = man.relations._.images;
+			if (!iz.length) return alert("no images uploaded yet!");
+			CT.modal.prompt({
+				prompt: "please select an image",
+				style: "icon",
+				recenter: true,
+				className: "basicpopup mosthight galimg",
+				data: iz,
+				cb: cb
+			});
+		},
+		uploader: function(cb) {
+			CT.modal.prompt({
+				prompt: "select the file you wish to upload",
+				style: "file",
+				cb: function(ctfile) {
+					ctfile.upload("/_db", function(ilink) {
+						man.relations._.images.push(ilink);
+						cb(ilink);
+					}, {
+						action: "blob"
+					});
+				}
+			});
+		}
+	},
 	images: function(cb) {
-		var iz = man.relations._.images;
-		if (!iz.length) return alert("no images uploaded yet!");
-		CT.modal.prompt({
-			prompt: "please select an image",
-			style: "icon",
-			recenter: true,
-			className: "basicpopup mosthight galimg",
-			data: iz,
-			cb: cb
+		var _ = man.relations._;
+		CT.modal.choice({
+			prompt: "select existing image or upload a new one?",
+			data: ["select", "upload"],
+			cb: function(sel) {
+				if (sel == "select")
+					_.selector(cb);
+				else
+					_.uploader(cb);
+			}
 		});
 	},
 	ancestors: function(key) {
