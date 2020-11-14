@@ -57,10 +57,10 @@
 		]
 	},
 	"declarations": [{
-		"name": "client"
+		"name": "client name"
 	}, {
 		"isTA": true,
-		"name": "site"
+		"name": "project site"
 	}, {
 		"name": "project no."
 	}],
