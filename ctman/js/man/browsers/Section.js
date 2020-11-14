@@ -130,7 +130,7 @@ man.browsers.Section = CT.Class({
 	},
 	choosevar: function(d, cb) {
 		CT.modal.prompt({
-			prompt: "what's the injection variable?",
+			prompt: "what's the insertion variable?",
 			cb: cb
 		})
 	},
