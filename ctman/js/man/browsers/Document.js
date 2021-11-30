@@ -202,11 +202,14 @@ man.browsers.Document = CT.Class({
 		this.opts = CT.merge(opts, {
 			modelName: "document",
 			opener: "Step 1. Start New HASP Here",
-			blurs: ["project name", "document title", "project/document name"]
+			blurs: ["project name", "document title", "project/document name"],
+			prebuild: function(items) {
+				CT.db.get("template", function(tz) {
+					_.templates = tz;
+					_.build(items);
+				}, 1000, 0, null, null, null, null, "unrolled");
+			}
 		}, this.opts);
-		CT.db.get("template", function(tz) {
-			_.templates = tz;
-		}, 1000, 0, null, null, null, null, "unrolled");
 		man.injections.init();
 	}
 }, CT.Browser);
