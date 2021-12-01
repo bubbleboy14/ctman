@@ -41,7 +41,9 @@ Extension=.ttf,
 UprightFont=Regular,
 ItalicFont=Italic,
 BoldFont=Bold,
-BoldItalicFont=BoldItalic]{%s}"""
+BoldItalicFont=BoldItalic]{%s}
+
+\\setmathfont{Latin Modern Math}"""
 
 DEX = """\\newpage
 SITE-SPECIFIC HEALTH AND SAFETY PLAN
