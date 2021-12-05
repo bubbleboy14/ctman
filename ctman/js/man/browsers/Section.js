@@ -115,7 +115,7 @@ man.browsers.Section = CT.Class({
 	},
 	secbutts: function(d) {
 		if (!d.key || !this.opts.secbutts) return;
-		var _ = this._;
+		var _ = this._, prebutt = this.prebutt(d);
 		return CT.dom.div([
 			CT.dom.checkboxAndLabel("headerless", d.headerless,
 				null, null, "inline rmargined", function(cb) {
@@ -125,7 +125,7 @@ man.browsers.Section = CT.Class({
 					});
 				}
 			),
-			_.prebutt(d)
+			prebutt
 		], "abs ctr bordered round shiftup");
 	},
 	choosevar: function(d, cb) {
