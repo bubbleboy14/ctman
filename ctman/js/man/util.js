@@ -105,10 +105,11 @@ man.util = {
 	},
 	builder: function(bdata) {
 		var showBuild = function() {
+			var bp = "/" + bdata.build;
 			CT.modal.modal([
-				CT.dom.iframe(bdata.build),
+				CT.dom.iframe(bp),
 				CT.dom.link("click here to open in a new tab",
-					null, bdata.build, "centered block", null, null, true)
+					null, bp, "centered block", null, null, true)
 			]);
 		}, showMessage = function() {
 			CT.modal.modal([
