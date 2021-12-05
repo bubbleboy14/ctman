@@ -2,6 +2,7 @@ import os, datetime
 from cantools.util import read, write, output
 from ctman.hazards import chemicals, chemprops
 from ctman.util import symage
+from cantools.web import mail
 from cantools import config
 
 def part(fname):
@@ -87,6 +88,14 @@ def pretex(doc, fname, fontonly=False):
 
 PDINFO = {}
 
+def report(bdata):
+	mail.email_reportees("\n".join([
+		"path: " + bdata["build"],
+		"success: " + str(bdata["success"]),
+		"message:",
+		bdata["message"]
+	]))
+
 def export(doc, data=None):
 	fname = doc.name.replace(" ", "_").replace("(",
 		"").replace(")", "").replace("/", "")
@@ -104,11 +113,13 @@ def export(doc, data=None):
 	write(data, mdname)
 	bname = os.path.join("build", "%s.pdf"%(fname,))
 	panout = md2pdf(doc, mdname, bname, pname)
-	return {
+	bdata = {
 		"build": bname,
 		"message": panout,
 		"success": "Error producing PDF" not in panout
 	}
+	panout and report(bdata)
+	return bdata
 
 def initpandoc():
 	if "version" not in PDINFO:
