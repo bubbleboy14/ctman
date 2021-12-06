@@ -5,9 +5,15 @@ from model import db
 def response():
 	entity = db.get(cgi_get("key"))
 	if entity.polytype == "document":
-		entity.pdf = build(entity)
-		entity.put()
-		succeed(entity.data())
+		bdata = build(entity)
+		if bdata["success"]:
+			entity.revision += 1
+			entity.pdf = bdata["build"]
+			entity.put()
+		succeed({
+			"build": bdata,
+			"doc": entity.data()
+		})
 	else: # build fragment
 		succeed(export(entity))
 

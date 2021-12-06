@@ -102,5 +102,21 @@ man.util = {
 	},
 	inject: function(content) {
 		tinyMCE.activeEditor.selection.setContent(content);
+	},
+	builder: function(bdata) {
+		var showBuild = function() {
+			var bp = "/" + bdata.build;
+			CT.modal.modal([
+				CT.dom.iframe(bp),
+				CT.dom.link("click here to open in a new tab",
+					null, bp, "centered block", null, null, true)
+			]);
+		}, showMessage = function() {
+			CT.modal.modal([
+				CT.dom.div("Issues Encountered", "big centered"),
+				bdata.message
+			], bdata.success && showBuild);
+		};
+		bdata.message ? showMessage() : showBuild();
 	}
 };

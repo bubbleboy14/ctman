@@ -1,7 +1,8 @@
 import os, datetime
-from cantools.util import cmd, read, write, output
+from cantools.util import read, write, output
 from ctman.hazards import chemicals, chemprops
 from ctman.util import symage
+from cantools.web import mail
 from cantools import config
 
 def part(fname):
@@ -87,6 +88,14 @@ def pretex(doc, fname, fontonly=False):
 
 PDINFO = {}
 
+def report(bdata):
+	mail.email_reportees("\n".join([
+		"path: " + bdata["build"],
+		"success: " + str(bdata["success"]),
+		"message:",
+		bdata["message"]
+	]))
+
 def export(doc, data=None):
 	fname = doc.name.replace(" ", "_").replace("(",
 		"").replace(")", "").replace("/", "")
@@ -103,8 +112,14 @@ def export(doc, data=None):
 	mdname = os.path.join("build", "%s.md"%(fname,))
 	write(data, mdname)
 	bname = os.path.join("build", "%s.pdf"%(fname,))
-	md2pdf(doc, mdname, bname, pname)
-	return bname
+	panout = md2pdf(doc, mdname, bname, pname)
+	bdata = {
+		"build": bname,
+		"message": panout,
+		"success": "Error producing PDF" not in panout
+	}
+	panout and report(bdata)
+	return bdata
 
 def initpandoc():
 	if "version" not in PDINFO:
@@ -121,10 +136,9 @@ def md2pdf(doc, mdname, bname, pname=None):
 		pcmd += " -B %s"%(pname,)
 	if doc.polytype == "document" and doc.table_of_contents:
 		pcmd += " --toc -N"
-	cmd(pcmd)
+	return output(pcmd)
 
 def build(doc):
-	doc.revision += 1
 	afunc = doc.template and doc.content or assemble
 	tempbod = afunc(doc.assembly.get("sections"))
 	#fulltemp = hazard(tempbod, doc.assembly.get("hazards", {}))

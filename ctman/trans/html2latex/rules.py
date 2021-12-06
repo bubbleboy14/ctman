@@ -168,8 +168,10 @@ GL = ["alpha", "beta", "gamma", "delta", "epsilon", "zeta", "eta", "theta",
 	"sigma", "tau", "upsilon", "phi", "chi", "psi", "omega"]
 for l in GL:
 	c = l.capitalize()
-	swaps["&%s;"%(l,)] = "\\begin{math}\\%s\\end{math} "%(l,)
-	swaps["&%s;"%(c,)] = "\\begin{math}\\%s\\end{math} "%(c,)
+#	swaps["&%s;"%(l,)] = "$\\%s$"%(l,)
+#	swaps["&%s;"%(l,)] = "\\%s"%(l,)
+	swaps["&%s;"%(l,)] = "\\begin{math}\\%s\\end{math}"%(l,)
+	swaps["&%s;"%(c,)] = "\\begin{math}\\%s\\end{math}"%(c,)
 
 flags = {
 	"p": {

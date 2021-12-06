@@ -8,9 +8,12 @@ man.browsers.Document = CT.Class({
 				params: {
 					key: d.key
 				},
-				cb: function(newd) {
-					d.pdf = newd.pdf;
-					n.refresh();
+				cb: function(rdata) {
+					if (rdata.build.success) {
+						d.pdf = rdata.doc.pdf;
+						n.refresh();
+					}
+					man.util.builder(rdata.build);
 				}
 			});
 		};
