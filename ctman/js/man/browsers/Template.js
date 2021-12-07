@@ -15,10 +15,10 @@ man.browsers.Template = CT.Class({
 		}) : alert("no insertion variables defined! please define some :)");
 	},
 	extra: function(d) {
-		return d.key && [
-			this.sections(d),
-			man.injections.editor(d)
-		];
+		if (!d.key) return;
+		CT.dom.setContent(this.opts.injections,
+			man.injections.editor(d));
+		return this.sections(d);
 	},
 	items: function(items) {
 		man.relations.geneologize(items);
