@@ -25,7 +25,8 @@ CT.onload(function() {
 		minmax
 	]);
 	midrow.onwheel = function(wevent) {
-		midrow.firstChild.scrollLeft += wevent.deltaY;
+		if (midrow.scroller)
+			midrow.scroller.scrollLeft += wevent.deltaY;
 		wevent.preventDefault();
 		wevent.stopPropagation();
 	};
