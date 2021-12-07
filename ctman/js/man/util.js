@@ -25,12 +25,12 @@ man.util = {
 			}),
 		], core.config.ctman.classes[d.modelName].form);
 	},
-	refresher: function(title, buttname, buttcb, bodgen, classes, collapsible) {
+	refresher: function(title, buttname, buttcb, bodgen, classes, collapsible, buttclass) {
 		var n = CT.dom.div(null, classes || "margined padded bordered round"),
 			section = this.section, asec = this.asec;
 		n.refresh = function() {
 			CT.dom.setContent(n, [
-				CT.dom.button(buttname, buttcb(n), "right"),
+				CT.dom.button(buttname, buttcb(n), buttclass || "right"),
 				collapsible ? man.util.collapser(title) : title,
 				bodgen()
 			]);
