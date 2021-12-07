@@ -75,13 +75,13 @@ man.util = {
 	},
 	minmax: function(top, mid, bottom) {
 		var fullt = function() {
-			mid.style.top = top.style.height = "calc(90% - 15px)";
-			bottom.style.height = "calc(10% - 15px)";
+			mid.style.top = top.style.height = "calc(90% - 25px)";
+			bottom.style.height = "calc(10% - 25px)";
 		}, fullb = function() {
-			mid.style.top = top.style.height = "calc(10% - 15px)";
-			bottom.style.height = "calc(90% - 15px)";
+			mid.style.top = top.style.height = "calc(10% - 25px)";
+			bottom.style.height = "calc(90% - 25px)";
 		}, same = function() {
-			mid.style.top = top.style.height = bottom.style.height = "calc(50% - 15px)";
+			mid.style.top = top.style.height = bottom.style.height = "calc(50% - 25px)";
 		}, n = CT.dom.div([
 			CT.dom.button("Template Screen", fullt),
 			CT.dom.button("Section Screen", fullb),
