@@ -63,7 +63,7 @@ man.injections = {
 	},
 	editor: function(d) {
 		var classes = core.config.ctman.classes.template,
-			titnode = CT.dom.div(null, "left");
+			titnode = CT.dom.div(null, "left w195p pl10");
 		return man.util.refresher(titnode, "edit insertion variables",
 			n => this.button(d, n), function() {
 				var ilist = CT.dom.div(d.injections.map(function(ikey) {
@@ -71,9 +71,10 @@ man.injections = {
 					return CT.dom.div(i.name + " (" + i.variety + ")",
 						classes.injection);
 				}), classes.injections);
-				CT.dom.setContent(titnode, CT.dom.filter(ilist, "inline-block"));
+				CT.dom.setContent(titnode, CT.dom.filter(ilist,
+					"filter insertion variables", "inline-block"));
 				return ilist;
-			}, "block", null, "left");
+			}, "block", null, "abs l0 b0 w160p ml10");
 	},
 	extract: function(secs) {
 		var injections = [], sec,
