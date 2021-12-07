@@ -69,7 +69,9 @@ man.injections = {
 				var ilist = CT.dom.div(d.injections.map(function(ikey) {
 					var i = CT.data.get(ikey);
 					return CT.dom.div(i.name + " (" + i.variety + ")",
-						classes.injection);
+						classes.injection, null, {
+							onclick: () => man.util.inject("{{" + i.name + "}}")
+						});
 				}), classes.injections);
 				CT.dom.setContent(titnode, CT.dom.filter(ilist,
 					"filter insertion variables", "inline-block"));
