@@ -18,8 +18,8 @@
 			"form": "margined padded bordered round template_form",
 			"image": "margined padded bordered round template_image",
 			"sections": "margined padded bordered round template_sections",
-			"injections": "margined padded bordered round template_injections",
-			"injection": "margined padded bordered round inline-block template_injection"
+			"injections": "nowrap scrollx template_injections",
+			"injection": "margined padded bordered round inline-block pointer template_injection"
 		}
 	},
 	"help": {

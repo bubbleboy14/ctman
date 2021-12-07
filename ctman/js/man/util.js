@@ -25,12 +25,12 @@ man.util = {
 			}),
 		], core.config.ctman.classes[d.modelName].form);
 	},
-	refresher: function(title, buttname, buttcb, bodgen, classes, collapsible) {
+	refresher: function(title, buttname, buttcb, bodgen, classes, collapsible, buttclass) {
 		var n = CT.dom.div(null, classes || "margined padded bordered round"),
 			section = this.section, asec = this.asec;
 		n.refresh = function() {
 			CT.dom.setContent(n, [
-				CT.dom.button(buttname, buttcb(n), "right"),
+				CT.dom.button(buttname, buttcb(n), buttclass || "right"),
 				collapsible ? man.util.collapser(title) : title,
 				bodgen()
 			]);
@@ -73,15 +73,15 @@ man.util = {
 		}, "abs cbl");
 		return b;
 	},
-	minmax: function(top, bottom) {
+	minmax: function(top, mid, bottom) {
 		var fullt = function() {
-			top.style.height = "90%";
-			bottom.style.height = "10%";
+			mid.style.top = top.style.height = "calc(90% - 25px)";
+			bottom.style.height = "calc(10% - 25px)";
 		}, fullb = function() {
-			top.style.height = "10%";
-			bottom.style.height = "90%";
+			mid.style.top = top.style.height = "calc(10% - 25px)";
+			bottom.style.height = "calc(90% - 25px)";
 		}, same = function() {
-			top.style.height = bottom.style.height = "50%";
+			mid.style.top = top.style.height = bottom.style.height = "calc(50% - 25px)";
 		}, n = CT.dom.div([
 			CT.dom.button("Template Screen", fullt),
 			CT.dom.button("Section Screen", fullb),

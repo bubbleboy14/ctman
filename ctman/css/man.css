@@ -67,6 +67,16 @@
 
 .tophalf, .bottomhalf {
 	transition: height 1s;
+	height: calc(50% - 25px);
+}
+
+.midrow {
+	left: 0;
+	right: 0;
+	height: 50px;
+	transition: top 1s;
+	top: calc(50% - 25px);
+	border: 1px solid black;
 }
 
 .jccenter div, .jccenter a {

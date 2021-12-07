@@ -137,11 +137,11 @@ man.browsers.Section = CT.Class({
 	injectors: function(d) {
 		var cvar = this.choosevar;
 		return CT.dom.div([
-			CT.dom.button("insert variable", function() {
-				cvar(d, function(ivar) {
-					man.util.inject("{{" + ivar + "}}");
-				});
-			}),
+//			CT.dom.button("insert variable", function() {
+//				cvar(d, function(ivar) {
+//					man.util.inject("{{" + ivar + "}}");
+//				});
+//			}),
 			CT.dom.button("insert image", function() {
 				man.relations.images(function(img) {
 					man.util.inject("<img style='display: block; max-width: 100%' src='" + img + "'>");
