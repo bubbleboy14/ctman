@@ -19,7 +19,7 @@
 			"image": "margined padded bordered round template_image",
 			"sections": "margined padded bordered round template_sections",
 			"injections": "nowrap scrollx template_injections",
-			"injection": "margined padded bordered round inline-block template_injection"
+			"injection": "margined padded bordered round inline-block pointer template_injection"
 		}
 	},
 	"help": {
