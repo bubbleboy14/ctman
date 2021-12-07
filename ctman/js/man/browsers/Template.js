@@ -16,8 +16,9 @@ man.browsers.Template = CT.Class({
 	},
 	extra: function(d) {
 		if (!d.key) return;
-		CT.dom.setContent(this.opts.injections,
-			man.injections.editor(d));
+		var injed = man.injections.editor(d);
+		CT.dom.setContent(this.opts.injections, injed);
+		this.opts.injections.scroller = injed.getElementsByClassName("template_injections")[0];
 		return this.sections(d);
 	},
 	items: function(items) {
