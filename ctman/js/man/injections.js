@@ -62,14 +62,17 @@ man.injections = {
 		};
 	},
 	editor: function(d) {
-		var classes = core.config.ctman.classes.template;
-		return man.util.refresher(null, "edit insertion variables",
+		var classes = core.config.ctman.classes.template,
+			titnode = CT.dom.div(null, "left");
+		return man.util.refresher(titnode, "edit insertion variables",
 			n => this.button(d, n), function() {
-				return CT.dom.div(d.injections.map(function(ikey) {
+				var ilist = CT.dom.div(d.injections.map(function(ikey) {
 					var i = CT.data.get(ikey);
 					return CT.dom.div(i.name + " (" + i.variety + ")",
 						classes.injection);
 				}), classes.injections);
+				CT.dom.setContent(titnode, CT.dom.filter(ilist, "inline-block"));
+				return ilist;
 			}, "block", null, "left");
 	},
 	extract: function(secs) {
