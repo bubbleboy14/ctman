@@ -63,14 +63,14 @@ man.injections = {
 	},
 	editor: function(d) {
 		var classes = core.config.ctman.classes.template;
-		return man.util.refresher("injections", "edit insertion variables",
+		return man.util.refresher(null, "edit insertion variables",
 			n => this.button(d, n), function() {
-				return d.injections.map(function(ikey) {
+				return CT.dom.div(d.injections.map(function(ikey) {
 					var i = CT.data.get(ikey);
 					return CT.dom.div(i.name + " (" + i.variety + ")",
 						classes.injection);
-				});
-			}, classes.injections);
+				}), classes.injections);
+			}, "block", null, "left");
 	},
 	extract: function(secs) {
 		var injections = [], sec,
