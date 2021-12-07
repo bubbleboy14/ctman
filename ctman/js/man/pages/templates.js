@@ -14,7 +14,7 @@ CT.onload(function() {
 	CT.db.setLimit(5000);
 	var tophalf = CT.dom.div(null, "abs tophalf"),
 		midrow = CT.dom.div(CT.dom.node("select a template",
-			"center", "smallpadded"), "abs midrow"),
+			"center", "padded"), "abs midrow"),
 		bottomhalf = CT.dom.div(null, "abs bottomhalf"),
 		minmax = man.util.minmax(tophalf, midrow, bottomhalf);
 	CT.dom.setMain([
@@ -24,12 +24,18 @@ CT.onload(function() {
 		man.util.sideslide(),
 		minmax
 	]);
+	midrow.onwheel = function(wevent) {
+		midrow.firstChild.scrollLeft += wevent.deltaY;
+		wevent.preventDefault();
+		wevent.stopPropagation();
+	};
 	var secs = new man.browsers.Section({
 		parent: bottomhalf
 	});
 	new man.browsers.Template({
 		parent: tophalf,
 		sections: secs,
+		injections: midrow,
 		onsection: minmax.bottom
 	});
 });
