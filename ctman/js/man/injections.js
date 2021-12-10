@@ -67,10 +67,15 @@ man.injections = {
 		return man.util.refresher(titnode, "edit insertion variables",
 			n => this.button(d, n), function() {
 				var ilist = CT.dom.div(d.injections.map(function(ikey) {
-					var i = CT.data.get(ikey);
+					var i = CT.data.get(ikey), itag = "{{" + i.name + "}}";
 					return CT.dom.div(i.name + " (" + i.variety + ")",
 						classes.injection, null, {
-							onclick: () => man.util.inject("{{" + i.name + "}}")
+							draggable: true,
+							onclick: () => man.util.inject(itag),
+							ondragstart: function(ev) {
+								ev.dataTransfer.dropEffect = "copy";
+								ev.dataTransfer.setData("text/plain", itag);
+							}
 						});
 				}), classes.injections);
 				CT.dom.setContent(titnode, CT.dom.filter(ilist,
