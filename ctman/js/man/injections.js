@@ -84,7 +84,7 @@ man.injections = {
 					return man.injections.inode(CT.data.get(ikey));
 				});
 				if (mcfg.injeclarations)
-					inodez = inodez.concat(mcfg.injections.map(man.injections.inode));
+					inodez = inodez.concat(mcfg.declarations.map(man.injections.inode));
 				var ilist = CT.dom.div(inodez, classes.injections);
 				CT.dom.setContent(titnode, CT.dom.filter(ilist,
 					"filter insertion variables", "inline-block"));
