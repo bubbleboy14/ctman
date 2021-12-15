@@ -61,23 +61,31 @@ man.injections = {
 			});
 		};
 	},
-	editor: function(d) {
+	inode: function(i) {
 		var classes = core.config.ctman.classes.template,
+			itag = "{{" + i.name + "}}";
+		return CT.dom.div(i.name + " (" + (i.variety || "core") + ")",
+			classes.injection, null, {
+				draggable: true,
+				onclick: () => man.util.inject(itag),
+				ondragstart: function(ev) {
+					ev.dataTransfer.dropEffect = "copy";
+					ev.dataTransfer.setData("text/plain", itag);
+				}
+			});
+	},
+	editor: function(d) {
+		var mcfg = core.config.ctman,
+			classes = mcfg.classes.template,
 			titnode = CT.dom.div(null, "left w195p pl10");
 		return man.util.refresher(titnode, "edit insertion variables",
 			n => this.button(d, n), function() {
-				var ilist = CT.dom.div(d.injections.map(function(ikey) {
-					var i = CT.data.get(ikey), itag = "{{" + i.name + "}}";
-					return CT.dom.div(i.name + " (" + i.variety + ")",
-						classes.injection, null, {
-							draggable: true,
-							onclick: () => man.util.inject(itag),
-							ondragstart: function(ev) {
-								ev.dataTransfer.dropEffect = "copy";
-								ev.dataTransfer.setData("text/plain", itag);
-							}
-						});
-				}), classes.injections);
+				var inodez = d.injections.map(function(ikey) {
+					return man.injections.inode(CT.data.get(ikey));
+				});
+				if (mcfg.injeclarations)
+					inodez = inodez.concat(mcfg.injections.map(man.injections.inode));
+				var ilist = CT.dom.div(inodez, classes.injections);
 				CT.dom.setContent(titnode, CT.dom.filter(ilist,
 					"filter insertion variables", "inline-block"));
 				return ilist;
