@@ -29,12 +29,13 @@ man.injections = {
 	get: function(name) {
 		return man.injections._.names[name];
 	},
-	pushit: function(iz, d) {
+	pushit: function(iz) {
+		var _ = man.injections._, d = _.template;
 		d.injections = iz.map(i => i.key);
 		CT.db.put({
 			key: d.key,
 			injections: d.injections
-		}, _.n && _.n.refresh);
+		}, _.node && _.node.refresh);
 	},
 	fields: function(template) {
 		return template.injections.map(function(ikey) {
@@ -59,10 +60,10 @@ man.injections = {
 						_.inew(function(ivar) {
 							CT.data.remove(iz, niv);
 							iz.push(ivar);
-							man.injections.pushit(iz, d);
+							man.injections.pushit(iz);
 						});
 					} else
-						man.injections.pushit(iz, d);
+						man.injections.pushit(iz);
 				}
 			});
 		};
@@ -84,6 +85,7 @@ man.injections = {
 		var mcfg = core.config.ctman,
 			classes = mcfg.classes.template,
 			titnode = CT.dom.div(null, "left w195p pl10");
+		man.injections._.template = d;
 		return man.util.refresher(titnode, "edit insertion variables",
 			n => this.button(d, n), function() {
 				var inodez = d.injections.map(function(ikey) {

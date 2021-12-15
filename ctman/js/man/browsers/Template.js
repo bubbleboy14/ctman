@@ -9,7 +9,7 @@ man.browsers.Template = CT.Class({
 		if (bads.length) {
 			if (!confirm("For these Sections to render properly you will need to define insertion variables for the following: " + bads.join(", ") + " -- Should I add these insertion variables to this template?"))
 				return false;
-			man.injections.pushit(iobjz.concat(bads.map(man.injections.get)), d);
+			man.injections.pushit(iobjz.concat(bads.map(man.injections.get)));
 		}
 		return true;
 	},
