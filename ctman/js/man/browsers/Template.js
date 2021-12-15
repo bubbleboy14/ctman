@@ -3,9 +3,15 @@ man.browsers.Template = CT.Class({
 	goodsecs: function(d, secs) {
 		var newsecs = secs.filter(s => !d.sections.includes(s.key)),
 			sinjs = man.injections.extract(newsecs),
-			tinjs = CT.data.getSet(d.injections).map(i => i.name),
+			iobjz = CT.data.getSet(d.injections),
+			tinjs = iobjz.map(i => i.name),
 			bads = sinjs.filter(i => !tinjs.includes(i));
-		return bads.length ? alert("For these Sections to render properly you will need to define insertion variables for the following: " + bads.join(", ")) : true;
+		if (bads.length) {
+			if (!confirm("For these Sections to render properly you will need to define insertion variables for the following: " + bads.join(", ") + " -- Should I add these insertion variables to this template?"))
+				return false;
+			man.injections.pushit(iobjz.concat(bads.map(man.injections.get)), d);
+		}
+		return true;
 	},
 	choosevar: function(d, cb) {
 		d.injections.length ? CT.modal.choice({
