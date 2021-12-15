@@ -64,6 +64,7 @@
 	}, {
 		"name": "project no."
 	}],
+	"injeclarations": true,
 	"template": [{
 		"isTA": true,
 		"wyz": "nonbsp restricted tables spellcheck fullscreen charmap",
