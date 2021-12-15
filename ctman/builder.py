@@ -138,9 +138,15 @@ def md2pdf(doc, mdname, bname, pname=None):
 		pcmd += " --toc -N"
 	return output(pcmd)
 
+def injectedDoc(tempbod, doc):
+	injectz = doc.injections.copy()
+	if config.ctman.builder.injeclarations:
+		injectz.update(doc.declarations)
+	return inject(tempbod, injectz)
+
 def build(doc):
 	afunc = doc.template and doc.content or assemble
 	tempbod = afunc(doc.assembly.get("sections"))
 	#fulltemp = hazard(tempbod, doc.assembly.get("hazards", {}))
-	data = inject(tempbod, doc.injections)
+	data = injectedDoc(tempbod, doc)
 	return export(doc, data)
