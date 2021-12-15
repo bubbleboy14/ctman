@@ -89,7 +89,7 @@ def pretex(doc, fname, fontonly=False):
 PDINFO = {}
 
 def report(bdata):
-	mail.email_reportees("\n".join([
+	mail.email_reportees("uh oh!", "\n".join([
 		"path: " + bdata["build"],
 		"success: " + str(bdata["success"]),
 		"message:",
