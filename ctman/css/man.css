@@ -119,3 +119,7 @@
 .document_template button {
 	display: none;
 }
+
+.grayback {
+	background: gray !important;
+}
