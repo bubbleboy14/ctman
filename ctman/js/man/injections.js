@@ -1,5 +1,6 @@
 man.injections = {
 	_: {
+		names: {},
 		inew: function(cb) {
 			CT.modal.prompt({
 				prompt: "what's the new insertion variable's name?",
@@ -25,6 +26,16 @@ man.injections = {
 			return d.split("{{").filter(p => p.includes("}}")).map(i => i.split("}}")[0]);
 		}
 	},
+	get: function(name) {
+		return man.injections._.names[name];
+	},
+	pushit = function(iz, d) {
+		d.injections = iz.map(i => i.key);
+		CT.db.put({
+			key: d.key,
+			injections: d.injections
+		}, _.n && _.n.refresh);
+	},
 	fields: function(template) {
 		return template.injections.map(function(ikey) {
 			var i = CT.data.get(ikey), d = {
@@ -36,13 +47,8 @@ man.injections = {
 		});
 	},
 	button: function(d, n) {
-		var _ = man.injections._, pushit = function(iz) {
-			d.injections = iz.map(i => i.key);
-			CT.db.put({
-				key: d.key,
-				injections: d.injections
-			}, n.refresh);
-		}, niv = "new insertion variable";
+		var _ = man.injections._, niv = "new insertion variable";
+		_.node = n;
 		return function() {
 			CT.modal.choice({
 				style: "multiple-choice",
@@ -53,10 +59,10 @@ man.injections = {
 						_.inew(function(ivar) {
 							CT.data.remove(iz, niv);
 							iz.push(ivar);
-							pushit(iz);
+							man.injections.pushit(iz, d);
 						});
 					} else
-						pushit(iz);
+						man.injections.pushit(iz, d);
 				}
 			});
 		};
@@ -103,8 +109,12 @@ man.injections = {
 		return injections;
 	},
 	init: function() {
+		var _ = man.injections._;
 		CT.db.get("injection", function(iz) {
-			man.injections._.injections = iz;
+			_.injections = iz;
+			iz.forEach(function(i) {
+				_.names[i.name] = i;
+			});
 		});
 	}
 };
