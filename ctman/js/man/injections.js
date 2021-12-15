@@ -29,7 +29,7 @@ man.injections = {
 	get: function(name) {
 		return man.injections._.names[name];
 	},
-	pushit = function(iz, d) {
+	pushit: function(iz, d) {
 		d.injections = iz.map(i => i.key);
 		CT.db.put({
 			key: d.key,
