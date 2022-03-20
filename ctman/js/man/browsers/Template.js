@@ -5,7 +5,7 @@ man.browsers.Template = CT.Class({
 			sinjs = man.injections.extract(newsecs),
 			iobjz = CT.data.getSet(d.injections),
 			tinjs = iobjz.map(i => i.name),
-			bads = sinjs.filter(i => !tinjs.includes(i));
+			bads = CT.data.uniquify(sinjs.filter(i => !tinjs.includes(i)));
 		if (bads.length) {
 			if (!confirm("For these Sections to render properly you will need to define insertion variables for the following: " + bads.join(", ") + " -- Should I add these insertion variables to this template?"))
 				return false;
