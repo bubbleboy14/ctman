@@ -8,6 +8,15 @@ class H2L(object):
 		self.fragment = fragment
 		self.depth = depth
 		self.header = Header()
+		self.uncomment()
+
+	def uncomment(self):
+		cs = "<!--"
+		ce = "-->"
+		while cs in self.fragment:
+			start = self.fragment.index(cs)
+			end = self.fragment.index(ce, start)
+			self.fragment = self.fragment[:start] + self.fragment[end + 3:]
 
 	def translate(self):
 		self.swaps()

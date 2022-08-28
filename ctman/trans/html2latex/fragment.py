@@ -6,6 +6,18 @@ class Fragment(object):
 		self.fragment = fragment
 		self.starter = starter
 		self.rules = rules
+		self.realign()
+
+	def realign(self):
+		aligner = ' align="'
+		if not aligner in self.starter: return
+		alignment = self.starter.split(aligner).pop().split('"').pop(0)
+		stysta = ' style="'
+		sta = '%stext-align: %s;'%(stysta, alignment)
+		if "style" in self.starter:
+			self.starter = self.starter.replace(stysta, '%s '%(sta,))
+		else:
+			self.starter = self.starter.replace('%s%s"'%(aligner, alignment), '%s"'%(sta,))
 
 	def style(self, tx):
 		if self.rules.get("nostyle"):
