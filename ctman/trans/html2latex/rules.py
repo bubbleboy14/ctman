@@ -157,6 +157,7 @@ swaps = {
 	"_": "\\_",
 	"<p>|": "|",
 	"|</p>": "|",
+	"<br>": " \\hfill\\break ",
 	"<br />": " \\hfill\\break ",
 	"text-align: left; ": "",
 	"padding-left: 60px; text-align: center;": "text-align: center;",
@@ -188,6 +189,9 @@ flags = {
 	},
 	"a": {
 		"tex": " %s "
+	},
+	"b": {
+		"tex": "\\textbf{%s}"
 	},
 	"strong": {
 		"tex": "\\textbf{%s}"
