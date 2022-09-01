@@ -42,3 +42,6 @@ class H2L(object):
 
 	def cleanup(self):
 		self.translation = self.translation.replace("{#}", "{\\#}")
+		self.translation = self.translation.replace("NEWPAGE", # custom injection
+			"\\newpage").replace("\\begin{flushleft}\\newpage\\end{flushleft}",
+			"\\newpage")
