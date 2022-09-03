@@ -1,51 +1,7 @@
 from ctman.util import getstart
 from .fragment import Fragment
 from .rules import *
-
-#
-# misc
-#
-
-def nextlast(h, flagz):
-	f = None
-	i = -1
-	for flag in flagz:
-		startflag = flagz[flag].get("start")
-		if startflag:
-			sflags = [startflag]
-		else:
-			sflags = ["<%s "%(flag,), "<%s>"%(flag,)]
-		for sflag in sflags:
-			fi = getstart(h, sflag)
-			if fi > i:
-				i = fi
-				f = flag
-	return f
-
-def trans(h, flag, rules=None):
-	rules = rules or flags[flag]
-#	sflag = rules.get("start", "<%s"%(flag,))
-	sflag = rules.get("start")
-	altstart = None
-	if not sflag:
-		sflag = "<%s>"%(flag,)
-		altstart = "<%s "%(flag,)
-	seflag = rules.get("startend", ">")
-	esflag = rules.get("endstart")
-	eflag = rules.get("end", "</%s>"%(flag,))
-	tex = rules.get("tex")
-	while sflag in h or altstart and altstart in h:
-		start = getstart(h, sflag)
-		if altstart:
-			start = max(start, getstart(h, altstart))
-		startend = seflag and h.index(seflag, start)
-		startender = (startend or start) + len(seflag or sflag)
-		endstart = esflag and h.index(esflag, startender)
-		end = h.index(eflag, startender or start)
-		starter = h[start : startender]
-		seg = h[startender : (endstart or end)]
-		h = h[:start] + Fragment(seg, starter, rules).translate() + h[end + len(eflag):]
-	return h
+from ..util import nextlast, trans, Converter
 
 #
 # tables
