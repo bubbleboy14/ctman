@@ -2,10 +2,12 @@ from ctman.util import symage
 from .rules import styles, cstyles
 
 class Fragment(object):
-	def __init__(self, fragment, starter, rules):
+	def __init__(self, fragment, starter, rules, styles=styles, cstyles=cstyles):
 		self.fragment = fragment
 		self.starter = starter
 		self.rules = rules
+		self.styles = styles
+		self.cstyles = cstyles
 		self.realign()
 
 	def realign(self):
@@ -29,11 +31,11 @@ class Fragment(object):
 		srules = self.starter[start:end]
 		for rule in srules.split("; "):
 			[key, val] = rule.split(": ")
-			if key in styles:
-				if val in styles[key]:
-					tx = styles[key][val]%(tx,)
-			elif key in cstyles:
-				tx = cstyles[key]%(val[-6:], tx)
+			if key in self.styles:
+				if val in self.styles[key]:
+					tx = self.styles[key][val]%(tx,)
+			elif key in self.cstyles:
+				tx = self.cstyles[key]%(val[-6:], tx)
 		return tx
 
 	def translate(self):
