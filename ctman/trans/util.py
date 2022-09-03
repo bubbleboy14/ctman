@@ -48,14 +48,18 @@ def trans(h, flag, rules=None, styles=styles, cstyles=cstyles):
 	return h
 
 class Converter(object):
-	def __init__(self, fragment, depth=0, swappers={}, flaggers={}, styles={}, cstyles={}):
+	def __init__(self, fragment, depth=0, swappers={}, flaggers={}, styles={}, cstyles={}, loud=False):
 		self.fragment = fragment
 		self.depth = depth
 		self.swappers = swappers
 		self.flaggers = flaggers
 		self.styles = styles
 		self.cstyles = cstyles
+		self.loud = loud
 		self.uncomment()
+
+	def log(self, *msg):
+		self.loud and print(*msg)
 
 	def uncomment(self):
 		cs = "<!--"
@@ -74,13 +78,16 @@ class Converter(object):
 	def swapem(self):
 		h = self.fragment
 		for swap in self.swappers:
-			h = h.replace(swap, self.swappers[swap])
+			swapper = self.swappers[swap]
+			self.log("swapping", swap, "for", swapper)
+			h = h.replace(swap, swapper)
 		self.translation = h
 
 	def bottomsup(self):
 		h = self.translation
 		flag = nextlast(h, self.flaggers)
 		while flag:
+			self.log("transing", flag)
 			h = trans(h, flag, styles=self.styles, cstyles=self.cstyles)
 			flag = nextlast(h, self.flaggers)
 		self.translation = h
