@@ -25,3 +25,7 @@ def h2l(h, depth=0):
 	if config.ctman and config.ctman.legacyh2l:
 		return trans.legacy.h2l(h, depth)
 	return trans.html2latex.H2L(h, depth).translate()
+
+def h2x(h):
+	from ctman import trans
+	return trans.html2docx.H2X(h).translate()
