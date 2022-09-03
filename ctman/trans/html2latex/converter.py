@@ -2,8 +2,8 @@ from .util import TABLE_FLAGS, flags, swaps, styles, cstyles, trans, Converter
 from .header import Header
 
 class H2L(Converter):
-	def __init__(self, fragment, depth=0, swappers=swaps, flaggers=flags, styles=styles, cstyles=cstyles):
-		Converter.__init__(self, fragment, depth, swappers, flaggers, styles, cstyles)
+	def __init__(self, fragment, depth=0, swappers=swaps, flaggers=flags, styles=styles, cstyles=cstyles, loud=False):
+		Converter.__init__(self, fragment, depth, swappers, flaggers, styles, cstyles, loud)
 		self.header = Header()
 
 	def translate(self):
