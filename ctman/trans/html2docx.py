@@ -7,9 +7,17 @@ DXPB = """```{=openxml}
   </w:r>
 </w:p>
 ```"""
+DXPA = """```{=openxml}
+<w:p>
+  <w:pPr>
+    <w:jc w:val="ALIGNMENT"/>
+  </w:pPr>
+  <w:r><w:t>%s</w:t></w:r>
+</w:p>
+```"""
 
-def dxtl(alignment):
-	return '```{=openxml}\n<w:jc w:val="' + alignment + '">\n  %s\n</w:jc>\n```'
+def dxta(alignment):
+	return DXPA.replace("ALIGNMENT", alignment)
 
 swaps = {
 	"NEWPAGE": DXPB
@@ -19,9 +27,9 @@ flags = {
 }
 styles = {
 	"text-align": {
-		"center": dxtl("center"),
-		"right": dxtl("right"),
-#		"left": dxtl("left")
+		"center": dxta("center"),
+		"right": dxta("right"),
+#		"left": dxta("left")
 	}
 }
 
