@@ -21,7 +21,7 @@ styles = {
 	"text-align": {
 		"center": dxtl("center"),
 		"right": dxtl("right"),
-		"left": dxtl("left")
+#		"left": dxtl("left")
 	}
 }
 
