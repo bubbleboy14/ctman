@@ -157,8 +157,8 @@ swaps = {
 	"_": "\\_",
 	"<p>|": "|",
 	"|</p>": "|",
-	"<br>": " \\hfill\\break ",
-	"<br />": " \\hfill\\break ",
+	"<br>": "\n",# \\\\ ",
+	"<br />": "\n",#" \\\\ ",
 	"text-align: left; ": "",
 	"padding-left: 60px; text-align: center;": "text-align: center;",
 	'<span style="text-align: center; ': '<span style="'
@@ -174,15 +174,19 @@ for l in GL:
 	swaps["&%s;"%(l,)] = "\\begin{math}\\%s\\end{math}"%(l,)
 	swaps["&%s;"%(c,)] = "\\begin{math}\\%s\\end{math}"%(c,)
 
+#baseblok = "\\hfill\\break %s \\hfill\\break"
+#baseblok = "\\\\ %s \\\\"
+baseblok = "\n\n%s\n\n"
+
 flags = {
 	"p": {
-		"tex": "\\hfill\\break %s \\hfill\\break"
+		"tex": baseblok
 	},
 	"pre": {
-		"tex": "\\hfill\\break %s \\hfill\\break"
+		"tex": baseblok
 	},
 	"div": {
-		"tex": "\\hfill\\break %s \\hfill\\break"
+		"tex": baseblok
 	},
 	"span": {
 		"tex": " %s "
