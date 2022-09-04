@@ -20,6 +20,11 @@ def getstart(h, sflag):
 		i = h.find(sflag, i + 1)
 	return i
 
+def pan(fp, ex=None, srcex="html", opath=None):
+	opath = opath or "%s.%s"%(fp, ex)
+	cmd('pandoc "%s.%s" -o "%s"'%(fp, srcex, opath))
+	return opath
+
 def h2l(h, depth=0):
 	from ctman import trans
 	if config.ctman and config.ctman.legacyh2l:
