@@ -48,18 +48,30 @@ def trans(h, flag, rules=None, flags=flags, styles=styles, cstyles=cstyles):
 	return h
 
 class Converter(object):
-	def __init__(self, fragment, depth=0, swappers={}, flaggers={}, styles={}, cstyles={}, loud=False):
+	def __init__(self, fragment, depth=0, swappers={}, flaggers={}, styles={}, cstyles={}, linestrips=[], loud=False):
 		self.fragment = fragment
 		self.depth = depth
 		self.swappers = swappers
 		self.flaggers = flaggers
 		self.styles = styles
 		self.cstyles = cstyles
+		self.linestrips = linestrips
 		self.loud = loud
 		self.uncomment()
+		linestrips and self.striplines()
 
 	def log(self, *msg):
 		self.loud and print(*msg)
+
+	def striplines(self):
+		lines = []
+		for line in self.fragment.split("\n"):
+			for flag in self.linestrips:
+				if flag in line:
+					lines.append(flag)
+				else:
+					lines.append(line)
+		self.fragment = "\n".join(lines)
 
 	def uncomment(self):
 		cs = "<!--"

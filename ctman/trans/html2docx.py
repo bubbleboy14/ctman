@@ -24,6 +24,7 @@ def wt(txt, prp=False):
 		txt = '<w:rPr>%s</w:rPr>'%(txt,)
 	return '</w:t>%s<w:t xml:space="preserve">'%(txt,)
 
+linestrips = ["NEWPAGE"]
 swaps = {
 	"NEWPAGE": DXPB
 }
@@ -47,5 +48,5 @@ styles = {
 }
 
 class H2X(Converter):
-	def __init__(self, fragment, depth=0, swappers=swaps, flaggers=flags, styles=styles, cstyles={}, loud=True):
-		Converter.__init__(self, fragment, depth, swappers, flaggers, styles, cstyles, loud)
+	def __init__(self, fragment, depth=0, swappers=swaps, flaggers=flags, styles=styles, cstyles={}, linestrips=linestrips, loud=True):
+		Converter.__init__(self, fragment, depth, swappers, flaggers, styles, cstyles, linestrips, loud)
