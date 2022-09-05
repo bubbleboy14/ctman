@@ -19,6 +19,11 @@ DXPA = """```{=openxml}
 def dxta(alignment):
 	return DXPA.replace("ALIGNMENT", alignment)
 
+def wt(txt, prp=False):
+	if prp:
+		txt = '<w:rPr>%s</w:rPr>'%(txt,)
+	return '</w:t>%s<w:t xml:space="preserve">'%(txt,)
+
 swaps = {
 	"NEWPAGE": DXPB
 }
@@ -27,9 +32,9 @@ flags = {
 		"strip": ["b", "br"],
 		"tex": "\n\n%s\n\n",
 		"sanswap": {
-			"<b>": '<w:b w:val="true"/>',
-			"</b>": '<w:b w:val="false"/>',
-			"<br>": '</w:t><w:br/><w:t>'
+			"<b>": wt('<w:b w:val="true"/>', True),
+			"</b>": wt('<w:b w:val="false"/>', True),
+			"<br>": wt('<w:br/>')
 		}
 	}
 }
