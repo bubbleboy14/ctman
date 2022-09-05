@@ -6,6 +6,9 @@ headers = {
 }
 headers["section"].reverse()
 
+#baselb = " \\\\ "
+baselb = " \\hfill\\break "
+
 swaps = {
 
 	# basic
@@ -157,8 +160,8 @@ swaps = {
 	"_": "\\_",
 	"<p>|": "|",
 	"|</p>": "|",
-	"<br>": "\n",# \\\\ ",
-	"<br />": "\n",#" \\\\ ",
+	"<br>": baselb,
+	"<br />": baselb,
 	"text-align: left; ": "",
 	"padding-left: 60px; text-align: center;": "text-align: center;",
 	'<span style="text-align: center; ': '<span style="'
