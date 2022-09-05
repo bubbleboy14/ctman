@@ -39,8 +39,18 @@ class Fragment(object):
 				tx = self.cstyles[key]%(val[-6:], tx)
 		return tx
 
+	def sanitize(self, seg): # mainly strip for now
+		strip = self.rules.get("strip")
+		print("sanitize!", strip, seg[:100], '...')
+		if strip == True:
+			seg = strip_html(seg)
+		elif strip:
+			print("stripping carefully!")
+			seg = strip_html_carefully(seg, strip)
+		return seg
+
 	def translate(self):
-		seg = self.style(self.fragment)
+		seg = self.style(self.sanitize(self.fragment))
 		if "handler" in self.rules:
 			return self.rules["handler"](seg)
 		if "liner" in self.rules:
@@ -51,9 +61,4 @@ class Fragment(object):
 			return "\n%s\n%s\n"%(mdblock, epart)
 		if self.rules.get("sym"):
 			seg = symage(seg)
-		strip = self.rules.get("strip")
-		if strip == True:
-			seg = strip_html(seg)
-		elif strip:
-			seg = strip_html_carefully(seg, strip)
 		return self.rules.get("tex")%(seg,)
