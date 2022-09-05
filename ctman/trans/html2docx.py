@@ -23,7 +23,10 @@ swaps = {
 	"NEWPAGE": DXPB
 }
 flags = {
-	"p": { "tex": "\n\n%s\n\n" }
+	"p": {
+		"strip": ["b"],
+		"tex": "\n\n%s\n\n"
+	}
 }
 styles = {
 	"text-align": {

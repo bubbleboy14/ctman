@@ -1,3 +1,4 @@
+from cantools.web import strip_html, strip_html_carefully
 from ctman.util import symage
 from .rules import styles, cstyles
 
@@ -50,4 +51,9 @@ class Fragment(object):
 			return "\n%s\n%s\n"%(mdblock, epart)
 		if self.rules.get("sym"):
 			seg = symage(seg)
+		strip = self.rules.get("strip")
+		if strip == True:
+			seg = strip_html(seg)
+		elif strip:
+			seg = strip_html_carefully(seg, strip)
 		return self.rules.get("tex")%(seg,)
