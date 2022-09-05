@@ -41,12 +41,14 @@ class Fragment(object):
 
 	def sanitize(self, seg): # mainly strip for now
 		strip = self.rules.get("strip")
-		print("sanitize!", strip, seg[:100], '...')
 		if strip == True:
 			seg = strip_html(seg)
 		elif strip:
-			print("stripping carefully!")
 			seg = strip_html_carefully(seg, strip)
+		sanswap = self.rules.get("sanswap")
+		if sanswap:
+			for k, v in sanswap.items():
+				seg = seg.replace(k, v)
 		return seg
 
 	def translate(self):
