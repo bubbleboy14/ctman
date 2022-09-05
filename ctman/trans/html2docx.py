@@ -24,8 +24,13 @@ swaps = {
 }
 flags = {
 	"p": {
-		"strip": ["b"],
-		"tex": "\n\n%s\n\n"
+		"strip": ["b", "br"],
+		"tex": "\n\n%s\n\n",
+		"sanswap": {
+			"<b>": '<w:b w:val="true"/>',
+			"</b>": '<w:b w:val="false"/>',
+			"<br>": '</w:t><w:br/><w:t>'
+		}
 	}
 }
 styles = {
