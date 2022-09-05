@@ -22,7 +22,7 @@ def nextlast(h, flagz):
 				f = flag
 	return f
 
-def trans(h, flag, rules=None, styles=styles, cstyles=cstyles):
+def trans(h, flag, rules=None, flags=flags, styles=styles, cstyles=cstyles):
 	rules = rules or flags[flag]
 #	sflag = rules.get("start", "<%s"%(flag,))
 	sflag = rules.get("start")
@@ -88,7 +88,7 @@ class Converter(object):
 		flag = nextlast(h, self.flaggers)
 		while flag:
 			self.log("transing", flag)
-			h = trans(h, flag, styles=self.styles, cstyles=self.cstyles)
+			h = trans(h, flag, flags=self.flaggers, styles=self.styles, cstyles=self.cstyles)
 			flag = nextlast(h, self.flaggers)
 		self.translation = h
 
