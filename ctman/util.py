@@ -20,8 +20,17 @@ def getstart(h, sflag):
 		i = h.find(sflag, i + 1)
 	return i
 
+def pan(fp, ex=None, srcex="html", opath=None):
+	opath = opath or "%s.%s"%(fp, ex)
+	cmd('pandoc "%s.%s" -o "%s"'%(fp, srcex, opath))
+	return opath
+
 def h2l(h, depth=0):
 	from ctman import trans
 	if config.ctman and config.ctman.legacyh2l:
 		return trans.legacy.h2l(h, depth)
 	return trans.html2latex.H2L(h, depth).translate()
+
+def h2x(h):
+	from ctman import trans
+	return trans.html2docx.H2X(h).translate()

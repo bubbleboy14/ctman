@@ -1,35 +1,37 @@
-from cantools import config
-from .util import TABLE_FLAGS, flags, swaps, trans, nextlast
+from .util import TABLE_FLAGS, flags, swaps, styles, cstyles, trans, Converter
 from .header import Header
-from .fragment import Fragment
 
-class H2L(object):
-	def __init__(self, fragment, depth):
-		self.fragment = fragment
-		self.depth = depth
+linestrips = ["NEWPAGE"]
+ifswaps = {
+	"\\begin{center}": {
+		" \\hfill\\break ": " \\\\ "
+	}
+}
+
+class H2L(Converter):
+	def __init__(self, fragment, depth=0, swappers=swaps, flaggers=flags, styles=styles, cstyles=cstyles, linestrips=linestrips, loud=False):
+		Converter.__init__(self, fragment, depth, swappers, flaggers, styles, cstyles, linestrips, loud)
 		self.header = Header()
 
 	def translate(self):
-		self.swaps()
+		self.swapem()
 		self.translation = trans(self.translation, "table", TABLE_FLAGS)
 		self.bottomsup()
 		self.translation = self.header(self.translation, self.depth)
 		self.cleanup()
 		return self.translation
 
-	def swaps(self):
-		h = self.fragment
-		for swap in swaps:
-			h = h.replace(swap, swaps[swap])
-		self.translation = h
-
-	def bottomsup(self):
-		h = self.translation
-		flag = nextlast(h, flags)
-		while flag:
-			h = trans(h, flag)
-			flag = nextlast(h, flags)
-		self.translation = h
-
 	def cleanup(self):
 		self.translation = self.translation.replace("{#}", "{\\#}")
+		self.translation = self.translation.replace("NEWPAGE", "\\newpage")
+		self.ifswaps()
+
+	def ifswaps(self):
+		lines = []
+		for line in self.translation.split("\n"):
+			for swap in ifswaps:
+				if swap in line:
+					for k, v in ifswaps[swap].items():
+						line = line.replace(k, v)
+			lines.append(line)
+		self.translation = "\n".join(lines)
