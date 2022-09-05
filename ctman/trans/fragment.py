@@ -1,6 +1,6 @@
 from cantools.web import strip_html, strip_html_carefully
 from ctman.util import symage
-from .rules import styles, cstyles
+from .html2latex.rules import styles, cstyles
 
 class Fragment(object):
 	def __init__(self, fragment, starter, rules, styles=styles, cstyles=cstyles):

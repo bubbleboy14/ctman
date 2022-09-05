@@ -1,5 +1,4 @@
 from ctman.util import getstart
-from .fragment import Fragment
 from .rules import *
 from ..util import nextlast, trans, Converter
 

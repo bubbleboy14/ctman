@@ -1,6 +1,6 @@
 from ctman.util import getstart
 from .html2latex.rules import flags, styles, cstyles
-from .html2latex.fragment import Fragment
+from .fragment import Fragment
 
 #
 # misc
