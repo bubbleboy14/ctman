@@ -11,7 +11,7 @@ baselb = " \\hfill\\break "
 
 swaps = {
 
-	"&nbsp;": "\\ ", # maybe multiple spaces.....?
+	"&nbsp;": "\\ \\ ", # how many spaces.....?
 
 	# basic
 
