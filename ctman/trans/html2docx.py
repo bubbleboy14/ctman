@@ -26,7 +26,8 @@ def wt(txt, prp=False):
 
 linestrips = ["NEWPAGE"]
 swaps = {
-	"NEWPAGE": DXPB
+	"NEWPAGE": DXPB,
+	"&nbsp;": "&#160;"
 }
 flags = {
 	"p": {
