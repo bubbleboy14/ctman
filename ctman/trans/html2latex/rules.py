@@ -11,6 +11,8 @@ baselb = " \\hfill\\break "
 
 swaps = {
 
+	"☐": "\\checkmark",
+
 	"&nbsp;": "\\ \\ ", # how many spaces.....?
 
 	# basic
