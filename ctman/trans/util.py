@@ -83,8 +83,11 @@ class Converter(object):
 
 	def translate(self):
 		self.swapem()
+		self.log("\n======================\n", "prebot", self.translation[:200], "\n======================\n")
 		self.bottomsup()
+		self.log("\n======================\n", "preclean", self.translation[:200], "\n======================\n")
 		self.cleanup()
+		self.log("\n======================\n", "postclean", self.translation[:200], "\n======================\n")
 		return self.translation
 
 	def swapem(self):
