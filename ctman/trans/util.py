@@ -128,3 +128,4 @@ class Converter(object):
 					line = self._swap(line, self.notswaps[flag], True)
 			lines.append(line)
 		self.translation = "\n".join(lines)
+		hasattr(self, "touchup") and self.touchup()
