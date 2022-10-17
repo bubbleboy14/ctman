@@ -10,6 +10,7 @@ class Fragment(object):
 		self.styles = styles
 		self.cstyles = cstyles
 		self.loud = loud
+		self.log("starter:", starter)
 		self.realign()
 
 	def log(self, *msg):
