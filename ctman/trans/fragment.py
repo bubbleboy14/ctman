@@ -44,11 +44,11 @@ class Fragment(object):
 				if val in self.styles[key]:
 					self.log("restyling from:", tx)
 					tx = self.styles[key][val]%(tx,)
-					self.log("to": tx)
+					self.log("to:", tx)
 			elif key in self.cstyles:
 				self.log("restyling from:", tx)
 				tx = self.cstyles[key]%(val[-6:], tx)
-				self.log("to": tx)
+				self.log("to:", tx)
 		return tx
 
 	def sanitize(self, seg): # mainly strip for now
