@@ -10,7 +10,6 @@ class Fragment(object):
 		self.styles = styles
 		self.cstyles = cstyles
 		self.loud = loud
-		self.log("starter:", starter)
 		self.realign()
 
 	def log(self, *msg):
@@ -23,7 +22,7 @@ class Fragment(object):
 	def realign(self):
 		aligner = ' align="'
 		if not aligner in self.starter:
-			return self.log("realign()", "aligner not present!")
+			return self.log("realign()", "aligner not present:", self.starter)
 		alignment = self.starter.split(aligner).pop().split('"').pop(0)
 		stysta = ' style="'
 		sta = '%stext-align: %s;'%(stysta, alignment)
