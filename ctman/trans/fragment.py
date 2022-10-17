@@ -3,13 +3,21 @@ from ctman.util import symage
 from .html2latex.rules import styles, cstyles
 
 class Fragment(object):
-	def __init__(self, fragment, starter, rules, styles=styles, cstyles=cstyles):
+	def __init__(self, fragment, starter, rules, styles=styles, cstyles=cstyles, loud=False):
 		self.fragment = fragment
 		self.starter = starter
 		self.rules = rules
 		self.styles = styles
 		self.cstyles = cstyles
+		self.loud = loud
 		self.realign()
+
+	def log(self, *msg):
+		self.loud and print(*msg)
+
+	def repstart(self, a, b):
+		self.log("swapping", a, "for", b)
+		self.starter = self.starter.replace(a, b)
 
 	def realign(self):
 		aligner = ' align="'
@@ -18,9 +26,9 @@ class Fragment(object):
 		stysta = ' style="'
 		sta = '%stext-align: %s;'%(stysta, alignment)
 		if "style" in self.starter:
-			self.starter = self.starter.replace(stysta, '%s '%(sta,))
+			self.repstart(stysta, '%s '%(sta,))
 		else:
-			self.starter = self.starter.replace('%s%s"'%(aligner, alignment), '%s"'%(sta,))
+			self.repstart('%s%s"'%(aligner, alignment), '%s"'%(sta,))
 
 	def style(self, tx):
 		if self.rules.get("nostyle"):
