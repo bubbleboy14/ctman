@@ -50,4 +50,4 @@ styles = {
 
 class H2X(Converter):
 	def __init__(self, fragment, depth=0, swappers=swaps, flaggers=flags, styles=styles, cstyles={}, linestrips=linestrips, loud=True):
-		Converter.__init__(self, fragment, depth, swappers, flaggers, styles, cstyles, linestrips, loud)
+		Converter.__init__(self, fragment, depth, swappers, flaggers, styles, cstyles, linestrips, loud=loud)
