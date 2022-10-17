@@ -13,15 +13,16 @@ class Fragment(object):
 		self.realign()
 
 	def log(self, *msg):
-		self.loud and print(*msg)
+		self.loud and print("Fragment", *msg)
 
 	def repstart(self, a, b):
-		self.log("swapping", a, "for", b)
+		self.log("repstart()", "swapping", a, "for", b)
 		self.starter = self.starter.replace(a, b)
 
 	def realign(self):
 		aligner = ' align="'
-		if not aligner in self.starter: return
+		if not aligner in self.starter:
+			return self.log("realign()", "aligner not present!")
 		alignment = self.starter.split(aligner).pop().split('"').pop(0)
 		stysta = ' style="'
 		sta = '%stext-align: %s;'%(stysta, alignment)
@@ -42,11 +43,11 @@ class Fragment(object):
 			[key, val] = rule.split(": ")
 			if key in self.styles:
 				if val in self.styles[key]:
-					self.log("restyling from:", tx)
+					self.log("style()", "restyling from:", tx)
 					tx = self.styles[key][val]%(tx,)
 					self.log("to:", tx)
 			elif key in self.cstyles:
-				self.log("restyling from:", tx)
+				self.log("style()", "restyling from:", tx)
 				tx = self.cstyles[key]%(val[-6:], tx)
 				self.log("to:", tx)
 		return tx
