@@ -91,12 +91,7 @@ class Converter(object):
 		return self.translation
 
 	def swapem(self):
-		h = self.fragment
-		for swap in self.swappers:
-			swapper = self.swappers[swap]
-			self.log("swapping", swap, "for", swapper)
-			h = h.replace(swap, swapper)
-		self.translation = h
+		self.translation = self._swap(self.fragment, self.swappers)
 
 	def bottomsup(self):
 		h = self.translation
@@ -106,6 +101,17 @@ class Converter(object):
 			h = trans(h, flag, flags=self.flaggers, styles=self.styles, cstyles=self.cstyles, loud=self.loud)
 			flag = nextlast(h, self.flaggers)
 		self.translation = h
+
+	def _swap(self, txt, swapz, logline=False):
+		for k, v in swapz.items():
+			if k in txt:
+				if logline:
+					vbit = "%s on %s"%(v, txt)
+				else:
+					vbit = v
+				self.log("swapping", k, "for", vbit)
+				txt = txt.replace(k, v)
+		return txt
 
 	def cleanup(self):
 		pass
