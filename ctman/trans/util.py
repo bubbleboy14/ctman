@@ -48,7 +48,7 @@ def trans(h, flag, rules=None, flags=flags, styles=styles, cstyles=cstyles, loud
 	return h
 
 class Converter(object):
-	def __init__(self, fragment, depth=0, swappers={}, flaggers={}, styles={}, cstyles={}, linestrips=[], loud=False):
+	def __init__(self, fragment, depth=0, swappers={}, flaggers={}, styles={}, cstyles={}, linestrips=[], postswaps={}, ifswaps={}, notswaps={}, loud=False):
 		self.fragment = fragment
 		self.depth = depth
 		self.swappers = swappers
@@ -56,6 +56,9 @@ class Converter(object):
 		self.styles = styles
 		self.cstyles = cstyles
 		self.linestrips = linestrips
+		self.postswaps = postswaps
+		self.ifswaps = ifswaps
+		self.notswaps = notswaps
 		self.loud = loud
 		self.uncomment()
 		linestrips and self.striplines()
@@ -114,4 +117,14 @@ class Converter(object):
 		return txt
 
 	def cleanup(self):
-		pass
+		self.translation = self._swap(self.translation, self.postswaps)
+		lines = []
+		for line in self.translation.split("\n"):
+			for flag in self.ifswaps:
+				if flag in line:
+					line = self._swap(line, self.ifswaps[flag], True)
+			for flag in self.notswaps:
+				if flag not in line:
+					line = self._swap(line, self.notswaps[flag], True)
+			lines.append(line)
+		self.translation = "\n".join(lines)
