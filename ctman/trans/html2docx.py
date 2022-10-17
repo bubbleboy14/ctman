@@ -47,7 +47,12 @@ styles = {
 #		"left": dxta("left")
 	}
 }
+nswaps = {
+	"<w:r><w:t>": {
+		"_": "\\_"
+	}
+}
 
 class H2X(Converter):
-	def __init__(self, fragment, depth=0, swappers=swaps, flaggers=flags, styles=styles, cstyles={}, linestrips=linestrips, postswaps={}, ifswaps={}, notswaps={}, loud=True):
+	def __init__(self, fragment, depth=0, swappers=swaps, flaggers=flags, styles=styles, cstyles={}, linestrips=linestrips, postswaps={}, ifswaps={}, notswaps=nswaps, loud=True):
 		Converter.__init__(self, fragment, depth, swappers, flaggers, styles, cstyles, linestrips, postswaps, ifswaps, notswaps, loud)
