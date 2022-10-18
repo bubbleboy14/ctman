@@ -33,7 +33,7 @@ linestrips = ["NEWPAGE"]
 swaps = {
 	"NEWPAGE": DXPB,
 	"&nbsp;": "&#160;",
-	"&rsquo;": "&#2019"
+	"&rsquo;": "'"
 }
 flags = {
 	"p": {
@@ -70,4 +70,7 @@ class H2X(Converter):
 				if marker in self.translation:
 					fixed = DXPW%(line,)
 					self.log("touchup()", "swapping", line[:100], "for", fixed[:100])
+					if "\\_" in fixed:
+						self.log("touchup()", "unescaping underscores")
+						fixed = fixed.replace("\\_", "_")
 					self.translation = self.translation.replace(marker, fixed)
