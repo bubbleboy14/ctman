@@ -22,7 +22,7 @@ def nextlast(h, flagz):
 				f = flag
 	return f
 
-def trans(h, flag, rules=None, flags=flags, styles=styles, cstyles=cstyles):
+def trans(h, flag, rules=None, flags=flags, styles=styles, cstyles=cstyles, loud=False):
 	rules = rules or flags[flag]
 #	sflag = rules.get("start", "<%s"%(flag,))
 	sflag = rules.get("start")
@@ -44,11 +44,11 @@ def trans(h, flag, rules=None, flags=flags, styles=styles, cstyles=cstyles):
 		end = h.index(eflag, startender or start)
 		starter = h[start : startender]
 		seg = h[startender : (endstart or end)]
-		h = h[:start] + Fragment(seg, starter, rules, styles, cstyles).translate() + h[end + len(eflag):]
+		h = h[:start] + Fragment(seg, starter, rules, styles, cstyles, loud).translate() + h[end + len(eflag):]
 	return h
 
 class Converter(object):
-	def __init__(self, fragment, depth=0, swappers={}, flaggers={}, styles={}, cstyles={}, linestrips=[], loud=False):
+	def __init__(self, fragment, depth=0, swappers={}, flaggers={}, styles={}, cstyles={}, linestrips=[], postswaps={}, ifswaps={}, notswaps={}, loud=False):
 		self.fragment = fragment
 		self.depth = depth
 		self.swappers = swappers
@@ -56,6 +56,9 @@ class Converter(object):
 		self.styles = styles
 		self.cstyles = cstyles
 		self.linestrips = linestrips
+		self.postswaps = postswaps
+		self.ifswaps = ifswaps
+		self.notswaps = notswaps
 		self.loud = loud
 		self.uncomment()
 		linestrips and self.striplines()
@@ -83,26 +86,46 @@ class Converter(object):
 
 	def translate(self):
 		self.swapem()
+		self.log("\n======================\n", "prebot", self.translation[:200], "\n======================\n")
 		self.bottomsup()
+		self.log("\n======================\n", "preclean", self.translation[:200], "\n======================\n")
 		self.cleanup()
+		self.log("\n======================\n", "postclean", self.translation[:200], "\n======================\n")
 		return self.translation
 
 	def swapem(self):
-		h = self.fragment
-		for swap in self.swappers:
-			swapper = self.swappers[swap]
-			self.log("swapping", swap, "for", swapper)
-			h = h.replace(swap, swapper)
-		self.translation = h
+		self.translation = self._swap(self.fragment, self.swappers)
 
 	def bottomsup(self):
 		h = self.translation
 		flag = nextlast(h, self.flaggers)
 		while flag:
-			self.log("transing", flag)
-			h = trans(h, flag, flags=self.flaggers, styles=self.styles, cstyles=self.cstyles)
+			self.log("transing", flag, h[:100])
+			h = trans(h, flag, flags=self.flaggers, styles=self.styles, cstyles=self.cstyles, loud=self.loud)
 			flag = nextlast(h, self.flaggers)
 		self.translation = h
 
+	def _swap(self, txt, swapz, logline=False):
+		for k, v in swapz.items():
+			if k in txt:
+				if logline:
+					vbit = "%s on %s"%(v, txt)
+				else:
+					vbit = v
+				self.log("swapping", k, "for", vbit)
+				txt = txt.replace(k, v)
+		return txt
+
 	def cleanup(self):
-		pass
+		self.translation = self._swap(self.translation, self.postswaps)
+		lines = []
+		for line in self.translation.split("\n"):
+			for flag in self.ifswaps:
+				if flag in line:
+					line = self._swap(line, self.ifswaps[flag], True)
+			for flag in self.notswaps:
+				if flag not in line:
+					line = self._swap(line, self.notswaps[flag], True)
+			lines.append(line)
+		self.translation = "\n".join(lines)
+		hasattr(self, "touchup") and self.touchup()

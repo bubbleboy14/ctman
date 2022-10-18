@@ -3,24 +3,33 @@ from ctman.util import symage
 from .html2latex.rules import styles, cstyles
 
 class Fragment(object):
-	def __init__(self, fragment, starter, rules, styles=styles, cstyles=cstyles):
+	def __init__(self, fragment, starter, rules, styles=styles, cstyles=cstyles, loud=False):
 		self.fragment = fragment
 		self.starter = starter
 		self.rules = rules
 		self.styles = styles
 		self.cstyles = cstyles
+		self.loud = loud
 		self.realign()
+
+	def log(self, *msg):
+		self.loud and print("Fragment", *msg)
+
+	def repstart(self, a, b):
+		self.log("repstart()", "swapping", a, "for", b)
+		self.starter = self.starter.replace(a, b)
 
 	def realign(self):
 		aligner = ' align="'
-		if not aligner in self.starter: return
+		if not aligner in self.starter:
+			return self.log("realign()", "aligner not present:", self.starter)
 		alignment = self.starter.split(aligner).pop().split('"').pop(0)
 		stysta = ' style="'
 		sta = '%stext-align: %s;'%(stysta, alignment)
 		if "style" in self.starter:
-			self.starter = self.starter.replace(stysta, '%s '%(sta,))
+			self.repstart(stysta, '%s '%(sta,))
 		else:
-			self.starter = self.starter.replace('%s%s"'%(aligner, alignment), '%s"'%(sta,))
+			self.repstart('%s%s"'%(aligner, alignment), '%s"'%(sta,))
 
 	def style(self, tx):
 		if self.rules.get("nostyle"):
@@ -34,9 +43,13 @@ class Fragment(object):
 			[key, val] = rule.split(": ")
 			if key in self.styles:
 				if val in self.styles[key]:
+					self.log("style()", "restyling from:", tx)
 					tx = self.styles[key][val]%(tx,)
+					self.log("to:", tx)
 			elif key in self.cstyles:
+				self.log("style()", "restyling from:", tx)
 				tx = self.cstyles[key]%(val[-6:], tx)
+				self.log("to:", tx)
 		return tx
 
 	def sanitize(self, seg): # mainly strip for now

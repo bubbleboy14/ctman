@@ -1,5 +1,10 @@
 from .util import Converter
 
+DXPW = """\n\n```{=openxml}
+<w:p>
+  <w:r><w:t xml:space="preserve">%s</w:t></w:r>
+</w:p>
+```\n\n"""
 DXPB = """```{=openxml}
 <w:p>
   <w:r>
@@ -27,7 +32,8 @@ def wt(txt, prp=False):
 linestrips = ["NEWPAGE"]
 swaps = {
 	"NEWPAGE": DXPB,
-	"&nbsp;": "&#160;"
+	"&nbsp;": "&#160;",
+	"&rsquo;": "'"
 }
 flags = {
 	"p": {
@@ -47,7 +53,24 @@ styles = {
 #		"left": dxta("left")
 	}
 }
+nswaps = {
+	"<w:r><w:t>": {
+		"_": "\\_"
+	}
+}
 
 class H2X(Converter):
-	def __init__(self, fragment, depth=0, swappers=swaps, flaggers=flags, styles=styles, cstyles={}, linestrips=linestrips, loud=True):
-		Converter.__init__(self, fragment, depth, swappers, flaggers, styles, cstyles, linestrips, loud)
+	def __init__(self, fragment, depth=0, swappers=swaps, flaggers=flags, styles=styles, cstyles={}, linestrips=linestrips, postswaps={}, ifswaps={}, notswaps=nswaps, loud=True):
+		Converter.__init__(self, fragment, depth, swappers, flaggers, styles, cstyles, linestrips, postswaps, ifswaps, notswaps, loud)
+
+	def touchup(self):
+		for line in self.translation.split("\n"):
+			if "</w:t>" in line:
+				marker = "\n\n%s\n\n"%(line,)
+				if marker in self.translation:
+					fixed = DXPW%(line,)
+					self.log("touchup()", "swapping", line[:100], "for", fixed[:100])
+					if "\\_" in fixed:
+						self.log("touchup()", "unescaping underscores")
+						fixed = fixed.replace("\\_", "_")
+					self.translation = self.translation.replace(marker, fixed)
