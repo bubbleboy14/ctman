@@ -64,7 +64,7 @@ class Fragment(object):
 				seg = seg.replace(k, v)
 		return seg
 
-	def translate(self):
+	def _translate(self):
 		seg = self.style(self.sanitize(self.fragment))
 		if "handler" in self.rules:
 			return self.rules["handler"](seg)
@@ -77,3 +77,9 @@ class Fragment(object):
 		if self.rules.get("sym"):
 			seg = symage(seg)
 		return self.rules.get("tex")%(seg,)
+
+	def translate(self):
+		self.log("before:", self.fragment)
+		trans = self._translate()
+		self.log("after:", trans)
+		return trans
