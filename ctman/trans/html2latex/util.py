@@ -38,7 +38,7 @@ def table(seg):
 			"startend": iorig["startend"],
 			"end": iorig["end"],
 			"tex": "\\includegraphics[width=" + str(1.0 / numcols)[:3] + "\\linewidth]{%s}"
-		})
+		}, loud=True)
 		rowz = list(map(row, seg.split(TSEP)))
 		return TBL%(numcols * "c", "\\\\\n\n".join([" & ".join(r) for r in rowz]))
 	else:
