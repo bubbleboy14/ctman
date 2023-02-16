@@ -241,7 +241,7 @@ for i in range(1, 7):
 		"tex": "#" * i + " %s"
 	}
 	tflags["h%s"%(i,)] = {
-		"tex": headers["latex"][6 - i] + "{%s}\\normalsize "
+		"tex": headers["latex"][6 - i] + " %s \\normalsize "
 	}
 
 styles = {

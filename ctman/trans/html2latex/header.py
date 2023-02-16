@@ -19,7 +19,7 @@ class Header(object):
 		for i in range(6):
 			flag = hflags[i]
 			if line.startswith(flag):
-				return "\n%s{%s}\\normalsize\n"%(lahead[i], line[len(flag):])
+				return "\n%s %s \\normalsize\n"%(lahead[i], line[len(flag):])
 		return line
 
 	def upsize(self, h):
