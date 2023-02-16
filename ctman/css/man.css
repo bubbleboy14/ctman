@@ -23,6 +23,10 @@
 	overflow-y: auto;
 }
 
+.tox { /* tinymce */
+	width: 100%;
+}
+
 .collapsible {
 	overflow: hidden;
 	max-height: 3000px;
