@@ -214,8 +214,8 @@ flags = {
 		"tex": "\\underline{%s}"
 	},
 	"img": {
-		"start": '<img style="display: block; max-width: 100%;',
-		"startend": ' src="../',
+		"start": '<img ',
+		"startend": 'src="../',
 		"endstart": '" ',
 		"end": ' />',
 		"tex": "\\includegraphics[width=\\linewidth]{%s}",
