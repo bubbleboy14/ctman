@@ -214,12 +214,12 @@ flags = {
 		"tex": "\\underline{%s}"
 	},
 	"img": {
-		"start": '<img style="display: block; max-width: 100%;" src="../',
+		"start": '<img style="display: block; max-width: 100%;',
+		"startend": ' src="../',
 		"endstart": '" ',
 		"end": ' />',
 		"tex": "\\includegraphics[width=\\linewidth]{%s}",
 		"sym": True,
-		"startend": None
 	},
 	"ol": {
 		"liner": "1. %s"
