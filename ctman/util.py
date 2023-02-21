@@ -35,7 +35,7 @@ def panflag(src, dest, flag=None, val=None):
 
 def pan(fp, ex=None, srcex="html", opath=None):
 	opath = opath or "%s.%s"%(fp, ex)
-	cline = 'pandoc "%s.%s" -o "%s"'%(fp, srcex, opath)
+	cline = 'pandoc "%s.%s" -o "%s" --verbose'%(fp, srcex, opath)
 	pfz = panflag(srcex, ex)
 	for k, v in pfz.items():
 		cline = "%s -%s %s"%(cline, k, v)
