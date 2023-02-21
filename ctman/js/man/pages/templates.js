@@ -12,7 +12,7 @@ CT.require("man.browsers.Template");
 CT.onload(function() {
 	CT.initCore();
 	CT.db.setLimit(5000);
-	var tophalf = CT.dom.div(null, "abs tophalf"),
+	var tophalf = CT.dom.div(null, "abs tophalf noflow"),
 		midrow = CT.dom.div(CT.dom.node("select a template",
 			"center", "padded"), "abs midrow"),
 		bottomhalf = CT.dom.div(null, "abs bottomhalf"),
