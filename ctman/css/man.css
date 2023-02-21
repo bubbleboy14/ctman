@@ -23,8 +23,12 @@
 	overflow-y: auto;
 }
 
-.tox { /* tinymce */
+/* tinymce */
+.tox {
 	width: 100%;
+}
+.tox-fullscreen #ctheader {
+	display: none;
 }
 
 .collapsible {
