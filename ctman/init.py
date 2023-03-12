@@ -18,6 +18,7 @@ routes = {
 requires = ["ctuser"]
 cfg = {
 	"builder": {
+		"verbose": False,
 		"injeclarations": True
 	},
 	"font": {
