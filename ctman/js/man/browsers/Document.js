@@ -12,7 +12,7 @@ man.browsers.Document = CT.Class({
 						prompt: "perform sequential build?",
 						data: ["yes", "no"],
 						cb: (sel) => (sel == "yes") && man.util.sequentialBuild(d)
-					})
+					});
 				});
 			});
 		};
@@ -122,14 +122,21 @@ man.browsers.Document = CT.Class({
 			});
 	},
 	settings: function(d) {
-		var scheck = this.scheck;
+		var scheck = this.scheck, mcfg = core.config.ctman,
+			fcfg = mcfg.fonts, fz = fcfg.options;
 		return CT.dom.div([
 			man.util.collapser("settings"),
 			["signup_sheet", "table_of_contents", "declaration_page", "section_page_breaks"].map(function(p) {
 				return scheck(d, p);
 			}).concat([scheck(d, "pretty_filenames",
-				"use pretty (titled and revisioned) filenames")])
-		], core.config.ctman.classes.document.settings);
+				"use pretty (titled and revisioned) filenames")]),
+			CT.dom.select(fz.map(f => f.replace(/-/g, " ")), fz, null, d.font, fcfg.default, function(fname) {
+				CT.db.put({
+					key: d.key,
+					font: fname
+				});
+			}, null, true)
+		], mcfg.classes.document.settings);
 	},
 	declarations: function(d, cb) {
 		CT.modal.prompt({
