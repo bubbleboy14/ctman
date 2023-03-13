@@ -113,7 +113,21 @@ man.util = {
 	inject: function(content) {
 		tinyMCE.activeEditor.selection.setContent(content);
 	},
-	builder: function(bdata) {
+	sequentialBuild(d) {
+		var sindex = 0, worked, buildNext = function() {
+			man.util.build(secs[sindex], function(bdata) {
+				worked = bdata.build.success;
+				secnodes[sindex].classList.add(worked ? "green" : "red");
+				if (!worked) return;
+				sindex += 1;
+				(sindex < secs.length) && buildNext();
+			});
+		}, secs = CT.data.get(d.template).sections,
+			secnodes = secs.map(s => CT.dom.div(s.name));
+		CT.modal.modal(secnodes);
+		buildNext();
+	},
+	builder: function(bdata, onfail) {
 		var showBuild = function() {
 			var bp = "/" + bdata.build;
 			CT.modal.modal([
@@ -125,7 +139,7 @@ man.util = {
 			CT.modal.modal([
 				CT.dom.div("Issues Encountered", "big centered"),
 				bdata.message
-			], bdata.success && showBuild);
+			], bdata.success ? showBuild : onfail);
 		};
 		bdata.message ? showMessage() : showBuild();
 	}
