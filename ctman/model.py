@@ -116,6 +116,7 @@ class Document(db.TimeStampedBase):
 	logo = db.Binary()
 	template = db.ForeignKey(kind=Template)
 	name = db.String()
+	font = db.String()
 	injections = db.JSON()
 	assembly = db.JSON()
 	declarations = db.JSON()
