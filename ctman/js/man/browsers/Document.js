@@ -7,7 +7,13 @@ man.browsers.Document = CT.Class({
 					d.pdf = rdata.doc.pdf;
 					n.refresh();
 				}
-				man.util.builder(rdata.build);
+				man.util.builder(rdata.build, function() {
+					CT.modal.choice({
+						prompt: "perform sequential build?",
+						data: ["yes", "no"],
+						cb: (sel) => (sel == "yes") && man.util.sequentialBuild(d)
+					})
+				});
 			});
 		};
 	},
