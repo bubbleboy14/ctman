@@ -1,4 +1,14 @@
 man.util = {
+	build: function(d, cb) {
+		CT.net.post({
+			spinner: true,
+			path: "/_man",
+			params: {
+				key: d.key
+			},
+			cb: cb
+		});
+	},
 	collapser: function(title) {
 		var n = CT.dom.div(title, "pointer");
 		n.onclick = function() {
