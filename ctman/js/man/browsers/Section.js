@@ -99,16 +99,9 @@ man.browsers.Section = CT.Class({
 	prebutt: function(d) {
 		var _ = this._, pbutt = CT.dom.button("preview", function() {
 			pbutt.disabled = true;
-			CT.net.post({
-				spinner: true,
-				path: "/_man",
-				params: {
-					key: d.key
-				},
-				cb: function(bdata) {
-					man.util.builder(bdata);
-					pbutt.disabled = false;
-				}
+			man.util.build(d, function(bdata) {
+				man.util.builder(bdata);
+				pbutt.disabled = false;
 			});
 		});
 		return pbutt;

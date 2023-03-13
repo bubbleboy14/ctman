@@ -2,19 +2,12 @@ man.browsers.Document = CT.Class({
 	CLASSNAME: "man.browsers.Document",
 	builder: function(d, n) {
 		return function() {
-			CT.net.post({
-				spinner: true,
-				path: "/_man",
-				params: {
-					key: d.key
-				},
-				cb: function(rdata) {
-					if (rdata.build.success) {
-						d.pdf = rdata.doc.pdf;
-						n.refresh();
-					}
-					man.util.builder(rdata.build);
+			man.util.build(d, function(rdata) {
+				if (rdata.build.success) {
+					d.pdf = rdata.doc.pdf;
+					n.refresh();
 				}
+				man.util.builder(rdata.build);
 			});
 		};
 	},
