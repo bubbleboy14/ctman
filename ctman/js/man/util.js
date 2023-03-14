@@ -1,13 +1,17 @@
 man.util = {
-	build: function(d, cb) {
+	m: function(d, cb, action) {
 		CT.net.post({
 			spinner: true,
 			path: "/_man",
 			params: {
-				key: d.key
+				key: d.key,
+				action: action
 			},
 			cb: cb
 		});
+	},
+	build: function(d, cb) {
+		man.util.m(d, cb, "build");
 	},
 	collapser: function(title) {
 		var n = CT.dom.div(title, "pointer");
