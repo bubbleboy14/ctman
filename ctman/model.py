@@ -85,6 +85,15 @@ class Section(SecBase):
 	image = db.Binary()
 	headerless = db.Boolean(default=False)
 
+	def embedders(self):
+		return SecBase.query(SecBase.sections.contains(self.key.urlsafe())).all()
+
+	def beforeremove(self, session):
+		embedders = self.embedders()
+		for embedder in embedders:
+			embedder.sections = list(filter(lambda s : s != self.key, embedder.sections))
+		db.put_multi(embedders, session=session)
+
 	def labeler(self):
 		return "%s [%s]"%(self.name, self.index)
 
