@@ -106,8 +106,27 @@ man.browsers.Section = CT.Class({
 		});
 		return pbutt;
 	},
-	secbutts: function(d) {
-		if (!d.key || !this.opts.secbutts) return;
+	delbutt: function(d) {
+		return CT.dom.button("delete", function() {
+			man.util.m(d, function(embedders) {
+				CT.modal.modal([
+					CT.dom.div("this section is embedded in " + embedders.length + " places",
+						"bigger"),
+					embedders.map(e => e.name),
+					CT.dom.button("click here to delete it anyway", function() {
+						if (!(confirm("really delete this section?") && confirm("really?")))
+							return;
+						CT.db.put(d.key, function() {
+							alert("ok, you asked for it!");
+							location.reload(); // meh
+						}, "delete", "key");
+					}, "big red w1")
+				]);
+			}, "embedders");
+		}, "red");
+	},
+	rightbutts: function(d) {
+		if (!d.key || !this.opts.rightbutts) return;
 		var _ = this._, prebutt = this.prebutt(d);
 		return CT.dom.div([
 			CT.dom.checkboxAndLabel("headerless", d.headerless,
@@ -120,6 +139,12 @@ man.browsers.Section = CT.Class({
 			),
 			prebutt
 		], "abs ctr bordered round shiftup");
+	},
+	leftbutts: function(d) {
+		if (!d.key || !this.opts.leftbutts) return;
+		return CT.dom.div([
+			this.delbutt(d)
+		], "abs ctl bordered round shiftup");
 	},
 	choosevar: function(d, cb) {
 		CT.modal.prompt({
@@ -147,7 +172,8 @@ man.browsers.Section = CT.Class({
 	view: function(d) {
 		var _ = this._, mcfg = core.config.ctman, val;
 		CT.dom.setContent(_.nodes.content, [
-			this.secbutts(d),
+			this.leftbutts(d),
+			this.rightbutts(d),
 			this.namer(d),
 			man.util.form(d, "template", function(vals) {
 				for (val in vals)
@@ -178,7 +204,8 @@ man.browsers.Section = CT.Class({
 	init: function(opts) {
 		this.opts = CT.merge(opts, {
 			owner: false,
-			secbutts: true,
+			leftbutts: true,
+			rightbutts: true,
 			modelName: "section",
 			saveMessage: "you saved!",
 			blurs: ["section name", "section title", "name that section"]
