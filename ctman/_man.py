@@ -3,8 +3,11 @@ from ctman.builder import build, export
 from model import db
 
 def response():
+	action = cgi_get("action", default="build", choices=["build", "embedders"])
 	entity = db.get(cgi_get("key"))
-	if entity.polytype == "document":
+	if action == "embedders":
+		succeed([e.data() for e in entity.embedders()])
+	elif entity.polytype == "document":
 		bdata = build(entity)
 		if bdata["success"]:
 			entity.revision += 1
