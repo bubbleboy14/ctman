@@ -77,7 +77,8 @@ def pretex(doc, fname, fontonly=False):
 	pname = os.path.join("build", "%s.tex"%(fname,))
 	if not fontonly and doc.logo:
 		iname = symage(doc.logo.path)
-	fontdesc = fcfg.family and FONTFAM%(fcfg.family, fcfg.family) or ""
+	ff = doc.font or fcfg.family
+	fontdesc = ff and FONTFAM%(ff, ff) or ""
 	write(fontonly and fontdesc or read("tex/pre.tex").replace("_CLIENT_LOGO_",
 		doc.logo and iname or "img/logo.jpg").replace("_DECLARATION_PAGE_",
 			doc.declaration_page and dex(doc) or "").replace("_SIGNUP_SHEET_",
