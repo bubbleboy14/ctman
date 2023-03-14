@@ -36,7 +36,7 @@ def panflag(src, dest, flag=None, val=None):
 def pan(fp, ex=None, srcex="html", opath=None):
 	opath = opath or "%s.%s"%(fp, ex)
 	cline = 'pandoc "%s.%s" -o "%s"'%(fp, srcex, opath)
-	if config.ctman.builder.verbose:
+	if config.ctman and config.ctman.builder.verbose:
 		cline = "%s --verbose"%(cline,)
 	pfz = panflag(srcex, ex)
 	for k, v in pfz.items():
