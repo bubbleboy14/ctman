@@ -149,8 +149,14 @@ def injectedDoc(tempbod, doc):
 	return inject(tempbod, injectz)
 
 def build(doc):
-	afunc = doc.template and doc.content or assemble
-	tempbod = afunc(doc.assembly.get("sections"))
-	#fulltemp = hazard(tempbod, doc.assembly.get("hazards", {}))
-	data = injectedDoc(tempbod, doc)
-	return export(doc, data)
+	try:
+		afunc = doc.template and doc.content or assemble
+		tempbod = afunc(doc.assembly.get("sections"))
+		#fulltemp = hazard(tempbod, doc.assembly.get("hazards", {}))
+		data = injectedDoc(tempbod, doc)
+		return export(doc, data)
+	except Exception as e:
+		return {
+			"message": str(e),
+			"success": False
+		}
