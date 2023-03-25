@@ -23,6 +23,10 @@
 	overflow-y: auto;
 }
 
+.ctswrap {
+	z-index: 100000;
+}
+
 /* tinymce */
 .tox {
 	width: 100%;
