@@ -119,8 +119,8 @@ man.util = {
 	},
 	sequentialBuild(d) {
 		var sindex = 0, worked, buildNext = function() {
-			man.util.build(secs[sindex], function(bdata) {
-				worked = bdata.build.success;
+			man.util.build(secs[sindex], function(build) {
+				worked = build.success;
 				secnodes[sindex].classList.add(worked ? "green" : "red");
 				if (!worked) return;
 				sindex += 1;
