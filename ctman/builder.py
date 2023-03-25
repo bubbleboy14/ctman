@@ -108,8 +108,15 @@ def export(doc, data=None):
 		data = "\\newpage\n%s"%(data,)
 		pname = pretex(doc, fname)
 	else:
-		data = doc.content(depth=1, novars=True)
-		pname = pretex(doc, fname, True)
+		try:
+			data = doc.content(depth=1, novars=True)
+			pname = pretex(doc, fname, True)
+		except Exception as e:
+			return {
+				"message": str(e),
+				"success": False
+			}
+
 	mdname = os.path.join("build", "%s.md"%(fname,))
 	write(data, mdname)
 	bname = os.path.join("build", "%s.pdf"%(fname,))
