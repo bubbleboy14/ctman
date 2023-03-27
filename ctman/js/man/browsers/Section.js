@@ -97,7 +97,7 @@ man.browsers.Section = CT.Class({
 			}, core.config.ctman.classes[d.modelName].sections);
 	},
 	prebutt: function(d) {
-		var _ = this._, pbutt = CT.dom.button("preview", function() {
+		var _ = this._, pbutt = CT.dom.button("PDF Preview", function() {
 			pbutt.disabled = true;
 			man.util.build(d, function(bdata) {
 				man.util.builder(bdata);
