@@ -3,7 +3,7 @@ man.builder = {
 		man.util.m(d, cb, "build");
 	},
 	sequential(d) {
-		new man.builder.Sequential({ document: d });
+		man.util.current.sequential = new man.builder.Sequential({ document: d });
 	},
 	failer: function(d) {
 		return function() {
