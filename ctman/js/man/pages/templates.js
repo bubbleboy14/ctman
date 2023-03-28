@@ -3,6 +3,7 @@ CT.require("CT.rte");
 CT.require("core");
 CT.require("user.core");
 CT.require("man.util");
+CT.require("man.builder");
 CT.require("man.tables");
 CT.require("man.relations");
 CT.require("man.injections");
