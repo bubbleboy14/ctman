@@ -2,18 +2,12 @@ man.browsers.Document = CT.Class({
 	CLASSNAME: "man.browsers.Document",
 	builder: function(d, n) {
 		return function() {
-			man.util.build(d, function(rdata) {
+			man.builder.build(d, function(rdata) {
 				if (rdata.build.success) {
 					d.pdf = rdata.doc.pdf;
 					n.refresh();
 				}
-				man.util.builder(rdata.build, function() {
-					CT.modal.choice({
-						prompt: "perform sequential build?",
-						data: ["yes", "no"],
-						cb: (sel) => (sel == "yes") && man.util.sequentialBuild(d)
-					});
-				});
+				man.builder.builder(rdata.build, true);
 			});
 		};
 	},

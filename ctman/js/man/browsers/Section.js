@@ -99,8 +99,8 @@ man.browsers.Section = CT.Class({
 	prebutt: function(d) {
 		var _ = this._, pbutt = CT.dom.button("PDF Preview", function() {
 			pbutt.disabled = true;
-			man.util.build(d, function(bdata) {
-				man.util.builder(bdata);
+			man.builder.build(d, function(bdata) {
+				man.builder.builder(bdata);
 				pbutt.disabled = false;
 			});
 		});
