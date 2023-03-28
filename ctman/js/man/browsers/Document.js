@@ -56,15 +56,6 @@ man.browsers.Document = CT.Class({
 			}) : alert("create a template on the templates page");
 		};
 	},
-	_bs: function(d) {
-		var cz = this._secmap[d.key], actives = cz && cz.value;
-		return {
-			key: d.key,
-			sections: d.sections.filter(function(sec, i) {
-				return actives && actives.includes(i);
-			}).map(this._bs)
-		};
-	},
 	buildSecs: function(d) {
 		if (!d.assembly)
 			d.assembly = {};
@@ -72,7 +63,7 @@ man.browsers.Document = CT.Class({
 			delete d.assembly.sections;
 			return;
 		}
-		d.assembly.sections = this._bs(CT.data.get(d.template)).sections;
+		d.assembly.sections = man.builder.assemble(CT.data.get(d.template), this._secmap).sections;
 	},
 	_secmap: {},
 	_onmap: {},
@@ -89,6 +80,7 @@ man.browsers.Document = CT.Class({
 			_.shouldSave = true;
 		}), ons = this._onmap[d.key], _ = this._;
 		this._secmap[d.key] = cz;
+		CT.data.add(d);
 		ons && CT.dom.each(cz, function(sel, i) {
 			if (ons.includes(sel._id))
 				sel.onclick();

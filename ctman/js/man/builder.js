@@ -2,6 +2,15 @@ man.builder = {
 	build: function(d, cb) {
 		man.util.m(d, cb, "build");
 	},
+	assemble: function(d, secmap) {
+		var cz = secmap && secmap[d.key], actives = cz && cz.value;
+		return {
+			key: d.key,
+			sections: d.sections.filter(function(sec, i) {
+				return !actives || (actives && actives.includes(i));
+			}).map(s => man.builder.assemble(s, secmap))
+		};
+	},
 	sequential(d) {
 		man.util.current.sequential = new man.builder.Sequential({ document: d });
 	},
@@ -36,36 +45,65 @@ man.builder = {
 
 man.builder.Sequential = CT.Class({
 	CLASSNAME: "man.builder.Sequential",
-	increment: function(build) {
-		if (build) {
-			var worked = build.success;
-			this.nodes[this.index].classList.add(worked ? "green" : "red");
-			if (!worked) return;
-		}
+	_: {
+		current: {}
+	},
+	advance: function() {
+		var od = this.opts.ondone;
 		this.index += 1;
-		(this.index < this.sections.length) && this.buildNext();
+		(this.index < this.sections.length) ? this.buildNext() : (od && od());
+	},
+	increment: function(build) {
+		var cur = this._.current, sec = cur.section, od = this.opts.ondone;
+		if (build) {
+			var worked = build.success, node = this.nodes[this.index];
+			node.classList.add(worked ? "green" : "red");
+			if (!worked) return od && od();
+			if (sec.sections.length) {
+				var assembly = this.assemSecs.length
+					? this.assemSecs[this.assemKeys.indexOf(sec.key)]
+					:  man.builder.assemble(sec);
+				cur.subseq = new man.builder.Sequential({
+					assembly: assembly,
+					ondone: this.advance
+				});
+				return node.after(cur.subseq.node);
+			}
+		}
+		this.advance();
 	},
 	buildNext: function() {
-		var sec = this.sections[this.index];
+		var sec = this._.current.section = this.sections[this.index];
 		if (this.assemSecs.length && !this.assemKeys.includes(sec.key))
 			this.increment();
 		else
 			man.builder.build(sec, this.increment);
 	},
 	launch: function() {
-		CT.modal.modal(this.nodes);
+		if (this.document)
+			CT.modal.modal(this.nodes);
+		else
+			this.node = CT.dom.div(this.nodes, "tabbed");
 		this.buildNext();
 	},
 	load: function() {
+		var oz = this.opts;
 		this.index = 0;
-		this.document = this.opts.document;
-		this.template = CT.data.get(this.document.template);
-		this.sections = this.template.sections;
-		this.assemSecs = this.document.assembly.sections;
+		if (oz.document) {
+			this.document = oz.document;
+			this.template = CT.data.get(this.document.template);
+			this.sections = this.template.sections;
+			this.assembly = this.document.assembly;
+		} else {
+			this.assembly = oz.assembly;
+			this.section = CT.data.get(this.assembly.key);
+			this.sections = this.section.sections;
+		}
+		this.assemSecs = this.assembly.sections;
 		this.assemKeys = this.assemSecs.map(s => s.key);
 		this.nodes = this.sections.map(s => CT.dom.div(s.name));
 	},
-	init: function(opts) {
+	init: function(opts) { // document OR (assembly AND ondone())
 		this.opts = opts;
 		this.load();
 		this.launch();
