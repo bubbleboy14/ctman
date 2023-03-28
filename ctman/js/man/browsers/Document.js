@@ -7,7 +7,7 @@ man.browsers.Document = CT.Class({
 					d.pdf = rdata.doc.pdf;
 					n.refresh();
 				}
-				man.builder.builder(rdata.build, true);
+				man.builder.builder(rdata.build, true, d);
 			});
 		};
 	},

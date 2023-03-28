@@ -3,36 +3,20 @@ man.builder = {
 		man.util.m(d, cb, "build");
 	},
 	sequential(d) {
-		var sindex = 0, sec, worked, incBuild = function(build) {
-			if (build) {
-				worked = build.success;
-				secnodes[sindex].classList.add(worked ? "green" : "red");
-				if (!worked) return;
-			}
-			sindex += 1;
-			(sindex < secs.length) && buildNext();
-		}, buildNext = function() {
-			sec = secs[sindex];
-			if (asez.length && !askeys.includes(sec.key))
-				incBuild();
-			else
-				man.builder.build(sec, incBuild);
-		}, asez = d.assembly.sections, askeys = asez.map(s => s.key),
-			secs = CT.data.get(d.template).sections,
-			secnodes = secs.map(s => CT.dom.div(s.name));
-		CT.modal.modal(secnodes);
-		buildNext();
+		new man.builder.Sequential({ document: d });
 	},
-	onfail: function() {
-		CT.modal.choice({
-			prompt: "perform sequential build?",
-			data: ["yes", "no"],
-			cb: (sel) => (sel == "yes") && man.builder.sequential(d)
-		});
+	failer: function(d) {
+		return function() {
+			CT.modal.choice({
+				prompt: "perform sequential build?",
+				data: ["yes", "no"],
+				cb: (sel) => (sel == "yes") && man.builder.sequential(d)
+			});
+		};
 	},
-	builder: function(bdata, onfail) {
+	builder: function(bdata, onfail, d) {
 		if (onfail == true)
-			onfail = man.builder.onfail;
+			onfail = man.builder.failer(d);
 		var showBuild = function() {
 			var bp = "/" + bdata.build;
 			CT.modal.modal([
@@ -49,3 +33,41 @@ man.builder = {
 		bdata.message ? showMessage() : showBuild();
 	}
 };
+
+man.builder.Sequential = CT.Class({
+	CLASSNAME: "man.builder.Sequential",
+	increment: function(build) {
+		if (build) {
+			var worked = build.success;
+			this.nodes[this.index].classList.add(worked ? "green" : "red");
+			if (!worked) return;
+		}
+		this.index += 1;
+		(this.index < this.sections.length) && this.buildNext();
+	},
+	buildNext: function() {
+		var sec = this.sections[this.index];
+		if (this.assemSecs.length && !this.assemKeys.includes(sec.key))
+			this.increment();
+		else
+			man.builder.build(sec, this.increment);
+	},
+	launch: function() {
+		CT.modal.modal(this.nodes);
+		this.buildNext();
+	},
+	load: function() {
+		this.index = 0;
+		this.document = this.opts.document;
+		this.template = CT.data.get(this.document.template);
+		this.sections = this.template.sections;
+		this.assemSecs = this.document.assembly.sections;
+		this.assemKeys = this.assemSecs.map(s => s.key);
+		this.nodes = this.sections.map(s => CT.dom.div(s.name));
+	},
+	init: function(opts) {
+		this.opts = opts;
+		this.load();
+		this.launch();
+	}
+});
