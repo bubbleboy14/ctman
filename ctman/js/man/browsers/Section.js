@@ -171,6 +171,7 @@ man.browsers.Section = CT.Class({
 	},
 	view: function(d) {
 		var _ = this._, mcfg = core.config.ctman, val;
+		man.util.current[this.opts.modelName] = d;
 		CT.dom.setContent(_.nodes.content, [
 			this.leftbutts(d),
 			this.rightbutts(d),
