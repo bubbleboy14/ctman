@@ -8,5 +8,5 @@ CT.require("man.browsers.Document");
 CT.onload(function() {
 	CT.initCore();
 	CT.db.setLimit(1000);
-	new man.browsers.Document();
+	man.util.current.browser = new man.browsers.Document();
 });

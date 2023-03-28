@@ -169,6 +169,7 @@ man.browsers.Document = CT.Class({
 			mcfg = core.config.ctman,
 			classes = mcfg.classes.document,
 			view = this.view, bs = this.buildSecs;
+		man.util.current.document = d;
 		CT.dom.setContent(_.nodes.content, [
 			this.namer(d, classes.title),
 			d.key && this.template(d),
