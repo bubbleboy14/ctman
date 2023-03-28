@@ -1,4 +1,5 @@
 man.util = {
+	current: {},
 	m: function(d, cb, action) {
 		CT.net.post({
 			spinner: true,
@@ -118,15 +119,22 @@ man.util = {
 		tinyMCE.activeEditor.selection.setContent(content);
 	},
 	sequentialBuild(d) {
-		var sindex = 0, worked, buildNext = function() {
-			man.util.build(secs[sindex], function(build) {
+		var sindex = 0, sec, worked, incBuild = function(build) {
+			if (build) {
 				worked = build.success;
 				secnodes[sindex].classList.add(worked ? "green" : "red");
 				if (!worked) return;
-				sindex += 1;
-				(sindex < secs.length) && buildNext();
-			});
-		}, secs = CT.data.get(d.template).sections,
+			}
+			sindex += 1;
+			(sindex < secs.length) && buildNext();
+		}, buildNext = function() {
+			sec = secs[sindex];
+			if (asez.length && !askeys.includes(sec.key))
+				incBuild();
+			else
+				man.util.build(sec, incBuild);
+		}, asez = d.assembly.sections, askeys = asez.map(s => s.key),
+			secs = CT.data.get(d.template).sections,
 			secnodes = secs.map(s => CT.dom.div(s.name));
 		CT.modal.modal(secnodes);
 		buildNext();
