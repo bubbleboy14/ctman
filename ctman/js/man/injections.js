@@ -1,33 +1,38 @@
 man.injections = {
 	_: {
 		names: {},
+		isave: function(name, variety, cb) {
+			return CT.db.put({
+				modelName: "injection",
+				name: name,
+				variety: variety || "text"
+			}, function(ivar) {
+				man.injections._.injections.push(ivar);
+				cb && cb(ivar);
+			}, null, null, !cb);
+		},
+		ikind: function(name, cb) {
+			CT.modal.choice({
+				prompt: 'what kind of variable is "' + name + '"?',
+				data: ["text", "text block"],
+				cb: variety => man.injections._.isave(name, variety, cb)
+			});
+		},
 		inew: function(cb) {
 			CT.modal.prompt({
 				prompt: "what's the new insertion variable's name?",
-				cb: function(name) {
-					CT.modal.choice({
-						prompt: "what kind of variable is it?",
-						data: ["text", "text block"],
-						cb: function(variety) {
-							CT.db.put({
-								modelName: "injection",
-								name: name,
-								variety: variety
-							}, function(ivar) {
-								man.injections._.injections.push(ivar);
-								cb(ivar);
-							});
-						}
-					});
-				}
-			})
+				cb: name => man.injections._.ikind(name, cb)
+			});
 		},
 		d2iz: function(d) {
 			return d.split("{{").filter(p => p.includes("}}")).map(i => i.split("}}")[0]);
 		}
 	},
 	get: function(name) {
-		return man.injections._.names[name];
+		var _ = man.injections._, nz = _.names;
+		if (!(name in nz))
+			nz[name] = _.isave(name);
+		return nz[name];
 	},
 	pushit: function(iz) {
 		var _ = man.injections._, d = _.template;
