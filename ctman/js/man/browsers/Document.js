@@ -1,7 +1,7 @@
 man.browsers.Document = CT.Class({
 	CLASSNAME: "man.browsers.Document",
 	builder: function(d, n) {
-		return function() {
+		var _ = this._, doBuild = function() {
 			man.builder.build(d, function(rdata) {
 				if (rdata.build.success) {
 					d.pdf = rdata.doc.pdf;
@@ -9,6 +9,9 @@ man.browsers.Document = CT.Class({
 				}
 				man.builder.builder(rdata.build, true, d);
 			});
+		}, saver = this.save;
+		return function() {
+			_.shouldSave ? saver(d, doBuild) : doBuild();
 		};
 	},
 	build: function(d) {
@@ -82,8 +85,9 @@ man.browsers.Document = CT.Class({
 			this.upons(s);
 	},
 	section: function(d) {
-		var cz = CT.dom.choices(d.sections.map(this.section), true),
-			ons = this._onmap[d.key];
+		var cz = CT.dom.choices(d.sections.map(this.section), true, null, null, function() {
+			_.shouldSave = true;
+		}), ons = this._onmap[d.key], _ = this._;
 		this._secmap[d.key] = cz;
 		ons && CT.dom.each(cz, function(sel, i) {
 			if (ons.includes(sel._id))
@@ -158,11 +162,22 @@ man.browsers.Document = CT.Class({
 			}, v => view(d));
 		});
 	},
+	save: function(d, cb, noreview) {
+		var _ = this._;
+		this.log("saving");
+		_.shouldSave = false;
+		this.buildSecs(d); // adds assembly.sections[]
+		_.edit(d.key ? {
+			key: d.key,
+			assembly: d.assembly,
+			injections: d.injections
+		} : d, noreview, cb);
+	},
 	view: function(d) {
 		var _ = this._,// haz = this.hazards(d),
 			mcfg = core.config.ctman,
 			classes = mcfg.classes.document,
-			view = this.view, bs = this.buildSecs;
+			view = this.view, save = this.save;
 		man.util.current.document = d;
 		CT.dom.setContent(_.nodes.content, [
 			this.namer(d, classes.title),
@@ -178,12 +193,7 @@ man.browsers.Document = CT.Class({
 //						chemical: haz.value.map(v => mcfg.hazards.chemical[v])
 //					}
 //				};
-				bs(d); // adds assembly.sections[]
-				_.edit(d.key ? {
-					key: d.key,
-					assembly: d.assembly,
-					injections: d.injections
-				} : d);
+				save(d);
 			}, null, d.template && man.injections.fields(CT.data.get(d.template)),
 				true),
 			d.key && man.util.image(d, "logo", "client logo", true),
