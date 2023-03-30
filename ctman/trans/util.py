@@ -38,13 +38,19 @@ def trans(h, flag, rules=None, flags=flags, styles=styles, cstyles=cstyles, loud
 		start = getstart(h, sflag)
 		if altstart:
 			start = max(start, getstart(h, altstart))
-		startend = seflag and h.index(seflag, start)
-		startender = (startend or start) + len(seflag or sflag)
-		endstart = esflag and h.index(esflag, startender)
-		end = h.index(eflag, startender or start)
-		starter = h[start : startender]
-		seg = h[startender : (endstart or end)]
-		h = h[:start] + Fragment(seg, starter, rules, styles, cstyles, loud).translate() + h[end + len(eflag):]
+		startend = seflag and h.find(seflag, start)
+		if startend == -1:
+			end = h.index(eflag, start)
+			seg = h[start:end + len(eflag)]
+			print("discarding bad node: %s"%(seg,))
+			h = h[:start] + h[end + len(eflag):]
+		else:
+			startender = (startend or start) + len(seflag or sflag)
+			endstart = esflag and h.index(esflag, startender)
+			end = h.index(eflag, startender or start)
+			starter = h[start : startender]
+			seg = h[startender : (endstart or end)]
+			h = h[:start] + Fragment(seg, starter, rules, styles, cstyles, loud).translate() + h[end + len(eflag):]
 	return h
 
 class Converter(object):
