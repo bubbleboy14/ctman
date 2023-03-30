@@ -1,4 +1,5 @@
 from cantools.web import strip_html, strip_html_carefully
+from cantools.util.data import rgb2hex
 from ctman.util import symage
 from .html2latex.rules import styles, cstyles
 
@@ -48,7 +49,11 @@ class Fragment(object):
 					self.log("to:", tx)
 			elif key in self.cstyles:
 				self.log("style()", "restyling from:", tx)
-				tx = self.cstyles[key]%(val[-6:].strip(")"), tx)
+				if "rgb" in val:
+					hval = rgb2hex(val)
+				else:
+					hval = val[-6:]
+				tx = self.cstyles[key]%(hval, tx)
 				self.log("to:", tx)
 		return tx
 
