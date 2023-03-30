@@ -48,7 +48,7 @@ class Fragment(object):
 					self.log("to:", tx)
 			elif key in self.cstyles:
 				self.log("style()", "restyling from:", tx)
-				tx = self.cstyles[key]%(val[-6:], tx)
+				tx = self.cstyles[key]%(val[-6:].strip(")"), tx)
 				self.log("to:", tx)
 		return tx
 
