@@ -84,6 +84,7 @@ class SecBase(db.TimeStampedBase):
 class Section(SecBase):
 	image = db.Binary()
 	headerless = db.Boolean(default=False)
+	landscape = db.Boolean(default=False)
 
 	def embedders(self):
 		return SecBase.query(SecBase.sections.contains(self.key.urlsafe())).all()
@@ -100,11 +101,16 @@ class Section(SecBase):
 	def header(self):
 		return self.headerless and " " or self.name
 
+	def landed(self, cont):
+		if self.landscape:
+			return "\\begin{landscape}%s\\end{landscape}"%(cont,)
+		return cont
+
 	def desc(self, depth=0, novars=False):
 		d = self.fixed_desc(depth, novars)
 		if not self.image:
-			return d
-		return "%s\r\n\r\n![](%s)"%(d, symage(self.image.path))
+			return self.landed(d)
+		return self.landed("%s\r\n\r\n![](%s)"%(d, symage(self.image.path)))
 
 class Injection(db.TimeStampedBase):
 	name = db.String()
