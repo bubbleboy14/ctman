@@ -125,18 +125,22 @@ man.browsers.Section = CT.Class({
 			}, "embedders");
 		}, "red");
 	},
+	boolcheck: function(d, name) {
+		var _ = this._, eoz;
+		return CT.dom.checkboxAndLabel(name, d[name],
+			null, null, "inline rmargined", function(cb) {
+				eoz = { key: d.key };
+				d[name] = eoz[name] = cb.checked;
+				_.edit(eoz);
+			}
+		);
+	},
 	rightbutts: function(d) {
 		if (!d.key || !this.opts.rightbutts) return;
 		var _ = this._, prebutt = this.prebutt(d);
 		return CT.dom.div([
-			CT.dom.checkboxAndLabel("headerless", d.headerless,
-				null, null, "inline rmargined", function(cb) {
-					_.edit({
-						key: d.key,
-						headerless: cb.checked
-					});
-				}
-			),
+			this.boolcheck(d, "headerless"),
+			this.boolcheck(d, "landscape"),
 			prebutt
 		], "abs ctr bordered round shiftup");
 	},
