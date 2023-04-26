@@ -260,6 +260,6 @@ for i in range(1, 4):
 	styles["padding-left"]["%spx"%(i * 30,)] = "\\begin{addmargin}[" + str(i) + "cm]{0cm}\n%s\n\\end{addmargin}"
 
 cstyles = {
-	"background-color": "\\colorbox[HTML]{%s}{%s}",
+	"background-color": "\\colorbox[HTML]{%s}{\\parbox{0.9\\textwidth}{%s}}",
 	"color": "\\textcolor[HTML]{%s}{%s}"
 }
