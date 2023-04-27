@@ -37,7 +37,7 @@
 
 .collapsible {
 	overflow: hidden;
-	max-height: 3000px;
+	max-height: 5000px;
 	transition: max-height 500ms;
 }
 
