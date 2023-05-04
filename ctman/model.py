@@ -103,7 +103,7 @@ class Section(SecBase):
 
 	def landed(self, cont):
 		if self.landscape:
-			return "\\begin{landscape}%s\\end{landscape}"%(cont,)
+			return "\\landscapeon\n%s\n\\landscapeoff"%(cont,)
 		return cont
 
 	def desc(self, depth=0, novars=False):
