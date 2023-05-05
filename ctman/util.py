@@ -1,6 +1,7 @@
 import os, magic
 from cantools import config
 from cantools.util import sym, cmd, log
+from cantools.util.data import hex2rgb
 
 class ColorMap(object):
 	def __init__(self):
@@ -8,6 +9,8 @@ class ColorMap(object):
 		self.map = {}
 
 	def __call__(self, rgbstr):
+		if not rgbstr.startswith("rgb"):
+			rgbstr = hex2rgb(rgbstr)
 		if rgbstr not in self.map:
 			self.log("registering", rgbstr)
 			self.map[rgbstr] = "col%s"%(self.count,)
