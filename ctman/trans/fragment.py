@@ -40,6 +40,7 @@ class Fragment(object):
 		start = self.starter.index('style="') + 7
 		end = self.starter.index(';"', start)
 		srules = self.starter[start:end]
+		colz = {}
 		for rule in srules.split("; "):
 			[key, val] = rule.split(": ")
 			if key in self.styles:
@@ -48,6 +49,11 @@ class Fragment(object):
 					tx = self.styles[key][val]%(tx,)
 					self.log("to:", tx)
 			elif key in self.cstyles:
+				colz[key] = val
+
+		for key in ["background-color", "color"]:
+			if key in colz:
+				val = colz[key]
 				self.log("style()", "restyling from:", tx)
 				if key == "background-color":
 					hval = colormap(val)
