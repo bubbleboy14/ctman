@@ -1,6 +1,6 @@
 from cantools.web import strip_html, strip_html_carefully
 from cantools.util.data import rgb2hex
-from ctman.util import symage
+from ctman.util import symage, colormap
 from .html2latex.rules import styles, cstyles
 
 class Fragment(object):
@@ -49,10 +49,13 @@ class Fragment(object):
 					self.log("to:", tx)
 			elif key in self.cstyles:
 				self.log("style()", "restyling from:", tx)
-				if "rgb" in val:
-					hval = rgb2hex(val)
-				else:
-					hval = val[-6:]
+				if key == "background-color":
+					hval = colormap(val)
+				else: # color (\textcolor[HTML])
+					if "rgb" in val:
+						hval = rgb2hex(val)
+					else:
+						hval = val[-6:]
 				tx = self.cstyles[key]%(hval, tx)
 				self.log("to:", tx)
 		return tx
