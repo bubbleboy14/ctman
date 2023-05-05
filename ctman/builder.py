@@ -1,7 +1,7 @@
 import os, datetime
 from cantools.util import read, write, output
 from ctman.hazards import chemicals, chemprops
-from ctman.util import symage
+from ctman.util import symage, colormap
 from cantools.web import mail
 from cantools import config
 
@@ -72,19 +72,21 @@ def dex(doc):
 		doc.modified.month, doc.modified.day)))
 	return DEX%("\n".join(rows),)
 
-def pretex(doc, fname, fontonly=False):
+def pretex(doc, fname, styleonly=False):
 	fcfg = config.ctman.font
 	pname = os.path.join("build", "%s.tex"%(fname,))
-	if not fontonly and doc.logo:
+	if not styleonly and doc.logo:
 		iname = symage(doc.logo.path)
 	ff = getattr(doc, "font", None) or fcfg.family
 	fontdesc = ff and FONTFAM%(ff, ff) or ""
-	write(fontonly and fontdesc or read("tex/pre.tex").replace("_CLIENT_LOGO_",
+	colors = colormap.definitions()
+	write(styleonly and "%s\n%s"%(fontdesc, colors) or read("tex/pre.tex").replace("_CLIENT_LOGO_",
 		doc.logo and iname or "img/logo.jpg").replace("_DECLARATION_PAGE_",
 			doc.declaration_page and dex(doc) or "").replace("_SIGNUP_SHEET_",
 			doc.signup_sheet and SUSHEET or "").replace("_DOC_NAME_",
 			doc.name).replace("_DOC_REVISION_",
-			str(doc.revision)).replace("_DOC_FONT_", fontdesc), pname)
+			str(doc.revision)).replace("_DOC_FONT_",
+			fontdesc).replace("_DOC_COLORS_", colors), pname)
 	return pname
 
 PDINFO = {}
