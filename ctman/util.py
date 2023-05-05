@@ -1,6 +1,32 @@
 import os, magic
 from cantools import config
 from cantools.util import sym, cmd, log
+from cantools.util.data import hex2rgb
+
+class ColorMap(object):
+	def __init__(self):
+		self.count = 0
+		self.map = {}
+
+	def __call__(self, rgbstr):
+		if not rgbstr.startswith("rgb"):
+			rgbstr = hex2rgb(rgbstr)
+		if rgbstr not in self.map:
+			self.log("registering", rgbstr)
+			self.map[rgbstr] = "col%s"%(self.count,)
+			self.count += 1
+		return self.map[rgbstr]
+
+	def log(self, *msg):
+		log("ColorMap: %s"%(" ".join(msg),))
+
+	def rule(self, rgbstr):
+		return "\\definecolor{%s}{RGB}{%s}"%(self.map[rgbstr], rgbstr[4:-1])
+
+	def definitions(self):
+		return "\n".join([self.rule(rs) for rs in self.map.keys()])
+
+colormap = ColorMap()
 
 def symage(path):
 	ext = magic.from_file(path).split(" ").pop(0).lower()
