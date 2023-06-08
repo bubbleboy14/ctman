@@ -64,7 +64,7 @@ man.tables = {
 		});
 	},
 	chemproc: function(chems, cols) {
-		var rows = [cols].concat(chems.map(c => cols.map(col => c[col])));
+		var rows = [cols.map(CT.parse.key2title)].concat(chems.map(c => cols.map(col => c[col])));
 		man.util.inject(man.tables._.r2t(rows));
 	},
 	chemsel: function(cols) {
