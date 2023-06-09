@@ -8,9 +8,9 @@ from ..util import nextlast, trans, Converter
 
 TSEP = '</tr>'
 TBL = """\\begin{center}
-\\begin{tabular}{%s}
+\\begin{tabulary}{1.4\\textwidth}{%s}
 %s
-\\end{tabular}
+\\end{tabulary}
 \\end{center}"""
 
 def clean(data):
@@ -20,7 +20,7 @@ def clean(data):
 	if "<" in data:
 		for flag in tflags:
 			data = trans(data, flag, tflags[flag])
-		data = "\\Centerstack{%s}"%(data,)
+#		data = "\\Centerstack{%s}"%(data,)
 	return data
 
 def row(chunk):
@@ -40,7 +40,7 @@ def table(seg):
 			"tex": "\\includegraphics[width=" + str(1.0 / numcols)[:3] + "\\linewidth]{%s}"
 		}, loud=True)
 	rowz = list(map(row, seg.split(TSEP)))
-	return TBL%(numcols * "c", "\\\\\n\n".join([" & ".join(r) for r in rowz]))
+	return TBL%(numcols * "C", "\\\\\n\n".join([" & ".join(r) for r in rowz]))
 #	else:
 #		return "\n".join(map(bartable, rowsets(rowz)))
 
