@@ -39,10 +39,10 @@ def table(seg):
 			"end": iorig["end"],
 			"tex": "\\includegraphics[width=" + str(1.0 / numcols)[:3] + "\\linewidth]{%s}"
 		}, loud=True)
-		rowz = list(map(row, seg.split(TSEP)))
-		return TBL%(numcols * "c", "\\\\\n\n".join([" & ".join(r) for r in rowz]))
-	else:
-		return "\n".join(map(bartable, rowsets(rowz)))
+	rowz = list(map(row, seg.split(TSEP)))
+	return TBL%(numcols * "c", "\\\\\n\n".join([" & ".join(r) for r in rowz]))
+#	else:
+#		return "\n".join(map(bartable, rowsets(rowz)))
 
 TABLE_FLAGS = {
 	"startend": '<tbody>',
