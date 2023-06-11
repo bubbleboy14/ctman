@@ -26,6 +26,39 @@ man.injections = {
 		},
 		d2iz: function(d) {
 			return d.split("{{").filter(p => p.includes("}}")).map(i => i.split("}}")[0]);
+		},
+		idefedit: function(i, dnode) {
+			CT.modal.prompt({
+				prompt: "please enter the new default",
+				isTA: i.variety == "text block",
+				value: i.fallback,
+				cb: function(val) {
+					i.fallback = val;
+					CT.db.put({
+						key: i.key,
+						fallback: val
+					}, function() {
+						dnode.update();
+						alert("ok, updated default");
+					});
+				}
+			});
+		},
+		ihover: function(i) {
+			var cont = [
+				CT.dom.div(i.name, "big")
+			], dnode = CT.dom.div();
+			dnode.update = function() {
+				CT.dom.setContent(dnode, "default: " + (i.fallback || "undefined"));
+			};
+			dnode.update();
+			if (i.variety) {
+				cont.push("variety: " + i.variety);
+				cont.push(dnode);
+				cont.push(CT.dom.button("change default", () => man.injections._.idefedit(i, dnode)));
+			} else
+				cont.push("core variable (config specified)");
+			return CT.dom.div(cont, "whiteback bordered padded round");
 		}
 	},
 	get: function(name) {
@@ -76,7 +109,7 @@ man.injections = {
 	inode: function(i) {
 		var classes = core.config.ctman.classes.template,
 			itag = "{{" + i.name + "}}";
-		return CT.dom.div(i.name + " (" + (i.variety || "core") + ")",
+		return CT.hover.auto(CT.dom.div(i.name + " (" + (i.variety || "core") + ")",
 			classes.injection, null, {
 				draggable: true,
 				onclick: () => man.util.inject(itag),
@@ -84,7 +117,7 @@ man.injections = {
 					ev.dataTransfer.dropEffect = "copy";
 					ev.dataTransfer.setData("text/plain", itag);
 				}
-			});
+			}), man.injections._.ihover(i));
 	},
 	editor: function(d) {
 		var mcfg = core.config.ctman,

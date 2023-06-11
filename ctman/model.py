@@ -115,6 +115,7 @@ class Section(SecBase):
 class Injection(db.TimeStampedBase):
 	name = db.String()
 	variety = db.String(choices=["text", "text block"])
+	fallback = db.String()
 
 	def labeler(self):
 		return "%s (%s)"%(self.name, self.variety)
