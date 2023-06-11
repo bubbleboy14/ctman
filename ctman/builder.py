@@ -4,6 +4,7 @@ from ctman.hazards import chemicals, chemprops
 from ctman.util import symage, colormap
 from cantools.web import mail
 from cantools import config
+from model import db
 
 def part(fname):
 	return "# %s\n%s"%(fname.split(".")[0], read(os.path.join("templates", fname)))
@@ -155,6 +156,9 @@ def injectedDoc(tempbod, doc):
 	injectz = doc.injections.copy()
 	if config.ctman.builder.injeclarations:
 		injectz.update(doc.declarations)
+	for injection in db.get_multi(doc.template.get().injections):
+		if injection.name not in injectz:
+			injectz[injection.name] = injection.fallback or "undefined"
 	return inject(tempbod, injectz)
 
 def build(doc):
