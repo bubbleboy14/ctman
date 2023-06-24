@@ -63,8 +63,13 @@ man.tables = {
 			}
 		});
 	},
+	headerize: function(key) {
+		if (key == "idlh")
+			return "IDLH";
+		return CT.parse.key2title(key);
+	},
 	chemproc: function(chems, cols) {
-		var rows = [cols.map(CT.parse.key2title)].concat(chems.map(c => cols.map(col => c[col])));
+		var rows = [cols.map(this.headerize)].concat(chems.map(c => cols.map(col => c[col])));
 		man.util.inject(man.tables._.r2t(rows));
 	},
 	chemsel: function(cols) {
