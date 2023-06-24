@@ -7,11 +7,7 @@ from ..util import nextlast, trans, Converter
 #
 
 TSEP = '</tr>'
-TBL = """\\begin{center}
-\\begin{tabulary}{1.4\\textwidth}{%s}
-%s
-\\end{tabulary}
-\\end{center}"""
+TBL = "\\tabby{%s}{%s}"
 
 def clean(data):
 	data = data.replace("\n", " ")
