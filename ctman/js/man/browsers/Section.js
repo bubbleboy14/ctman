@@ -126,12 +126,16 @@ man.browsers.Section = CT.Class({
 		}, "red");
 	},
 	boolcheck: function(d, name) {
-		var _ = this._, eoz;
+		var _ = this._, eoz, saveThen = this.saveThen;
 		return CT.dom.checkboxAndLabel(name, d[name],
 			null, null, "inline rmargined", function(cb) {
-				eoz = { key: d.key };
-				d[name] = eoz[name] = cb.checked;
-				_.edit(eoz);
+				CT.log("saving pre bool set");
+				saveThen(function() {
+					CT.log("setting bool");
+					eoz = { key: d.key };
+					d[name] = eoz[name] = cb.checked;
+					_.edit(eoz, true, null, true);
+				});
 			}
 		);
 	},
@@ -173,22 +177,35 @@ man.browsers.Section = CT.Class({
 			man.tables.chembutt()
 		], "right");
 	},
+	saveThen: function(cb) {
+		this._afterSave = cb;
+		this.formWrapper.form.continue();
+	},
+	doAfterSave: function() {
+		if (this._afterSave) {
+			this._afterSave();
+			delete this._afterSave;
+		}
+	},
+	saveMe: function(vals) {
+		var d = man.util.current[this.opts.modelName];
+		for (val in vals)
+			d[val] = vals[val];
+		this._.edit(d.key ? CT.merge({
+			key: d.key
+		}, vals) : d, true, this.doAfterSave);
+	},
 	view: function(d) {
 		var _ = this._, mcfg = core.config.ctman, val;
 		man.util.current[this.opts.modelName] = d;
+		this.formWrapper = man.util.form(d, "template", this.saveMe, {
+			description: ta => this.injectors(d)
+		});
 		CT.dom.setContent(_.nodes.content, [
 			this.leftbutts(d),
 			this.rightbutts(d),
 			this.namer(d),
-			man.util.form(d, "template", function(vals) {
-				for (val in vals)
-					d[val] = vals[val];
-				_.edit(d.key ? CT.merge({
-					key: d.key
-				}, vals) : d, true);
-			}, {
-				description: ta => this.injectors(d)
-			}),
+			this.formWrapper,
 			this.extra(d)
 		]);
 	},
