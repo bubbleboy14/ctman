@@ -82,7 +82,7 @@ man.tables = {
 	},
 	chemord: function(cols) {
 		var cl = cols.length;
-		if (cl > 6 && !confirm("are you sure you want to create a table with " + cl + " columns?"))
+		if (cl > 6 && !confirm("Are you sure you want to create a table with " + cl + " columns? This may be too wide for the page."))
 			return alert("table creation aborted");
 		CT.modal.choice({
 			prompt: "reorder columns as necessary",
