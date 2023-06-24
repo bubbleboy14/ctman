@@ -71,9 +71,9 @@ man.tables = {
 		CT.modal.choice({
 			prompt: "please select chems",
 			style: "multiple-choice",
-			className: "basicpopup mosthigh w400p",
+//			className: "basicpopup mosthigh w400p",
 			data: man.tables._.chemicals.names,
-			filter: "right up30",
+			filter: "right",
 			cb: function(chems) {
 				CT.db.multi(chems.map(c => c.key),
 					cz => man.tables.chemproc(cz, cols), null, "code");
