@@ -63,17 +63,22 @@ man.tables = {
 			}
 		});
 	},
+	headerize: function(key) {
+		if (key == "idlh")
+			return "IDLH";
+		return CT.parse.key2title(key);
+	},
 	chemproc: function(chems, cols) {
-		var rows = [cols.map(CT.parse.key2title)].concat(chems.map(c => cols.map(col => c[col])));
+		var rows = [cols.map(this.headerize)].concat(chems.map(c => cols.map(col => c[col])));
 		man.util.inject(man.tables._.r2t(rows));
 	},
 	chemsel: function(cols) {
 		CT.modal.choice({
 			prompt: "please select chems",
 			style: "multiple-choice",
-			className: "basicpopup mosthigh w400p",
+//			className: "basicpopup mosthigh w400p",
 			data: man.tables._.chemicals.names,
-			filter: "right up30",
+			filter: "right",
 			cb: function(chems) {
 				CT.db.multi(chems.map(c => c.key),
 					cz => man.tables.chemproc(cz, cols), null, "code");
@@ -82,7 +87,7 @@ man.tables = {
 	},
 	chemord: function(cols) {
 		var cl = cols.length;
-		if (cl > 6 && !confirm("are you sure you want to create a table with " + cl + " columns?"))
+		if (cl > 6 && !confirm("Are you sure you want to create a table with " + cl + " columns? This may be too wide for the page."))
 			return alert("table creation aborted");
 		CT.modal.choice({
 			prompt: "reorder columns as necessary",

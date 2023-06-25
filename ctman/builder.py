@@ -4,7 +4,7 @@ from ctman.hazards import chemicals, chemprops
 from ctman.util import symage, colormap
 from cantools.web import mail
 from cantools import config
-from model import db
+from model import db, Injection
 
 def part(fname):
 	return "# %s\n%s"%(fname.split(".")[0], read(os.path.join("templates", fname)))
@@ -22,7 +22,18 @@ def hazard(template, arules): # do non-chems as well
 	return "%s\n\n# Hazards - Chemical\n\n| %s |"%(template,
 		" |\n| ".join([" | ".join(r) for r in chart]))
 
-def inject(data, injects):
+def inject(data, injects=None):
+	if not injects: # preview mode
+		print("extracting injection variables from fragment")
+		possibles = [b.split("}}")[0] for b in data.split("{{")]
+		print("examining %s injection variable candidates"%(len(possibles),))
+		injects = {}
+		for name in possibles:
+			injection = Injection.query(Injection.name == name).get()
+			if injection:
+				print(name)
+				injects[name] = injection.fallback or "undefined"
+		print("using fallbacks for %s injection variables"%(len(injects.keys()),))
 	for i in injects:
 		data = data.replace("{{%s}}"%(i,), injects[i].replace("\n", " \\\\ "))
 	return data
@@ -112,7 +123,8 @@ def export(doc, data=None):
 		pname = pretex(doc, fname)
 	else:
 		try:
-			data = doc.content(depth=1, novars=True)
+			data = doc.content(depth=1)#, novars=True)
+			data = inject(data)
 			pname = pretex(doc, fname, True)
 		except Exception as e:
 			return {

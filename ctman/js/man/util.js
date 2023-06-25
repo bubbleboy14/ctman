@@ -23,19 +23,22 @@ man.util = {
 		return n;
 	},
 	form: function(d, fname, cb, extra, items, collapsible) {
-		var title = d[fname] && fname;
-		return CT.dom.div([
+		var title = d[fname] && fname, n = CT.dom.div(null,
+			core.config.ctman.classes[d.modelName].form);
+		n.form = CT.layout.form({
+			cb: cb,
+			extra: extra,
+			button: true,
+			labels: true,
+			bname: "save",
+			values: d[fname] || d,
+			items: items || core.config.ctman[fname]
+		});
+		CT.dom.setContent(n, [
 			collapsible ? man.util.collapser(title) : title,
-			CT.layout.form({
-				cb: cb,
-				extra: extra,
-				button: true,
-				labels: true,
-				bname: "save",
-				values: d[fname] || d,
-				items: items || core.config.ctman[fname]
-			}),
-		], core.config.ctman.classes[d.modelName].form);
+			n.form
+		]);
+		return n;
 	},
 	refresher: function(title, buttname, buttcb, bodgen, classes, collapsible, buttclass) {
 		var n = CT.dom.div(null, classes || "margined padded bordered round"),
