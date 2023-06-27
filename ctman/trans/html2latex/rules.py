@@ -215,10 +215,10 @@ flags = {
 	},
 	"img": {
 		"start": '<img ',
-		"startend": 'src="../',
+		"startend": 'src="/',
 		"endstart": '"',
 		"end": '>',
-		"tex": "\\includegraphics[width=\\linewidth]{%s}",
+		"tex": "\\includegraphics[width=\\linewidth]{../%s}",
 		"sym": True,
 	},
 	"ol": {
