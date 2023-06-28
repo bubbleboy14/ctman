@@ -199,7 +199,8 @@ flags = {
 		"tex": " %s "
 	},
 	"a": {
-		"tex": " %s "
+		"tex": "\\href{%s}{%s}",
+		"href": True
 	},
 	"b": {
 		"tex": "\\textbf{%s}"
@@ -215,10 +216,10 @@ flags = {
 	},
 	"img": {
 		"start": '<img ',
-		"startend": 'src="../',
+		"startend": 'src="/',
 		"endstart": '"',
 		"end": '>',
-		"tex": "\\includegraphics[width=\\linewidth]{%s}",
+		"tex": "\\includegraphics[width=\\linewidth]{../%s}",
 		"sym": True,
 	},
 	"ol": {

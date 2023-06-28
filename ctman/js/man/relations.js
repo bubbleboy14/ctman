@@ -8,7 +8,7 @@ man.relations = {
 				prompt: "please select an image",
 				style: "icon",
 				recenter: true,
-				className: "basicpopup mosthight galimg",
+				className: "basicpopup mosthigh flex col galimg h400p",
 				data: iz,
 				cb: cb
 			});
