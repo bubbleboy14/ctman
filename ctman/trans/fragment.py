@@ -32,14 +32,21 @@ class Fragment(object):
 		else:
 			self.repstart('%s%s"'%(aligner, alignment), '%s"'%(sta,))
 
+	def attribute(self, aname, ender='"'):
+		self.log("attribute()", aname, self.starter)
+		starter = '%s="'%(aname,)
+		if starter not in self.starter:
+			return None
+		start = self.starter.index(starter) + len(starter)
+		end = self.starter.index(ender, start)
+		return self.starter[start:end]
+
 	def style(self, tx):
 		if self.rules.get("nostyle"):
 			return tx
-		if "style" not in self.starter:
+		srules = self.attribute("style", ';"')
+		if not srules:
 			return tx
-		start = self.starter.index('style="') + 7
-		end = self.starter.index(';"', start)
-		srules = self.starter[start:end]
 		colz = {}
 		for rule in srules.split("; "):
 			[key, val] = rule.split(": ")
@@ -90,7 +97,11 @@ class Fragment(object):
 			return "\n%s\n%s\n"%(mdblock, epart)
 		if self.rules.get("sym"):
 			seg = symage(seg)
-		return self.rules.get("tex")%(seg,)
+		tex = self.rules.get("tex")
+		if self.rules.get("href"):
+			self.log("href", self.starter, seg)
+			return tex%(self.attribute("href"), seg)
+		return tex%(seg,)
 
 	def translate(self):
 		self.log("before:", self.fragment)
