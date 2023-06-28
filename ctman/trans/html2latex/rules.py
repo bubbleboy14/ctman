@@ -199,7 +199,8 @@ flags = {
 		"tex": " %s "
 	},
 	"a": {
-		"tex": " %s "
+		"tex": "\\href{%s}{%s}",
+		"href": True
 	},
 	"b": {
 		"tex": "\\textbf{%s}"
