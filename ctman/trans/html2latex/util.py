@@ -36,7 +36,9 @@ def table(seg):
 			"tex": "\\includegraphics[width=" + str(1.0 / numcols)[:3] + "\\linewidth]{%s}"
 		}, loud=True)
 	rowz = list(map(row, seg.split(TSEP)))
-	return TBL%(numcols * "C", "\\\\\n\n".join([" & ".join(r) for r in rowz]))
+#	return TBL%(numcols * "C", "\\\\\n\n".join([" & ".join(r) for r in rowz]))
+	return TBL%("| %s |"%(" | ".join(numcols * "C"),),
+		"\n\\hline\n%s\n\\\\ \\hline"%("\\\\\n\\hline\n".join([" & ".join(r) for r in rowz]),))
 #	else:
 #		return "\n".join(map(bartable, rowsets(rowz)))
 

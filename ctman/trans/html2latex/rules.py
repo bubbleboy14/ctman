@@ -268,5 +268,6 @@ for i in range(1, 4):
 
 cstyles = {
 	"background-color": "\\sethlcolor{%s} \\hl{%s}",
-	"color": "\\textcolor[HTML]{%s}{%s}"
+	"color": "\\textcolor[HTML]{%s}{%s}",
+	"border-color": "\\arrayrulecolor{%s}\n\n%s"
 }
