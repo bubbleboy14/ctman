@@ -58,11 +58,11 @@ class Fragment(object):
 			elif key in self.cstyles:
 				colz[key] = val
 
-		for key in ["background-color", "color"]:
+		for key in ["background-color", "color", "border-color"]:
 			if key in colz:
 				val = colz[key]
 				self.log("style()", "restyling from:", tx)
-				if key == "background-color":
+				if key == "background-color" or key == "border-color":
 					hval = colormap(val)
 				else: # color (\textcolor[HTML])
 					if "rgb" in val:
