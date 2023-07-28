@@ -31,6 +31,7 @@ def trans(h, flag, rules=None, flags=flags, styles=styles, cstyles=cstyles, loud
 		sflag = "<%s>"%(flag,)
 		altstart = "<%s "%(flag,)
 	seflag = rules.get("startend", ">")
+	aseflag = rules.get("altstartend")
 	esflag = rules.get("endstart")
 	eflag = rules.get("end", "</%s>"%(flag,))
 	tex = rules.get("tex")
@@ -39,13 +40,19 @@ def trans(h, flag, rules=None, flags=flags, styles=styles, cstyles=cstyles, loud
 		if altstart:
 			start = max(start, getstart(h, altstart))
 		startend = seflag and h.find(seflag, start)
+		selen = len(seflag or sflag)
+		if aseflag:
+			altstartend = h.find(aseflag, start)
+			if altstartend != -1 and (startend == -1 or altstartend < startend):
+				startend = altstartend
+				selen = len(aseflag)
 		if startend == -1:
 			end = h.index(eflag, start)
 			seg = h[start:end + len(eflag)]
 			print("discarding bad node: %s"%(seg,))
 			h = h[:start] + h[end + len(eflag):]
 		else:
-			startender = (startend or start) + len(seflag or sflag)
+			startender = (startend or start) + selen
 			endstart = esflag and h.index(esflag, startender)
 			end = h.index(eflag, startender or start)
 			starter = h[start : startender]
