@@ -32,6 +32,7 @@ def table(seg):
 			"start": iorig["start"],
 			"endstart": iorig["endstart"],
 			"startend": iorig["startend"],
+			"altstartend": iorig["altstartend"],
 			"end": iorig["end"],
 			"tex": "\\includegraphics[width=" + str(1.0 / numcols)[:3] + "\\linewidth]{%s}"
 		}, loud=True)
