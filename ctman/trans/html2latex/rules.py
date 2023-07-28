@@ -217,6 +217,7 @@ flags = {
 	"img": {
 		"start": '<img ',
 		"startend": 'src="/',
+		"altstartend": 'src="../',
 		"endstart": '"',
 		"end": '>',
 		"tex": "\\includegraphics[width=\\linewidth]{../%s}",
