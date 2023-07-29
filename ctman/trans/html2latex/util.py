@@ -23,6 +23,14 @@ def row(chunk):
 	return [clean(part.split(">", 1)[1].split("</td>")[0]) for part in chunk.split('<td')[1:]]
 
 def table(seg):
+	print()
+	print("table processing:", seg)
+	print()
+	preamble = ""
+	if not seg.startswith("<tr"):
+		preamble, seg = seg.split("<tr", 1)
+		seg = "<tr%s"%(seg,)
+		print("extracted preamble:", preamble)
 	rowz = list(map(row, seg.split(TSEP)))
 	numcols = len(rowz[0])
 	if "img" in seg:
@@ -38,7 +46,7 @@ def table(seg):
 		}, loud=True)
 	rowz = list(map(row, seg.split(TSEP)))
 #	return TBL%(numcols * "C", "\\\\\n\n".join([" & ".join(r) for r in rowz]))
-	return TBL%("| %s |"%(" | ".join(numcols * "C"),),
+	return preamble + TBL%("| %s |"%(" | ".join(numcols * "C"),),
 		"\n\\hline\n%s\n\\\\ \\hline"%("\\\\\n\\hline\n".join([" & ".join(r) for r in rowz]),))
 #	else:
 #		return "\n".join(map(bartable, rowsets(rowz)))
