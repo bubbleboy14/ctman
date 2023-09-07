@@ -220,7 +220,7 @@ flags = {
 		"altstartend": 'src="../',
 		"endstart": '"',
 		"end": '>',
-		"tex": "\\includegraphics[width=\\linewidth]{../%s}",
+		"tex": "\\includegraphics[width=\\linewidth]{%s}",
 		"sym": True,
 	},
 	"ol": {
