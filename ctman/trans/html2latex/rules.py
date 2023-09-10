@@ -224,10 +224,15 @@ flags = {
 		"sym": True,
 	},
 	"ol": {
-		"liner": "1. %s"
+#		"liner": "1. %s"
+		"tex": "\\begin{enumerate}%s\\end{enumerate}"
 	},
 	"ul": {
-		"liner": "- %s"
+#		"liner": "- %s"
+		"tex": "\\begin{itemize}%s\\end{itemize}"
+	},
+	"li": {
+		"tex": "\\item %s"
 	},
 	"sup": {
 		"tex": "$^{%s}$"
