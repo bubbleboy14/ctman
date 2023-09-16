@@ -7,7 +7,7 @@ from ..util import nextlast, trans, Converter
 #
 
 TSEP = '</tr>'
-TBL = "\\tabby{%s}{%s}"
+TBL = "\\begin{tabular}{%s}%s\\end{tabular}"
 
 def clean(data):
 	data = data.replace("\n", " ")
@@ -33,6 +33,8 @@ def table(seg):
 		print("extracted preamble:", preamble)
 	rowz = list(map(row, seg.split(TSEP)))
 	numcols = len(rowz[0])
+	colstr = "%s\\linewidth"%(str(1.0 / numcols)[:4],)
+	colper = "p{%s}"%(colstr,)
 	if "img" in seg:
 		iorig = flags["img"]
 		seg = trans(seg, "img", {
@@ -42,12 +44,11 @@ def table(seg):
 			"startend": iorig["startend"],
 			"altstartend": iorig["altstartend"],
 			"end": iorig["end"],
-			"tex": "\\includegraphics[width=" + str(1.0 / numcols)[:3] + "\\linewidth]{%s}"
+			"tex": "\\includegraphics[width=" + colstr + "]{%s}"
 		}, loud=True)
-	rowz = list(map(row, seg.split(TSEP)))
-#	return TBL%(numcols * "C", "\\\\\n\n".join([" & ".join(r) for r in rowz]))
-	return preamble + TBL%("| %s |"%(" | ".join(numcols * "C"),),
-		"\n\\hline\n%s\n\\\\ \\hline"%("\\\\\n\\hline\n".join([" & ".join(r) for r in rowz]),))
+		rowz = list(map(row, seg.split(TSEP)))
+	return preamble + TBL%("| %s |"%(" | ".join(numcols * [colper])),
+		"\n\\hline\n%s\\\\\n\\hline\n"%("\\\\\n\\hline\n".join([" & ".join(r) for r in rowz]),))
 #	else:
 #		return "\n".join(map(bartable, rowsets(rowz)))
 
