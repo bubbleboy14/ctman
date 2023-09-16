@@ -50,8 +50,6 @@ def table(seg):
 		rowz = list(map(row, seg.split(TSEP)))
 	return preamble + TBL%("| %s |"%(" | ".join(numcols * [colper])),
 		"\n\\hline\n%s\\\\\n\\hline\n"%("\\\\\n\\hline\n".join([" & ".join(r) for r in rowz]),))
-#	else:
-#		return "\n".join(map(bartable, rowsets(rowz)))
 
 TABLE_FLAGS = {
 	"startend": '<tbody>',
