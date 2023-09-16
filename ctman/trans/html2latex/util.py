@@ -16,7 +16,7 @@ def clean(data):
 	if "<" in data:
 		for flag in tflags:
 			data = trans(data, flag, tflags[flag])
-#		data = "\\Centerstack{%s}"%(data,)
+		data = "\\Centerstack{%s}"%(data,)
 	return data
 
 def row(chunk):
