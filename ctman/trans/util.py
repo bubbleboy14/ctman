@@ -22,7 +22,7 @@ def nextlast(h, flagz):
 				f = flag
 	return f
 
-def trans(h, flag, rules=None, flags=flags, styles=styles, cstyles=cstyles, loud=False):
+def trans(h, flag, rules=None, flags=flags, styles=styles, cstyles=cstyles, listed=False, loud=False):
 	rules = rules or flags[flag]
 #	sflag = rules.get("start", "<%s"%(flag,))
 	sflag = rules.get("start")
@@ -35,6 +35,7 @@ def trans(h, flag, rules=None, flags=flags, styles=styles, cstyles=cstyles, loud
 	esflag = rules.get("endstart")
 	eflag = rules.get("end", "</%s>"%(flag,))
 	tex = rules.get("tex")
+	fragset = []
 	while sflag in h or altstart and altstart in h:
 		start = getstart(h, sflag)
 		if altstart:
@@ -57,8 +58,10 @@ def trans(h, flag, rules=None, flags=flags, styles=styles, cstyles=cstyles, loud
 			end = h.index(eflag, startender or start)
 			starter = h[start : startender]
 			seg = h[startender : (endstart or end)]
-			h = h[:start] + Fragment(seg, starter, rules, styles, cstyles, loud).translate() + h[end + len(eflag):]
-	return h
+			frag = Fragment(seg, starter, rules, styles, cstyles, loud).translate()
+			fragset.insert(0, frag)
+			h = h[:start] + frag + h[end + len(eflag):]
+	return listed and fragset or h
 
 class Converter(object):
 	def __init__(self, fragment, depth=0, swappers={}, flaggers={}, styles={}, cstyles={}, linestrips=[], postswaps={}, ifswaps={}, notswaps={}, loud=False):
