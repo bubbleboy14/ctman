@@ -35,20 +35,7 @@ def table(seg):
 		print("extracted preamble:", preamble)
 	rowz = list(map(row, seg.split(TSEP)))
 	numcols = len(rowz[0])
-	colstr = "%s\\linewidth"%(str(1.0 / numcols)[:4],)
-	colper = "p{%s}"%(colstr,)
-	if "img" in seg:
-		iorig = flags["img"]
-		seg = trans(seg, "img", {
-			"sym": iorig["sym"],
-			"start": iorig["start"],
-			"endstart": iorig["endstart"],
-			"startend": iorig["startend"],
-			"altstartend": iorig["altstartend"],
-			"end": iorig["end"],
-			"tex": "\\includegraphics[width=" + colstr + "]{%s}"
-		}, loud=True)
-		rowz = list(map(row, seg.split(TSEP)))
+	colper = "p{%s\\linewidth}"%(str(1.0 / numcols)[:4],)
 	return preamble + TBL%("| %s |"%(" | ".join(numcols * [colper])),
 		"\n\\hline\n%s\\\\\n\\hline\n"%("\\\\\n\\hline\n".join([" & ".join(r) for r in rowz]),))
 
