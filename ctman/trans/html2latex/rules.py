@@ -241,10 +241,11 @@ flags = {
 }
 
 tflags = {
-	"p": {
-		"nostyle": True,
-		"tex": " \\\\ %s "
-	}
+	"td": { "tex": " %s " }
+}
+
+tcstyles = {
+	"background-color": "\\cellcolor{%s}{%s}"
 }
 
 for i in range(1, 7):
