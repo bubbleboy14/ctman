@@ -7,49 +7,21 @@ from ..util import nextlast, trans, Converter
 #
 
 TSEP = '</tr>'
-TBL = "\\tabby{%s}{%s}"
-
-def clean(data):
-	data = data.replace("\n", " ")
-	for c in "#$%^":
-		data = data.replace(c, "\\%s"%(c,))
-	if "<" in data:
-		for flag in tflags:
-			data = trans(data, flag, tflags[flag])
-#		data = "\\Centerstack{%s}"%(data,)
-	return data
+TBL = "\\begin{tabular}{%s}%s\\end{tabular}"
 
 def row(chunk):
-	return [clean(part.split(">", 1)[1].split("</td>")[0]) for part in chunk.split('<td')[1:]]
+	return trans(chunk, "td", tflags["td"], cstyles=tcstyles, listed=True)
 
 def table(seg):
-	print()
-	print("table processing:", seg)
-	print()
 	preamble = ""
 	if not seg.startswith("<tr"):
 		preamble, seg = seg.split("<tr", 1)
 		seg = "<tr%s"%(seg,)
-		print("extracted preamble:", preamble)
 	rowz = list(map(row, seg.split(TSEP)))
 	numcols = len(rowz[0])
-	if "img" in seg:
-		iorig = flags["img"]
-		seg = trans(seg, "img", {
-			"sym": iorig["sym"],
-			"start": iorig["start"],
-			"endstart": iorig["endstart"],
-			"startend": iorig["startend"],
-			"altstartend": iorig["altstartend"],
-			"end": iorig["end"],
-			"tex": "\\includegraphics[width=" + str(1.0 / numcols)[:3] + "\\linewidth]{%s}"
-		}, loud=True)
-	rowz = list(map(row, seg.split(TSEP)))
-#	return TBL%(numcols * "C", "\\\\\n\n".join([" & ".join(r) for r in rowz]))
-	return preamble + TBL%("| %s |"%(" | ".join(numcols * "C"),),
-		"\n\\hline\n%s\n\\\\ \\hline"%("\\\\\n\\hline\n".join([" & ".join(r) for r in rowz]),))
-#	else:
-#		return "\n".join(map(bartable, rowsets(rowz)))
+	colper = "p{%s\\linewidth}"%(str(1.0 / numcols)[:4],)
+	return preamble + TBL%("| %s |"%(" | ".join(numcols * [colper])),
+		"\n\\hline\n%s\\\\\n\\hline\n"%("\\\\\n\\hline\n".join([" & ".join(r) for r in rowz]),))
 
 TABLE_FLAGS = {
 	"startend": '<tbody>',

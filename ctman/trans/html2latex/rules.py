@@ -224,10 +224,13 @@ flags = {
 		"sym": True,
 	},
 	"ol": {
-		"liner": "1. %s"
+		"tex": "\\begin{enumerate}%s\\end{enumerate}"
 	},
 	"ul": {
-		"liner": "- %s"
+		"tex": "\\begin{itemize}%s\\end{itemize}"
+	},
+	"li": {
+		"tex": "\\item %s"
 	},
 	"sup": {
 		"tex": "$^{%s}$"
@@ -238,10 +241,11 @@ flags = {
 }
 
 tflags = {
-	"p": {
-		"nostyle": True,
-		"tex": " \\\\ %s "
-	}
+	"td": { "tex": " %s " }
+}
+
+tcstyles = {
+	"background-color": "\\cellcolor{%s}{%s}"
 }
 
 for i in range(1, 7):
