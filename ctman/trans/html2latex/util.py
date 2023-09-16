@@ -9,7 +9,7 @@ from ..util import nextlast, trans, Converter
 TSEP = '</tr>'
 TBL = "\\begin{tabular}{%s}%s\\end{tabular}"
 
-def clean(data):
+def clean(data): # deprecated??
 	data = data.replace("\n", " ")
 	for c in "#$%^":
 		data = data.replace(c, "\\%s"%(c,))
@@ -21,7 +21,8 @@ def clean(data):
 	return data
 
 def row(chunk):
-	return [clean(part.split(">", 1)[1].split("</td>")[0]) for part in chunk.split('<td')[1:]]
+	return trans(chunk, "td", tflags["td"], cstyles=tcstyles, listed=True, loud=True)
+#	return [clean(part.split(">", 1)[1].split("</td>")[0]) for part in chunk.split('<td')[1:]]
 
 def table(seg):
 	print()
