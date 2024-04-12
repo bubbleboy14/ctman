@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 from cantools import db, config
-from cantools.util import log
+from cantools.util import log, error
 from cantools.web import send_mail, email_admins
 from ctuser.model import *
 from ctedit.model import PageEdit, Style
@@ -218,6 +218,13 @@ class Pruner(object):
 		log("%s items"%(len(self.items),))
 		self.nameSort()
 		self.propCheck()
+		self.undupe()
+
+	def undupe(self):
+		for name in self.multis:
+			prunes = self.multis[name][1:]
+			log("pruning %s %s records"%(len(prunes), name))
+			db.delete_multi(prunes)
 
 	def propCheck(self):
 		log("%s redundant names"%(len(self.multis),))
@@ -229,6 +236,8 @@ class Pruner(object):
 				for item in items:
 					if val != getattr(item, prop):
 						matching = False
+			if not matching:
+				error("%s %s rows don't match - aborting!"%(len(items), name))
 			log("%s items named %s - matching: %s"%(len(items), name, matching))
 
 	def nameSort(self):
