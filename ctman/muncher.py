@@ -104,8 +104,8 @@ class Muncher(object):
 	def __init__(self, model=Chemical):
 		self.items = model.query().all()
 		self.log("%s items"%(len(self.items),))
-		confirm("prune") and Pruner()
-		confirm("fix links") and Linker()
+		confirm("prune") and Pruner(self.items)
+		confirm("fix links") and Linker(self.items)
 
 	def log(self, msg):
 		log("Muncher : %s"%(msg,))
