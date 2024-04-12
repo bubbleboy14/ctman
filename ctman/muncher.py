@@ -1,6 +1,6 @@
 from fyg.util import confirm
 from cantools.util import log, error
-from model import Chemical
+from model import db, Chemical
 
 PRUPROPS = ["classification", "code", "cas", "formula", "physical_description"]
 LINPROPS = ["rtecs", "idlh", "respirator_recommendations", "exposure_limits",
