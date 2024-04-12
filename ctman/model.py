@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+from fyg.util import confirm
 from cantools import db, config
 from cantools.util import log, error
 from cantools.web import send_mail, email_admins
@@ -221,6 +222,8 @@ class Pruner(object):
 		self.undupe()
 
 	def undupe(self):
+		if not confirm("remove duplicates across %s names?"%(len(self.multis),)):
+			return log("ok, bye!")
 		for name in self.multis:
 			prunes = self.multis[name][1:]
 			log("pruning %s %s records"%(len(prunes), name))
