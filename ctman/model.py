@@ -225,7 +225,7 @@ class Pruner(object):
 		if not confirm("remove duplicates across %s names"%(len(self.multis),)):
 			return log("ok, bye!")
 		for name in self.multis:
-			prunes = self.multis[name][1:]
+			prunes = self.names[name][1:]
 			log("pruning %s %s records"%(len(prunes), name))
 			db.delete_multi(prunes)
 
