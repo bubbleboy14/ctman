@@ -1,5 +1,5 @@
 from fyg.util import confirm
-from cantools.web import error
+from cantools.util import log, error
 from model import Chemical
 
 PRUPROPS = ["classification", "code", "cas", "formula", "physical_description"]
@@ -52,7 +52,7 @@ class Linker(object):
 		self.fix()
 
 	def log(self, msg):
-		log("Linker : %s"(msg,))
+		log("Linker : %s"%(msg,))
 
 	def linkify(self, orig):
 		if orig.startswith("http") or orig.startswith("//"):
