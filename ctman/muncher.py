@@ -97,7 +97,7 @@ class Linker(object):
 				if linkified:
 					setattr(item, prop, linkified)
 					changed.add(item)
-		if changed and confirm("fix %s rows?"%(len(changed),)):
+		if changed and confirm("fix %s rows"%(len(changed),)):
 			db.put_multi(list(changed))
 
 class Muncher(object):
