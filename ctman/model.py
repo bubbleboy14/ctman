@@ -233,15 +233,12 @@ class Pruner(object):
 		log("%s redundant names"%(len(self.multis),))
 		for name in self.multis:
 			items = self.names[name]
-			matching = True
 			for prop in self.props:
 				val = getattr(items[0], prop)
 				for item in items:
 					if val != getattr(item, prop):
-						matching = False
-			if not matching:
-				error("%s %s rows don't match - aborting!"%(len(items), name))
-			log("%s items named %s - matching: %s"%(len(items), name, matching))
+						error("%s %s rows don't match - aborting!"%(len(items), name))
+			log("%s items named %s"%(len(items), name))
 
 	def nameSort(self):
 		self.names = {}
