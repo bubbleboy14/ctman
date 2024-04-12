@@ -209,3 +209,34 @@ class Chemical(db.TimeStampedBase):
 			"key": self.id(),
 			"name": self.name
 		}
+
+class Pruner(object):
+	def __init__(self, model=Chemical, props=["classification", "code", "cas", "formula", "physical_description"]):
+		self.model = model
+		self.props = props
+		self.items = model.query().all()
+		log("%s items"%(len(self.items),))
+		self.nameSort()
+		self.propCheck()
+
+	def propCheck(self):
+		log("%s redundant names"%(len(self.multis),))
+		for name in self.multis:
+			items = self.names[name]
+			matching = True
+			for prop in self.props:
+				val = getattr(items[0], prop)
+				for item in items:
+					if val != getattr(item, prop):
+						matching = False
+			log("%s items named %s - matching: %s"%(len(items), name, matching))
+
+	def nameSort(self):
+		self.names = {}
+		for item in self.items:
+			if item.name not in self.names:
+				self.names[item.name] = []
+			self.names[item.name].append(item)
+		names = self.names.keys()
+		log("%s names"%(len(names),))
+		self.multis = list(filter(lambda n : len(self.names[n]) > 1, names))
