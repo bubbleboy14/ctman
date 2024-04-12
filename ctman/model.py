@@ -222,7 +222,7 @@ class Pruner(object):
 		self.undupe()
 
 	def undupe(self):
-		if not confirm("remove duplicates across %s names?"%(len(self.multis),)):
+		if not confirm("remove duplicates across %s names"%(len(self.multis),)):
 			return log("ok, bye!")
 		for name in self.multis:
 			prunes = self.multis[name][1:]
