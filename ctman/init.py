@@ -33,3 +33,4 @@ cfg = {
 		"100.00": 365
 	}
 }
+dependencies = ["pandoc", "texlive-latex-base", "texlive-fonts-recommended", "texlive-extra-utils", "texlive-latex-extra", "texlive-xetex"]
