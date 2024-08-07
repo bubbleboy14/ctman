@@ -79,6 +79,13 @@ man.browsers.Group = CT.Class({
 			this.permissions(d)
 		]);
 	},
+	defaults: function() {
+		return {
+			sections: [],
+			templates: [],
+			permissions: {}
+		};
+	},
 	init: function(opts) {
 		var _ = this._;
 		this.opts = CT.merge(opts, {
