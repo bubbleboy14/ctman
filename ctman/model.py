@@ -6,7 +6,13 @@ from ctuser.model import *
 from ctedit.model import PageEdit, Style
 from ctman.util import h2l, symage
 
+class Group(db.TimeStampedBase):
+	sections = db.ForeignKey(kind="section", repeated=True)
+	templates = db.ForeignKey(kind="template", repeated=True)
+	permissions = db.JSON()
+
 class Member(CTUser):
+	group = db.ForeignKey(kind=Group)
 	expiration = db.DateTime()
 
 	def onsale(self, amount, errmsg=None):
