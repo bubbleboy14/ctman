@@ -7,6 +7,7 @@ from ctedit.model import PageEdit, Style
 from ctman.util import h2l, symage
 
 class Group(db.TimeStampedBase):
+	name = db.String()
 	sections = db.ForeignKey(kind="section", repeated=True)
 	templates = db.ForeignKey(kind="template", repeated=True)
 	permissions = db.JSON()
