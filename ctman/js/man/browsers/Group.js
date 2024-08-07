@@ -96,4 +96,4 @@ man.browsers.Group = CT.Class({
 			}
 		});
 	}
-});
+}, CT.Browser);
