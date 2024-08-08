@@ -108,6 +108,6 @@ man.browsers.Group = CT.Class({
 					});
 				});
 			}
-		});
+		}, this.opts);
 	}
 }, CT.Browser);
