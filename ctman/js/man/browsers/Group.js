@@ -57,7 +57,7 @@ man.browsers.Group = CT.Class({
 	},
 	members: function(d) {
 		var memsnode = this._.nodes.members = CT.dom.div();
-		CT.db.get("member", mems => this.setter(variety, mems), null, null, {
+		CT.db.get("member", mems => this.setter(variety, mems), null, null, null, {
 			group: d.key
 		});
 		return this.noders.editor("members", memsnode, this.addMem);
