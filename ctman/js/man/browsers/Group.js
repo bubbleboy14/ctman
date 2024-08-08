@@ -2,7 +2,7 @@ man.browsers.Group = CT.Class({
 	CLASSNAME: "man.browsers.Group",
 	noders: {
 		item: function(d) {
-			return CT.dom.div(e.email ? [
+			return CT.dom.div(d.email ? [
 				d.firstName + " " + d.lastName,
 				d.email
 			] : (d.name || d), "bordered margined padded round inline-block");
@@ -43,8 +43,8 @@ man.browsers.Group = CT.Class({
 		});
 	},
 	editor: function(variety) {
-		var enode = this._.nodes[variety] = CT.dom.div();
-		CT.db.multi(d[variety], items => this.setter(variety, items));
+		var _ = this._, enode = _.nodes[variety] = CT.dom.div();
+		CT.db.multi(_.group[variety], items => this.setter(variety, items));
 		return this.noders.editor(variety, enode);
 	},
 	addMem: function() {
