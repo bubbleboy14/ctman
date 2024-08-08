@@ -26,7 +26,7 @@ man.browsers.Group = CT.Class({
 	},
 	selector: function(variety) {
 		var _ = this._, options = _[variety], sels = _.group[variety],
-			isperm = variety == "permissions";
+			isperm = variety == "permissions", getPerms = this.getPerms;
 		if (isperm) {
 			options = this.perms.map(p => "can " + p);
 			sels = this.perms.filter(p => _.group.permissions[p]);
@@ -37,7 +37,7 @@ man.browsers.Group = CT.Class({
 			data: options,
 			selections: sels,
 			cb: function(selections) {
-				_.group[variety] = isperm ? this.getPerms(selections) : selections.map(s => s.key);
+				_.group[variety] = isperm ? getPerms(selections) : selections.map(s => s.key);
 				_.edit(_.group);
 			}
 		});
@@ -48,7 +48,12 @@ man.browsers.Group = CT.Class({
 		return this.noders.editor(variety, enode);
 	},
 	addMem: function() {
-		// TODO...
+		var memnode = this._.nodes.members;
+		user.core.join({
+			group: this._.group.key
+		}, function(u) {
+			CT.dom.addContent(memnode, this.noders.item(u));
+		}, true);
 	},
 	members: function(d) {
 		var memsnode = this._.nodes.members = CT.dom.div();
