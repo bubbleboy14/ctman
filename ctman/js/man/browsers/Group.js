@@ -8,15 +8,9 @@ man.browsers.Group = CT.Class({
 			] : (d.name || d), "bordered margined padded round inline-block");
 		},
 		editor: function(variety, inode, adder) {
-			var cb = adder;
-			if (!cb) {
-				if (variety == "permissions")
-					cb = this.setPerms;
-				else
-					cb = () => this.selector(variety);
-			}
 			return [
-				CT.dom.button(adder ? "add" : "edit", cb, "right"),
+				CT.dom.button(adder ? "add" : "edit",
+					adder || (() => this.selector(variety)), "right"),
 				CT.dom.div(variety, "big bold"),
 				inode
 			];
@@ -31,14 +25,19 @@ man.browsers.Group = CT.Class({
 		CT.dom.setContent(this._.nodes[variety], items.map(this.noders[noder || "item"]));
 	},
 	selector: function(variety) {
-		var _ = this._;
+		var _ = this._, options = _[variety], sels = _.group[variety],
+			isperm = variety == "permissions";
+		if (isperm) {
+			options = this.perms.map(p => "can " + p);
+			sels = this.perms.filter(p => _.group.permissions[p]);
+		}
 		CT.modal.choice({
 			prompt: "please select the " + variety + " for this group",
 			style: "multiple-choice",
-			data: _[variety],
-			selections: _.group[variety],
+			data: options,
+			selections: sels,
 			cb: function(selections) {
-				_.group[variety] = selections.map(s => s.key);
+				_.group[variety] = isperm ? this.getPerms(selections) : selections.map(s => s.key);
 				_.edit(_.group);
 			}
 		});
@@ -61,8 +60,11 @@ man.browsers.Group = CT.Class({
 	perms: ["access", "build",
 		"edit section", "edit template", "edit document",
 		"create section", "create template", "create document"],
-	setPerms: function() {
-		// TODO...
+	getPerms: function(selections) {
+		var p, perms = {};
+		for (p of this.perms)
+			perms[p] = selections && selections.includes("can " + p);
+		return perms;
 	},
 	permissions: function(d) {
 		var pnode = this._.nodes.permissions = CT.dom.div();
@@ -83,7 +85,7 @@ man.browsers.Group = CT.Class({
 		return {
 			sections: [],
 			templates: [],
-			permissions: {}
+			permissions: this.getPerms()
 		};
 	},
 	init: function(opts) {
