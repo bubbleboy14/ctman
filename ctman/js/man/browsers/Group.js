@@ -86,6 +86,14 @@ man.browsers.Group = CT.Class({
 			this.permissions(d)
 		]);
 	},
+	firstview: function(d) {
+		this._.group = d;
+		CT.dom.setContent(this._.nodes.content, [
+			this.namer(d),
+			this.editor("sections"),
+			this.editor("templates")
+		]);
+	},
 	defaults: function() {
 		return {
 			sections: [],
