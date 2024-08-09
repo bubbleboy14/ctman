@@ -25,13 +25,13 @@ man.browsers.Group = CT.Class({
 		CT.dom.setContent(this._.nodes[variety], items.map(this.noders[noder || "item"]));
 	},
 	selector: function(variety) {
-		var _ = this._, isperm = variety == "permissions",
-			getPerms = this.getPerms, options = _[variety], eopts,
-			g = _.group, sels = CT.data.getSet(g[variety]).map(i => i.name);
+		var _ = this._, isperm = variety == "permissions", g = _.group,
+			getPerms = this.getPerms, options = _[variety], sels, eopts;
 		if (isperm) {
 			options = this.perms.map(p => "can " + p);
-			sels = this.perms.filter(p => g.permissions[p]);
-		}
+			sels = this.perms.filter(p => g.permissions[p]).map(p => "can " + p);
+		} else
+			sels = CT.data.getSet(g[variety]).map(i => i.name);
 		CT.modal.choice({
 			prompt: "please select the " + variety + " for this group",
 			style: "multiple-choice",
