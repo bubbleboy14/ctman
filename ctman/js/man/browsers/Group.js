@@ -60,9 +60,7 @@ man.browsers.Group = CT.Class({
 		var memnode = this._.nodes.members;
 		user.core.join({
 			group: this._.group.key
-		}, function(u) {
-			CT.dom.addContent(memnode, this.noders.item(u));
-		}, true);
+		}, u => CT.dom.addContent(memnode, this.noders.item(u)), true);
 	},
 	members: function(d) {
 		var memsnode = this._.nodes.members = CT.dom.div();
