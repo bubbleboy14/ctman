@@ -25,8 +25,8 @@ man.browsers.Group = CT.Class({
 		CT.dom.setContent(this._.nodes[variety], items.map(this.noders[noder || "item"]));
 	},
 	selector: function(variety) {
-		var _ = this._, options = _[variety], sels = _.group[variety],
-			isperm = variety == "permissions", getPerms = this.getPerms;
+		var _ = this._, isperm = variety == "permissions", getPerms = this.getPerms,
+			options = _[variety], sels = CT.data.getSet(_.group[variety]).map(i => i.name);
 		if (isperm) {
 			options = this.perms.map(p => "can " + p);
 			sels = this.perms.filter(p => _.group.permissions[p]);
