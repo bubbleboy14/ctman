@@ -25,11 +25,12 @@ man.browsers.Group = CT.Class({
 		CT.dom.setContent(this._.nodes[variety], items.map(this.noders[noder || "item"]));
 	},
 	selector: function(variety) {
-		var _ = this._, isperm = variety == "permissions", getPerms = this.getPerms,
-			options = _[variety], sels = CT.data.getSet(_.group[variety]).map(i => i.name);
+		var _ = this._, isperm = variety == "permissions",
+			getPerms = this.getPerms, options = _[variety], eopts,
+			g = _.group, sels = CT.data.getSet(g[variety]).map(i => i.name);
 		if (isperm) {
 			options = this.perms.map(p => "can " + p);
-			sels = this.perms.filter(p => _.group.permissions[p]);
+			sels = this.perms.filter(p => g.permissions[p]);
 		}
 		CT.modal.choice({
 			prompt: "please select the " + variety + " for this group",
@@ -37,8 +38,16 @@ man.browsers.Group = CT.Class({
 			data: options,
 			selections: sels,
 			cb: function(selections) {
-				_.group[variety] = isperm ? getPerms(selections) : selections.map(s => s.key);
-				_.edit(_.group);
+				eopts = {};
+				if (g.key)
+					eopts.key = g.key;
+				else {
+					eopts.name = g.name;
+					eopts.modelName = g.modelName;
+				}
+				eopts[variety] = g[variety] = isperm ?
+					getPerms(selections) : selections.map(s => s.key);
+				_.edit(eopts);
 			}
 		});
 	},
