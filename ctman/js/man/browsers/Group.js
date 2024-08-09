@@ -59,7 +59,7 @@ man.browsers.Group = CT.Class({
 	addMem: function() {
 		var memnode = this._.nodes.members;
 		user.core.join({
-			group: this._.group.key
+			extras: { group: this._.group.key }
 		}, u => CT.dom.addContent(memnode, this.noders.item(u)), true);
 	},
 	members: function(d) {
