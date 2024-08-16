@@ -17,9 +17,13 @@ man.browsers.Group = CT.Class({
 		},
 		perm: function(p) {
 			var node = this.noders.item("can " + p);
-			node.classList.add(this._.group.permissions[p] ? "green" : "red");
+			node.classList.add(this.perm(p) ? "green" : "red");
 			return node;
 		}
+	},
+	perm: function(p) {
+		var g = this._.group, pz = g.permissions = g.permissions || this.getPerms();
+		return p ? pz[p] : pz;
 	},
 	setter: function(variety, items, noder) {
 		CT.dom.setContent(this._.nodes[variety], items.map(this.noders[noder || "item"]));
@@ -29,7 +33,7 @@ man.browsers.Group = CT.Class({
 			getPerms = this.getPerms, options = _[variety], sels, eopts;
 		if (isperm) {
 			options = this.perms.map(p => "can " + p);
-			sels = this.perms.filter(p => g.permissions[p]).map(p => "can " + p);
+			sels = this.perms.filter(this.perm).map(p => "can " + p);
 		} else
 			sels = CT.data.getSet(g[variety]).map(i => i.name);
 		CT.modal.choice({
