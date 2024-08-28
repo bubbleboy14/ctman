@@ -230,6 +230,7 @@ man.browsers.Section = CT.Class({
 			rightbutts: true,
 			modelName: "section",
 			saveMessage: "you saved!",
+			cancreate: man.util.can("create section"),
 			blurs: ["section name", "section title", "name that section"]
 		}, this.opts);
 		man.tables.init();
