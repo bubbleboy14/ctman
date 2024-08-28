@@ -1,5 +1,25 @@
 man.util = {
 	current: {},
+	gated: ['templates', 'Create I-HASP', 'man'],
+	loaders: {
+		account: function() {
+			var u = user.core.get(), apage = "/man/account.html";
+			if (!u || u.admin || location.pathname == apage)
+				return;
+			if (!u.expiration || (new Date(u.expiration) < new Date()))
+				location = apage;
+		},
+		access: function() {
+			var mu = man.util, l, linx = CT.dom.tag("a", CT.dom.id("ctll")),
+				pname = location.pathname.split("/").pop().split(".").shift();
+			if (mu.can("access")) return;
+			if (mu.gated.includes(pname))
+				location = "/man/dash.html";
+			for (l of linx)
+				if (mu.gated.includes(l.innerHTML))
+					CT.dom.hide(l);
+		}
+	},
 	m: function(d, cb, action) {
 		CT.net.post({
 			spinner: true,
@@ -18,6 +38,11 @@ man.util = {
 		if (!cur.group)
 			cur.group = CT.db.one(u.group);
 		return cur.group.permissions[perm];
+	},
+	load: function() {
+		var loaders = man.util.loaders;
+		loaders.account();
+		loaders.access();
 	},
 	collapser: function(title) {
 		var n = CT.dom.div(title, "pointer");
