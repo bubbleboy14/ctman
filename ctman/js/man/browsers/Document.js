@@ -165,11 +165,14 @@ man.browsers.Document = CT.Class({
 			injections: d.injections
 		} : d, noreview, cb);
 	},
+	image: function(d) {
+		return this.opts.canedit ? mu.image(d, "logo", "client logo", true) : CT.dom.img(d.logo, "w1");
+	},
 	view: function(d) {
 		var _ = this._,// haz = this.hazards(d),
 			mcfg = core.config.ctman, mu = man.util,
 			classes = mcfg.classes.document,
-			view = this.view, save = this.save;
+			save = this.save;
 		mu.current.document = d;
 		CT.dom.setContent(_.nodes.content, [
 			this.namer(d, classes.title),
@@ -188,7 +191,7 @@ man.browsers.Document = CT.Class({
 				save(d);
 			}, null, d.template && man.injections.fields(CT.data.get(d.template)),
 				true),
-			d.key && mu.image(d, "logo", "client logo", true),
+			d.key && this.image(d),
 			d.key && this.settings(d),
 			d.key && mu.can("build") && this.build(d)
 		]);
