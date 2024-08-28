@@ -172,7 +172,7 @@ man.browsers.Document = CT.Class({
 		} : d, noreview, cb);
 	},
 	image: function(d) {
-		return this.opts.canedit ? mu.image(d, "logo", "client logo", true) : CT.dom.img(d.logo, "w1");
+		return this.opts.canedit ? man.util.image(d, "logo", "client logo", true) : CT.dom.img(d.logo, "w1");
 	},
 	injections: function(d) {
 		var save = this.save;
