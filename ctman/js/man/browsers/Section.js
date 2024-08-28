@@ -64,11 +64,11 @@ man.browsers.Section = CT.Class({
 				CT.dom.id("tl" + key).trigger();
 				oz.onsection && oz.onsection();
 			}
-		}), mover = this.move;
+		});
 		CT.db.one(key, function(s) { // meh shouldn't be necessary...
 			CT.dom.setContent(n, [
 //				CT.dom.button("move", e => mover(key, d, n, e), "right"),
-				CT.dom.button("remove", function(e) {
+				oz.canedit && CT.dom.button("remove", function(e) {
 					d.sections.splice(CT.dom.childNum(n), 1);
 					n.remove();
 					CT.db.put({
@@ -83,10 +83,12 @@ man.browsers.Section = CT.Class({
 		return n;
 	},
 	sections: function(d) {
-		var sec = this.section;
+		var sec = this.section, canedit = this.opts.canedit;
 		return man.util.refresher("sections", "add section",
 			n => this.asec(d, n), function() {
 //				return d.sections.map(s => sec(s, d));
+				if (!canedit)
+					return CT.dom.div(d.sections.map(sec));
 				return CT.dom.dragList(d.sections, k => sec(k, d), function(secs) {
 					d.sections = secs;
 					CT.db.put({
@@ -94,7 +96,7 @@ man.browsers.Section = CT.Class({
 						sections: d.sections
 					});
 				});
-			}, core.config.ctman.classes[d.modelName].sections);
+			}, core.config.ctman.classes[d.modelName].sections, false, null, canedit);
 	},
 	prebutt: function(d) {
 		var _ = this._, pbutt = CT.dom.button("PDF Preview", function() {
@@ -196,12 +198,14 @@ man.browsers.Section = CT.Class({
 		}, vals) : d, true, this.doAfterSave);
 	},
 	view: function(d) {
-		var _ = this._, mcfg = core.config.ctman, val;
 		man.util.current[this.opts.modelName] = d;
-		this.formWrapper = man.util.form(d, "template", this.saveMe, {
-			description: ta => this.injectors(d)
-		});
-		CT.dom.setContent(_.nodes.content, [
+		if (this.opts.canedit) {
+			this.formWrapper = man.util.form(d, "template", this.saveMe, {
+				description: ta => this.injectors(d)
+			});
+		} else
+			this.formWrapper = CT.dom.div(d.description);
+		CT.dom.setContent(this._.nodes.content, [
 			this.leftbutts(d),
 			this.rightbutts(d),
 			this.namer(d),
@@ -211,7 +215,7 @@ man.browsers.Section = CT.Class({
 	},
 	extra: function(d) {
 		return d.key && [
-			man.util.image(d),
+			this.opts.canedit ? man.util.image(d) : CT.dom.img(d.image, "w1"),
 			this.sections(d)
 		];
 	},
@@ -230,6 +234,7 @@ man.browsers.Section = CT.Class({
 			rightbutts: true,
 			modelName: "section",
 			saveMessage: "you saved!",
+			canedit: man.util.can("edit section"),
 			cancreate: man.util.can("create section"),
 			blurs: ["section name", "section title", "name that section"]
 		}, this.opts);
