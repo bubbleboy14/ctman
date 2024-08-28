@@ -208,6 +208,7 @@ man.browsers.Document = CT.Class({
 		this.opts = CT.merge(opts, {
 			modelName: "document",
 			opener: "Step 1. Start New HASP Here",
+			canedit: man.util.can("edit document"),
 			cancreate: man.util.can("create document"),
 			blurs: ["project name", "document title", "project/document name"],
 			prebuild: function(items) {
