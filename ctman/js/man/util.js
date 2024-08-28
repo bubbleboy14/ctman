@@ -73,12 +73,11 @@ man.util = {
 		]);
 		return n;
 	},
-	refresher: function(title, buttname, buttcb, bodgen, classes, collapsible, buttclass) {
-		var n = CT.dom.div(null, classes || "margined padded bordered round"),
-			section = this.section, asec = this.asec;
+	refresher: function(title, buttname, buttcb, bodgen, classes, collapsible, buttclass, canedit) {
+		var n = CT.dom.div(null, classes || "margined padded bordered round");
 		n.refresh = function() {
 			CT.dom.setContent(n, [
-				CT.dom.button(buttname, buttcb(n), buttclass || "right"),
+				canedit && CT.dom.button(buttname, buttcb(n), buttclass || "right"),
 				collapsible ? man.util.collapser(title) : title,
 				bodgen()
 			]);
