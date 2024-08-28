@@ -174,11 +174,23 @@ man.browsers.Document = CT.Class({
 	image: function(d) {
 		return this.opts.canedit ? mu.image(d, "logo", "client logo", true) : CT.dom.img(d.logo, "w1");
 	},
+	injections: function(d) {
+		var save = this.save;
+		if (!this.opts.canedit) {
+			return CT.dom.div([
+				CT.dom.div("injections", "big"),
+				Object.keys(d.injections).map(k => k + ": " + d.injections[k])
+			], "bordered padded margined round");
+		}
+		return man.util.form(d, "injections", function(vals) {
+			d.injections = vals;
+			save(d);
+		}, null, d.template && man.injections.fields(CT.data.get(d.template)), true);
+	},
 	view: function(d) {
 		var _ = this._,// haz = this.hazards(d),
 			mcfg = core.config.ctman, mu = man.util,
-			classes = mcfg.classes.document,
-			save = this.save;
+			classes = mcfg.classes.document;
 		mu.current.document = d;
 		CT.dom.setContent(_.nodes.content, [
 			this.namer(d, classes.title),
@@ -187,16 +199,7 @@ man.browsers.Document = CT.Class({
 //				"hazards",
 //				haz
 //			], classes.hazards),
-			man.util.form(d, "injections", function(vals) {
-				d.injections = vals;
-//				d.assembly = {
-//					hazards: {
-//						chemical: haz.value.map(v => mcfg.hazards.chemical[v])
-//					}
-//				};
-				save(d);
-			}, null, d.template && man.injections.fields(CT.data.get(d.template)),
-				true),
+			this.injections(d),
 			d.key && this.image(d),
 			d.key && this.settings(d),
 			d.key && mu.can("build") && this.build(d)
