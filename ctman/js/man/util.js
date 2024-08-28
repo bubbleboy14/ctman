@@ -11,6 +11,14 @@ man.util = {
 			cb: cb
 		});
 	},
+	can: function(perm) {
+		var u = user.core.get(), cur = man.util.current;
+		if (u.admin)
+			return true;
+		if (!cur.group)
+			cur.group = CT.db.one(u.group);
+		return cur.group.permissions[perm];
+	},
 	collapser: function(title) {
 		var n = CT.dom.div(title, "pointer");
 		n.onclick = function() {
