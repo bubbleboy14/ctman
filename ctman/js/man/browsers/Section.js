@@ -141,12 +141,12 @@ man.browsers.Section = CT.Class({
 	},
 	rightbutts: function(d) {
 		if (!d.key || !this.opts.rightbutts) return;
-		var _ = this._, prebutt = this.prebutt(d);
-		return CT.dom.div([
+		var cont = [
 			this.boolcheck(d, "headerless"),
-			this.boolcheck(d, "landscape"),
-			prebutt
-		], "abs ctr bordered round shiftup");
+			this.boolcheck(d, "landscape")
+		];
+		man.util.can("build") && cont.push(this.prebutt(d));
+		return CT.dom.div(cont, "abs ctr bordered round shiftup");
 	},
 	leftbutts: function(d) {
 		if (!d.key || !this.opts.leftbutts) return;
