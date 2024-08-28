@@ -167,10 +167,10 @@ man.browsers.Document = CT.Class({
 	},
 	view: function(d) {
 		var _ = this._,// haz = this.hazards(d),
-			mcfg = core.config.ctman,
+			mcfg = core.config.ctman, mu = man.util,
 			classes = mcfg.classes.document,
 			view = this.view, save = this.save;
-		man.util.current.document = d;
+		mu.current.document = d;
 		CT.dom.setContent(_.nodes.content, [
 			this.namer(d, classes.title),
 			d.key && this.template(d),
@@ -188,9 +188,9 @@ man.browsers.Document = CT.Class({
 				save(d);
 			}, null, d.template && man.injections.fields(CT.data.get(d.template)),
 				true),
-			d.key && man.util.image(d, "logo", "client logo", true),
+			d.key && mu.image(d, "logo", "client logo", true),
 			d.key && this.settings(d),
-			d.key && this.build(d)
+			d.key && mu.can("build") && this.build(d)
 		]);
 	},
 	defaults: function() {
