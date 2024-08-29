@@ -89,6 +89,7 @@ man.browsers.Document = CT.Class({
 			d.name,
 			cz
 		]);
+		cz.clickable = this.opts.canedit;
 		n._id = d.key;
 		return n;
 	},
