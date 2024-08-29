@@ -100,7 +100,7 @@ man.browsers.Document = CT.Class({
 	template: function(d) {
 		return man.util.refresher("template", "swap",
 			n => this.swaptemp(d, n), _ => this.sections(d),
-			core.config.ctman.classes.document.template, true);
+			core.config.ctman.classes.document.template, true, null, this.opts.canedit);
 	},
 	scheck: function(d, p, n) {
 		n = n || "include " + p.replace(/_/g, " ");
