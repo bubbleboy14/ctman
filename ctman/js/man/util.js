@@ -18,6 +18,15 @@ man.util = {
 			for (l of linx)
 				if (mu.gated.includes(l.innerHTML))
 					CT.dom.hide(l);
+		},
+		group: function(cb) {
+			var u = user.core.get();
+			if (u.admin)
+				return cb();
+			CT.db.one(u.group, function(g) {
+				man.util.current.group = g;
+				cb();
+			});
 		}
 	},
 	m: function(d, cb, action) {
@@ -47,17 +56,12 @@ man.util = {
 		return p ? pz[p] : pz;
 	},
 	can: function(perm) {
-		var u = user.core.get(), mu = man.util, cur = mu.current;
-		if (u.admin)
-			return true;
-		if (!cur.group)
-			cur.group = CT.db.one(u.group);
-		return mu.perm(perm);
+		return user.core.get("admin") || man.util.perm(perm);
 	},
 	load: function() {
 		var loaders = man.util.loaders;
 		loaders.account();
-		loaders.access();
+		loaders.group(loaders.access);
 	},
 	collapser: function(title) {
 		var n = CT.dom.div(title, "pointer");
