@@ -19,14 +19,11 @@ man.util = {
 				if (mu.gated.includes(l.innerHTML))
 					CT.dom.hide(l);
 		},
-		group: function(cb) {
-			var u = user.core.get();
-			if (u.admin)
-				return cb();
-			CT.db.one(u.group, function(g) {
-				man.util.current.group = g;
-				cb();
-			});
+		group: function() {
+			var cur = man.util.current;
+			cur.group = cur.group || CT.db.one(user.core.get("group"),
+				null, null, true, true);
+			return cur.group;
 		}
 	},
 	m: function(d, cb, action) {
@@ -51,7 +48,7 @@ man.util = {
 	},
 	perm: function(p, g) {
 		var mu = man.util;
-		g = g || mu.current.group;
+		g = g || mu.loaders.group();
 		var pz = g.permissions = g.permissions || mu.getPerms();
 		return p ? pz[p] : pz;
 	},
@@ -61,7 +58,7 @@ man.util = {
 	load: function() {
 		var loaders = man.util.loaders;
 		loaders.account();
-		loaders.group(loaders.access);
+		loaders.access();
 	},
 	collapser: function(title) {
 		var n = CT.dom.div(title, "pointer");
