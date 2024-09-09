@@ -4,7 +4,7 @@ man.util = {
 	loaders: {
 		account: function() {
 			var u = user.core.get(), apage = "/man/account.html";
-			if (!u || u.admin || location.pathname == apage)
+			if (!u || u.admin || u.group || location.pathname == apage)
 				return;
 			if (!u.expiration || (new Date(u.expiration) < new Date()))
 				location = apage;
