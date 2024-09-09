@@ -31,13 +31,28 @@ man.util = {
 			cb: cb
 		});
 	},
+	perms: ["access", "build",
+		"edit section", "edit template", "edit document",
+		"create section", "create template", "create document"],
+	getPerms: function(selections) {
+		var p, perms = {};
+		for (p of man.util.perms)
+			perms[p] = selections && selections.includes("can " + p);
+		return perms;
+	},
+	perm: function(p, g) {
+		var mu = man.util;
+		g = g || mu.current.group;
+		var pz = g.permissions = g.permissions || mu.getPerms();
+		return p ? pz[p] : pz;
+	},
 	can: function(perm) {
-		var u = user.core.get(), cur = man.util.current;
+		var u = user.core.get(), mu = man.util, cur = mu.current;
 		if (u.admin)
 			return true;
 		if (!cur.group)
 			cur.group = CT.db.one(u.group);
-		return cur.group.permissions[perm];
+		return mu.perm(perm);
 	},
 	load: function() {
 		var loaders = man.util.loaders;
