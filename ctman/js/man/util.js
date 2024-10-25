@@ -20,9 +20,10 @@ man.util = {
 					CT.dom.hide(l);
 		},
 		group: function() {
-			var cur = man.util.current;
-			cur.group = cur.group || CT.db.one(user.core.get("group"),
-				null, null, true, true);
+			var cur = man.util.current, gkey = user.core.get("group");
+			if (gkey && !cur.group)
+				cur.group = CT.db.one(gkey,
+					null, null, true, true);
 			return cur.group;
 		}
 	},
@@ -45,6 +46,10 @@ man.util = {
 		for (p of man.util.perms)
 			perms[p] = selections && selections.includes("can " + p);
 		return perms;
+	},
+	group: function(key) {
+		var g = man.util.loaders.group();
+		return key ? (g && g[key]) : g;
 	},
 	perm: function(p, g) {
 		var mu = man.util;
