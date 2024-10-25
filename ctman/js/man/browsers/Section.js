@@ -234,6 +234,7 @@ man.browsers.Section = CT.Class({
 			rightbutts: true,
 			modelName: "section",
 			saveMessage: "you saved!",
+			keys: man.util.group("sections"),
 			canedit: man.util.can("edit section"),
 			cancreate: man.util.can("create section"),
 			blurs: ["section name", "section title", "name that section"]
