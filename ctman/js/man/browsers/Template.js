@@ -42,5 +42,6 @@ man.browsers.Template = CT.Class({
 			blurs: ["template name", "template title", "name that template"]
 		}, this.opts);
 		man.injections.init();
+		this.gset = "sections";
 	}
 }, man.browsers.Section);

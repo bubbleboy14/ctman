@@ -227,6 +227,14 @@ man.browsers.Section = CT.Class({
 	items: function(items) {
 		man.relations.geneologize(items);
 	},
+	onFresh: function(data) {
+		var g = man.util.group(), gset = this.gset, eobj = {};
+		if (!g) return;
+		g[gset].push(data.key);
+		eobj[gset] = g[gset];
+		eobj.key = g.key;
+		CT.db.put(eobj);
+	},
 	init: function(opts) {
 		this.opts = CT.merge(opts, {
 			owner: false,
@@ -241,5 +249,6 @@ man.browsers.Section = CT.Class({
 		}, this.opts);
 		man.tables.init();
 		man.relations.init();
+		this.gset = "sections";
 	}
 }, CT.Browser);
