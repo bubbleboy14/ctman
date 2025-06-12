@@ -89,6 +89,7 @@ man.browsers.Document = CT.Class({
 			d.name,
 			cz
 		]);
+		cz.clickable = this.opts.canedit;
 		n._id = d.key;
 		return n;
 	},
@@ -100,10 +101,12 @@ man.browsers.Document = CT.Class({
 	template: function(d) {
 		return man.util.refresher("template", "swap",
 			n => this.swaptemp(d, n), _ => this.sections(d),
-			core.config.ctman.classes.document.template, true);
+			core.config.ctman.classes.document.template, true, null, this.opts.canedit);
 	},
 	scheck: function(d, p, n) {
 		n = n || "include " + p.replace(/_/g, " ");
+		if (!this.opts.canedit)
+			return CT.dom.div(p + ": " + d[p]);
 		return CT.dom.checkboxAndLabel(n,
 			d[p], null, null, null, function(cb) {
 				var evars = { key: d.key };
@@ -114,19 +117,23 @@ man.browsers.Document = CT.Class({
 	settings: function(d) {
 		var scheck = this.scheck, mcfg = core.config.ctman,
 			fcfg = mcfg.fonts, fz = fcfg.options;
-		return CT.dom.div([
+		var cont = [
 			man.util.collapser("settings"),
 			["signup_sheet", "table_of_contents", "declaration_page", "section_page_breaks"].map(function(p) {
 				return scheck(d, p);
 			}).concat([scheck(d, "pretty_filenames",
-				"use pretty (titled and revisioned) filenames")]),
-			CT.dom.select(fz.map(f => f.replace(/-/g, " ")), fz, null, d.font, fcfg.default, function(fname) {
+				"use pretty (titled and revisioned) filenames")])
+		];
+		if (this.opts.canedit) {
+			cont.push(CT.dom.select(fz.map(f => f.replace(/-/g, " ")), fz, null, d.font, fcfg.default, function(fname) {
 				CT.db.put({
 					key: d.key,
 					font: fname
 				});
-			}, null, true)
-		], mcfg.classes.document.settings);
+			}, null, true));
+		} else
+			cont.push(scheck(d, "font"));
+		return CT.dom.div(cont, mcfg.classes.document.settings);
 	},
 	declarations: function(d, cb) {
 		CT.modal.prompt({
@@ -165,12 +172,27 @@ man.browsers.Document = CT.Class({
 			injections: d.injections
 		} : d, noreview, cb);
 	},
+	image: function(d) {
+		return this.opts.canedit ? man.util.image(d, "logo", "client logo", true) : CT.dom.img(d.logo, "w1");
+	},
+	injections: function(d) {
+		var save = this.save;
+		if (!this.opts.canedit) {
+			return CT.dom.div([
+				CT.dom.div("injections", "big"),
+				Object.keys(d.injections).map(k => k + ": " + d.injections[k])
+			], "bordered padded margined round");
+		}
+		return man.util.form(d, "injections", function(vals) {
+			d.injections = vals;
+			save(d);
+		}, null, d.template && man.injections.fields(CT.data.get(d.template)), true);
+	},
 	view: function(d) {
 		var _ = this._,// haz = this.hazards(d),
-			mcfg = core.config.ctman,
-			classes = mcfg.classes.document,
-			view = this.view, save = this.save;
-		man.util.current.document = d;
+			mcfg = core.config.ctman, mu = man.util,
+			classes = mcfg.classes.document;
+		mu.current.document = d;
 		CT.dom.setContent(_.nodes.content, [
 			this.namer(d, classes.title),
 			d.key && this.template(d),
@@ -178,19 +200,10 @@ man.browsers.Document = CT.Class({
 //				"hazards",
 //				haz
 //			], classes.hazards),
-			man.util.form(d, "injections", function(vals) {
-				d.injections = vals;
-//				d.assembly = {
-//					hazards: {
-//						chemical: haz.value.map(v => mcfg.hazards.chemical[v])
-//					}
-//				};
-				save(d);
-			}, null, d.template && man.injections.fields(CT.data.get(d.template)),
-				true),
-			d.key && man.util.image(d, "logo", "client logo", true),
+			this.injections(d),
+			d.key && this.image(d),
 			d.key && this.settings(d),
-			d.key && this.build(d)
+			d.key && mu.can("build") && this.build(d)
 		]);
 	},
 	defaults: function() {
@@ -208,6 +221,8 @@ man.browsers.Document = CT.Class({
 		this.opts = CT.merge(opts, {
 			modelName: "document",
 			opener: "Step 1. Start New HASP Here",
+			canedit: man.util.can("edit document"),
+			cancreate: man.util.can("create document"),
 			blurs: ["project name", "document title", "project/document name"],
 			prebuild: function(items) {
 				CT.db.get("template", function(tz) {

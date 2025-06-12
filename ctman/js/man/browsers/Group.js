@@ -22,18 +22,17 @@ man.browsers.Group = CT.Class({
 		}
 	},
 	perm: function(p) {
-		var g = this._.group, pz = g.permissions = g.permissions || this.getPerms();
-		return p ? pz[p] : pz;
+		return man.util.perm(p, this._.group);
 	},
 	setter: function(variety, items, noder) {
 		CT.dom.setContent(this._.nodes[variety], items.map(this.noders[noder || "item"]));
 	},
 	selector: function(variety) {
-		var _ = this._, isperm = variety == "permissions", g = _.group,
-			getPerms = this.getPerms, options = _[variety], sels, eopts;
+		var _ = this._, mu = man.util, isperm = variety == "permissions", g = _.group,
+			getPerms = mu.getPerms, options = _[variety], sels, eopts;
 		if (isperm) {
-			options = this.perms.map(p => "can " + p);
-			sels = this.perms.filter(this.perm).map(p => "can " + p);
+			options = mu.perms.map(p => "can " + p);
+			sels = mu.perms.filter(this.perm).map(p => "can " + p);
 		} else
 			sels = CT.data.getSet(g[variety]).map(i => i.name);
 		CT.modal.choice({
@@ -73,18 +72,9 @@ man.browsers.Group = CT.Class({
 		});
 		return this.noders.editor("members", memsnode, this.addMem);
 	},
-	perms: ["access", "build",
-		"edit section", "edit template", "edit document",
-		"create section", "create template", "create document"],
-	getPerms: function(selections) {
-		var p, perms = {};
-		for (p of this.perms)
-			perms[p] = selections && selections.includes("can " + p);
-		return perms;
-	},
 	permissions: function(d) {
 		var pnode = this._.nodes.permissions = CT.dom.div();
-		this.setter("permissions", this.perms, "perm");
+		this.setter("permissions", man.util.perms, "perm");
 		return this.noders.editor("permissions", pnode);
 	},
 	view: function(d) {
@@ -109,7 +99,7 @@ man.browsers.Group = CT.Class({
 		return {
 			sections: [],
 			templates: [],
-			permissions: this.getPerms()
+			permissions: man.util.getPerms()
 		};
 	},
 	init: function(opts) {

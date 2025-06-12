@@ -1,5 +1,32 @@
 man.util = {
 	current: {},
+	gated: ['templates', 'Create I-HASP', 'man'],
+	loaders: {
+		account: function() {
+			var u = user.core.get(), apage = "/man/account.html";
+			if (!u || u.admin || u.group || location.pathname == apage)
+				return;
+			if (!u.expiration || (new Date(u.expiration) < new Date()))
+				location = apage;
+		},
+		access: function() {
+			var mu = man.util, l, linx = CT.dom.tag("a", CT.dom.id("ctll")),
+				pname = location.pathname.split("/").pop().split(".").shift();
+			if (mu.can("access")) return;
+			if (mu.gated.includes(pname))
+				location = "/man/dash.html";
+			for (l of linx)
+				if (mu.gated.includes(l.innerHTML))
+					CT.dom.hide(l);
+		},
+		group: function() {
+			var cur = man.util.current, gkey = user.core.get("group");
+			if (gkey && !cur.group)
+				cur.group = CT.db.one(gkey,
+					null, null, true, true);
+			return cur.group;
+		}
+	},
 	m: function(d, cb, action) {
 		CT.net.post({
 			spinner: true,
@@ -10,6 +37,33 @@ man.util = {
 			},
 			cb: cb
 		});
+	},
+	perms: ["access", "build",
+		"edit section", "edit template", "edit document",
+		"create section", "create template", "create document"],
+	getPerms: function(selections) {
+		var p, perms = {};
+		for (p of man.util.perms)
+			perms[p] = selections && selections.includes("can " + p);
+		return perms;
+	},
+	group: function(key) {
+		var g = man.util.loaders.group();
+		return key ? (g && g[key]) : g;
+	},
+	perm: function(p, g) {
+		var mu = man.util;
+		g = g || mu.loaders.group();
+		var pz = g.permissions = g.permissions || mu.getPerms();
+		return p ? pz[p] : pz;
+	},
+	can: function(perm) {
+		return user.core.get("admin") || man.util.perm(perm);
+	},
+	load: function() {
+		var loaders = man.util.loaders;
+		loaders.account();
+		loaders.access();
 	},
 	collapser: function(title) {
 		var n = CT.dom.div(title, "pointer");
@@ -40,12 +94,11 @@ man.util = {
 		]);
 		return n;
 	},
-	refresher: function(title, buttname, buttcb, bodgen, classes, collapsible, buttclass) {
-		var n = CT.dom.div(null, classes || "margined padded bordered round"),
-			section = this.section, asec = this.asec;
+	refresher: function(title, buttname, buttcb, bodgen, classes, collapsible, buttclass, canedit) {
+		var n = CT.dom.div(null, classes || "margined padded bordered round");
 		n.refresh = function() {
 			CT.dom.setContent(n, [
-				CT.dom.button(buttname, buttcb(n), buttclass || "right"),
+				canedit && CT.dom.button(buttname, buttcb(n), buttclass || "right"),
 				collapsible ? man.util.collapser(title) : title,
 				bodgen()
 			]);

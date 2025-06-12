@@ -36,8 +36,12 @@ man.browsers.Template = CT.Class({
 			leftbutts: false,
 			rightbutts: false,
 			modelName: "template",
+			keys: man.util.group("templates"),
+			canedit: man.util.can("edit template"),
+			cancreate: man.util.can("create template"),
 			blurs: ["template name", "template title", "name that template"]
 		}, this.opts);
 		man.injections.init();
+		this.gset = "sections";
 	}
 }, man.browsers.Section);
