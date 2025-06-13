@@ -13,6 +13,7 @@ setup(
     ],
     zip_safe = False,
     install_requires = [
+        "condox >= 0.1"
     ],
     entry_points = '''''',
     classifiers = [
