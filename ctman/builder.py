@@ -1,7 +1,7 @@
 import os, datetime
-from cantools.util import read, write, output
+from condox.util import symage, colormap
 from ctman.hazards import chemicals, chemprops
-from ctman.util import symage, colormap
+from cantools.util import read, write, output
 from cantools.web import mail
 from cantools import config
 from model import db, Injection

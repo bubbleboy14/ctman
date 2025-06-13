@@ -53,7 +53,7 @@ man.util = {
 	},
 	perm: function(p, g) {
 		var mu = man.util;
-		g = g || mu.loaders.group();
+		g = g || mu.loaders.group() || {};
 		var pz = g.permissions = g.permissions || mu.getPerms();
 		return p ? pz[p] : pz;
 	},
