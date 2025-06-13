@@ -1,10 +1,22 @@
 from datetime import datetime, timedelta
+from condox import config as condoxfig
 from condox.util import h2l, symage
 from cantools import db, config
 from cantools.util import log
 from cantools.web import send_mail, email_admins
 from ctuser.model import *
 from ctedit.model import PageEdit, Style
+
+mcfg = config.ctman
+condoxfig.set({
+	"legacyh2l": mcfg.legacyh2l,
+	"builder": {
+		"verbose": mcfg.builder.verbose
+	},
+	"toc": {
+		"secheaders": mcfg.toc.secheaders
+	}
+})
 
 class Group(db.TimeStampedBase):
 	name = db.String()
@@ -17,7 +29,7 @@ class Member(CTUser):
 	expiration = db.DateTime()
 
 	def onsale(self, amount, errmsg=None):
-		days = config.ctman.subs[amount]
+		days = mcfg.subs[amount]
 		payment = Payment(member=self.key,
 			amount=amount, duration=days)
 		if errmsg:
