@@ -1,10 +1,10 @@
 from datetime import datetime, timedelta
+from condox.util import h2l, symage
 from cantools import db, config
 from cantools.util import log
 from cantools.web import send_mail, email_admins
 from ctuser.model import *
 from ctedit.model import PageEdit, Style
-from ctman.util import h2l, symage
 
 class Group(db.TimeStampedBase):
 	name = db.String()
