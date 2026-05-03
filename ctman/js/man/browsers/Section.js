@@ -172,12 +172,14 @@ man.browsers.Section = CT.Class({
 			values.push(i);
 			names.push("Risk Score: " + i);
 		}
-		var setclass = function(val) {
+		var saveMe = this.saveMe, setclass = function(val) {
 			sel.className = "risker " + colors[val] + "back";
 		}, setval = function(val) {
-			CT.log("val changed to " + val + " - what now?");
 			val = parseInt(val);
 			setclass(val);
+			saveMe({
+				risk: val
+			});
 		}, sel = CT.dom.select({
 			names: names,
 			values: values,
