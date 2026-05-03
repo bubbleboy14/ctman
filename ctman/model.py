@@ -104,6 +104,7 @@ class Section(SecBase):
 	image = db.Binary()
 	headerless = db.Boolean(default=False)
 	landscape = db.Boolean(default=False)
+	risk = db.Integer(default=3)
 
 	def embedders(self):
 		return SecBase.query(SecBase.sections.contains(self.key.urlsafe())).all()
