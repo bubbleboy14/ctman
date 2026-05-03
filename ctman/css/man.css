@@ -27,6 +27,17 @@
 	z-index: 100000;
 }
 
+.risker option:nth-child(1), .risker option:nth-child(2), .risker option:nth-child(3) {
+	background-color: green;
+}
+.risker option:nth-child(4), .risker option:nth-child(5),
+.risker option:nth-child(6), .risker option:nth-child(7) {
+	background-color: yellow;
+}
+.risker option:nth-child(8), .risker option:nth-child(9), .risker option:nth-child(10) {
+	background-color: red;
+}
+
 /* tinymce */
 .tox {
 	width: 100%;

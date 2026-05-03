@@ -162,14 +162,36 @@ man.browsers.Section = CT.Class({
 			cb: cb
 		})
 	},
+	risker: function(d) {
+		var names = [], values = [], colors = {},
+			defrisk = 3, curisk = d.risk || defrisk;
+		colors[1] = colors[2] = colors[3] = "green";
+		colors[4] = colors[5] = colors[6] = colors[7] = "yellow";
+		colors[8] = colors[9] = colors[10] = "red";
+		for (var i = 1; i <= 10; i++) {
+			values.push(i);
+			names.push("Risk Score: " + i);
+		}
+		var saveMe = this.saveMe, setclass = function(val) {
+			sel.className = "risker " + colors[val] + "back";
+		}, setval = function(val) {
+			val = parseInt(val);
+			setclass(val);
+			saveMe({
+				risk: val
+			});
+		}, sel = CT.dom.select({
+			names: names,
+			values: values,
+			curvalue: curisk,
+			defaultvalue: defrisk,
+			onchange: setval
+		});
+		setclass(curisk);
+		return sel;
+	},
 	injectors: function(d) {
-		var cvar = this.choosevar;
-		return CT.dom.div([
-//			CT.dom.button("insert variable", function() {
-//				cvar(d, function(ivar) {
-//					man.util.inject("{{" + ivar + "}}");
-//				});
-//			}),
+		var cvar = this.choosevar, ivars = false, parts = [
 			CT.dom.button("insert image", function() {
 				man.relations.images(function(img) {
 					man.util.inject("<img style='display: block; max-width: 100%' src='" + img + "'>");
@@ -177,7 +199,17 @@ man.browsers.Section = CT.Class({
 			}),
 			man.tables.button(),
 			man.tables.chembutt()
-		], "right");
+		];
+		if (ivars) { // why is this disabled again?
+			parts.unshift(CT.dom.button("insert variable", function() {
+				cvar(d, function(ivar) {
+					man.util.inject("{{" + ivar + "}}");
+				});
+			}));
+		}
+		if (this.opts.modelName == "section")
+			parts.unshift(this.risker(d));
+		return CT.dom.div(parts, "right");
 	},
 	saveThen: function(cb) {
 		this._afterSave = cb;
