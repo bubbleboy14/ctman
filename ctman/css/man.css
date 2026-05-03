@@ -27,6 +27,11 @@
 	z-index: 100000;
 }
 
+.risker {
+	height: 27px;
+	vertical-align: text-bottom;
+}
+
 .risker option:nth-child(1), .risker option:nth-child(2), .risker option:nth-child(3) {
 	background-color: green;
 }
