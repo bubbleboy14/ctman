@@ -1,4 +1,4 @@
-import os, datetime
+import os, datetime, shutil
 from condox.util import symage, colormap
 from ctman.hazards import chemicals, chemprops
 from cantools.util import read, write, output
@@ -56,7 +56,7 @@ ItalicFont=Italic,
 BoldFont=Bold,
 BoldItalicFont=BoldItalic]{%s}
 
-\\setmathfont{Latin Modern Math}"""
+\\setmathfont{latinmodern-math.otf}"""
 
 DEX = """\\newpage
 SITE-SPECIFIC HEALTH AND SAFETY PLAN
@@ -111,6 +111,103 @@ def report(bdata):
 		bdata["message"]
 	]))
 
+def matching_brace(data, open_index):
+	depth = 0
+	for i in range(open_index, len(data)):
+		if data[i] == "\\":
+			continue
+		if data[i] == "{" and (i == 0 or data[i - 1] != "\\"):
+			depth += 1
+		elif data[i] == "}" and (i == 0 or data[i - 1] != "\\"):
+			depth -= 1
+			if depth == 0:
+				return i
+	return -1
+
+def strip_table_highlights(data):
+	lines = data.splitlines(True)
+	filtered = []
+	i = 0
+	while i < len(lines):
+		line = lines[i]
+		if line.lstrip().startswith("\\sethlcolor") and "\\hl{" in line:
+			j = i + 1
+			while j < len(lines) and not lines[j].strip():
+				j += 1
+			if j < len(lines) and lines[j].lstrip().startswith("\\begin{tabular}"):
+				i += 1
+				continue
+		filtered.append(line)
+		i += 1
+	data = "".join(filtered)
+
+	hlcolor = "\\sethlcolor"
+	out = []
+	pos = 0
+	while True:
+		start = data.find(hlcolor, pos)
+		if start == -1:
+			out.append(data[pos:])
+			return "".join(out)
+		out.append(data[pos:start])
+		color_start = start + len(hlcolor)
+		if color_start >= len(data) or data[color_start] != "{":
+			out.append(data[start:start + len(hlcolor)])
+			pos = start + len(hlcolor)
+			continue
+		color_end = matching_brace(data, color_start)
+		if color_end == -1:
+			out.append(data[start:])
+			return "".join(out)
+		hl_start = color_end + 1
+		while hl_start < len(data) and data[hl_start].isspace():
+			hl_start += 1
+		if not data.startswith("\\hl{", hl_start):
+			out.append(data[start:color_end + 1])
+			pos = color_end + 1
+			continue
+		body_start = hl_start + len("\\hl")
+		body_end = matching_brace(data, body_start)
+		if body_end == -1:
+			out.append(data[start:])
+			return "".join(out)
+		out.append(data[body_start + 1:body_end])
+		pos = body_end + 1
+
+def escape_percent(data):
+	out = []
+	for i, char in enumerate(data):
+		out.append("\\%" if char == "%" and (i == 0 or data[i - 1] != "\\") else char)
+	return "".join(out)
+
+def row_columns(line):
+	return 1 + sum(1 for i, char in enumerate(line) if char == "&" and (i == 0 or line[i - 1] != "\\"))
+
+def normalize_tabular_columns(data):
+	lines = data.splitlines(True)
+	out = []
+	i = 0
+	while i < len(lines):
+		line = lines[i]
+		if not line.lstrip().startswith("\\begin{tabular}{"):
+			out.append(line)
+			i += 1
+			continue
+		block = [line]
+		i += 1
+		while i < len(lines):
+			block.append(lines[i])
+			i += 1
+			if lines[i - 1].lstrip().startswith("\\end{tabular}"):
+				break
+		declared = block[0].count("p{")
+		actual = max([row_columns(row) for row in block[1:] if "\\\\" in row] or [declared])
+		if declared == 1 and actual > declared:
+			width = str(1.0 / actual)[:4]
+			block[0] = "\\begin{tabular}{| %s |}\n"%(" | ".join(actual * ["p{%s\\linewidth}"%(width,)]),)
+		out.extend(block)
+	return "".join(out)
+
 def export(doc, data=None):
 	fname = doc.name.replace(" ", "_").replace("(",
 		"").replace(")", "").replace("/", "")
@@ -131,6 +228,7 @@ def export(doc, data=None):
 				"message": str(e),
 				"success": False
 			}
+	data = escape_percent(normalize_tabular_columns(strip_table_highlights(data)))
 
 	mdname = os.path.join("build", "%s.md"%(fname,))
 	write(data, mdname)
@@ -148,12 +246,15 @@ def initpandoc():
 	if "version" not in PDINFO:
 		PDINFO['version'] = int(output("pandoc --version").split("\n").pop(0).split(" ").pop().split(".").pop(0))
 
+def xelatex():
+	return shutil.which("xelatex") or (os.path.exists("/Library/TeX/texbin/xelatex") and "/Library/TeX/texbin/xelatex") or "xelatex"
+
 def md2pdf(doc, mdname, bname, pname=None):
 	initpandoc()
 	mcfg = config.ctman
 	fcfg = mcfg.font
-	pcmd = "pandoc %s -o %s --%s-engine=xelatex -H tex/imps.tex -V geometry:margin=0.8in"%(mdname,
-		bname, PDINFO['version'] == 1 and "latex" or "pdf")
+	pcmd = "pandoc %s -o %s --%s-engine=%s -H tex/imps.tex -V geometry:margin=0.8in"%(mdname,
+		bname, PDINFO['version'] == 1 and "latex" or "pdf", xelatex())
 	if mcfg.builder.verbose:
 		pcmd = "%s --verbose"%(pcmd,)
 	if fcfg.size:
