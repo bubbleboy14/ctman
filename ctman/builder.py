@@ -1,4 +1,4 @@
-import os, datetime
+import os, datetime, shutil
 from condox.util import symage, colormap
 from ctman.hazards import chemicals, chemprops
 from cantools.util import read, write, output
@@ -56,7 +56,7 @@ ItalicFont=Italic,
 BoldFont=Bold,
 BoldItalicFont=BoldItalic]{%s}
 
-\\setmathfont{Latin Modern Math}"""
+\\setmathfont{latinmodern-math.otf}"""
 
 DEX = """\\newpage
 SITE-SPECIFIC HEALTH AND SAFETY PLAN
@@ -111,6 +111,12 @@ def report(bdata):
 		bdata["message"]
 	]))
 
+def escape_percent(data):
+	out = []
+	for i, char in enumerate(data):
+		out.append("\\%" if char == "%" and (i == 0 or data[i - 1] != "\\") else char)
+	return "".join(out)
+
 def export(doc, data=None):
 	fname = doc.name.replace(" ", "_").replace("(",
 		"").replace(")", "").replace("/", "")
@@ -131,6 +137,7 @@ def export(doc, data=None):
 				"message": str(e),
 				"success": False
 			}
+	data = escape_percent(data)
 
 	mdname = os.path.join("build", "%s.md"%(fname,))
 	write(data, mdname)
@@ -148,12 +155,15 @@ def initpandoc():
 	if "version" not in PDINFO:
 		PDINFO['version'] = int(output("pandoc --version").split("\n").pop(0).split(" ").pop().split(".").pop(0))
 
+def xelatex():
+	return shutil.which("xelatex") or (os.path.exists("/Library/TeX/texbin/xelatex") and "/Library/TeX/texbin/xelatex") or "xelatex"
+
 def md2pdf(doc, mdname, bname, pname=None):
 	initpandoc()
 	mcfg = config.ctman
 	fcfg = mcfg.font
-	pcmd = "pandoc %s -o %s --%s-engine=xelatex -H tex/imps.tex -V geometry:margin=0.8in"%(mdname,
-		bname, PDINFO['version'] == 1 and "latex" or "pdf")
+	pcmd = "pandoc %s -o %s --%s-engine=%s -H tex/imps.tex -V geometry:margin=0.8in"%(mdname,
+		bname, PDINFO['version'] == 1 and "latex" or "pdf", xelatex())
 	if mcfg.builder.verbose:
 		pcmd = "%s --verbose"%(pcmd,)
 	if fcfg.size:
