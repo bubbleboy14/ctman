@@ -1,8 +1,9 @@
 man.tables = {
 	_: {
 		chemicals: {
-			presels: ["name", "classification", "synonyms_and_trade_names", "idlh", "physical_description",
-				"symptoms", "first_aid", "exposure_routes", "exposure_limits", "target_organs"]
+			presels: ["name"]
+//			presels: ["name", "classification", "synonyms_and_trade_names", "idlh", "physical_description",
+//				"symptoms", "first_aid", "exposure_routes", "exposure_limits", "target_organs"]
 		},
 		entable: function(contents) {
 			return "<table><tbody><tr><td>" + contents + "</td></tr></tbody></table>";
