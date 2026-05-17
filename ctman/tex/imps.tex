@@ -11,5 +11,30 @@
 \usepackage{hyperref}
 \hypersetup{colorlinks=true,urlcolor=blue,linkcolor=blue}
 \usepackage{pdflscape}
-\def\landscapeon{\begin{landscape}}
-\def\landscapeoff{\end{landscape}}
+\usepackage{eso-pic}
+
+\newcount\landscapeflag
+\landscapeflag=0
+
+% physical top-right corner = visual bottom-right in landscape (pdflscape rotates 90 CW)
+\makeatletter
+\AddToShipoutPictureFG{%
+  \ifnum\landscapeflag=1\relax
+    \put(\strip@pt\paperwidth,\strip@pt\paperheight){%
+      \put(-30,-30){\rotatebox{90}{\makebox(0,0){\footnotesize\thepage}}}%
+    }%
+  \fi
+}
+\makeatother
+
+\def\landscapeon{%
+  \begin{landscape}%
+  \pagestyle{empty}%
+  \global\landscapeflag=1%
+}
+\def\landscapeoff{%
+  \end{landscape}%
+  \global\landscapeflag=0%
+  \pagestyle{fancy}%
+}
+\newenvironment{mylandscape}{\landscapeon}{\landscapeoff}
