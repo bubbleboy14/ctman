@@ -68,7 +68,7 @@ SITE-SPECIFIC HEALTH AND SAFETY PLAN
 """
 
 def drow(k, v):
-	return "%s: & %s \\\\ \\\\"%(k, v.replace("\n", "\\hfill\\break"))
+	return "%s: & %s \\\\ \\\\"%(k, v.replace("&", "\\&").replace("\n", "\\hfill\\break"))
 
 def tsrow(k, v):
 	return drow(k, v.strftime("%B %d, %Y"))
