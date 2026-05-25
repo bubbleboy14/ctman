@@ -20,6 +20,21 @@ man.browsers.Template = CT.Class({
 			cb: cb
 		}) : alert("no insertion variables defined! please define some :)");
 	},
+	dodelete: function(d) {
+		var reallybutt = this.del4realbutt, groups = this.mygroups;
+		CT.db.get("document", function(docs) {
+			if (docs.length)
+				return alert("sorry, " + docs.length
+					+ " documents use this template - can't delete!");
+			groups(d, function(gnode) {
+				CT.modal.modal([
+					gnode, reallybutt(d)
+				]);
+			});
+		}, null, null, null, {
+			template: d.key
+		});
+	},
 	extra: function(d) {
 		if (!d.key) return;
 		var injed = man.injections.editor(d);
@@ -33,7 +48,7 @@ man.browsers.Template = CT.Class({
 	init: function(opts) { // requires opts.sections
 		this.opts = CT.merge(opts, {
 			owner: true,
-			leftbutts: false,
+			leftbutts: true,
 			rightbutts: false,
 			modelName: "template",
 			keys: man.util.group("templates"),
