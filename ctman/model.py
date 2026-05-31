@@ -109,11 +109,17 @@ class Section(SecBase):
 	def embedders(self):
 		return SecBase.query(SecBase.sections.contains(self.key.urlsafe())).all()
 
+	def groups(self):
+		return Group.query(Group.sections.contains(self.key.urlsafe())).all()
+
+	def unlist(self, items):
+		for item in items:
+			item.sections = list(filter(lambda s : s != self.key, item.sections))
+		db.put_multi(items)
+
 	def beforeremove(self, session):
-		embedders = self.embedders()
-		for embedder in embedders:
-			embedder.sections = list(filter(lambda s : s != self.key, embedder.sections))
-		db.put_multi(embedders, session=session)
+		self.unlist(self.embedders())
+		self.unlist(self.groups())
 
 	def labeler(self):
 		return "%s [%s]"%(self.name, self.index)
@@ -143,6 +149,17 @@ class Injection(db.TimeStampedBase):
 class Template(SecBase):
 	owner = db.ForeignKey(kind=Member)
 	injections = db.ForeignKey(kind=Injection, repeated=True)
+
+	def groups(self):
+		return Group.query(Group.templates.contains(self.key.urlsafe())).all()
+
+	def unlist(self, items):
+		for item in items:
+			item.templates = list(filter(lambda s : s != self.key, item.templates))
+		db.put_multi(items)
+
+	def beforeremove(self, session):
+		self.unlist(self.groups())
 
 	def body(self, depth, novars=False, page_breaks=False):
 		return self.desc(depth, novars)

@@ -108,24 +108,46 @@ man.browsers.Section = CT.Class({
 		});
 		return pbutt;
 	},
-	delbutt: function(d) {
-		return CT.dom.button("delete", function() {
-			man.util.m(d, function(embedders) {
+	del4realbutt: function(d) {
+		return CT.dom.button("click here to delete it anyway", function() {
+			if (!(confirm("really delete this " + d.modelName + "?") && confirm("really?")))
+				return;
+			CT.db.put(d.key, function() {
+				alert("ok, you asked for it!");
+				location.reload(); // meh
+			}, "delete", "key");
+		}, "big red w1")
+	},
+	mygroups: function(d, cb) {
+		var filts = {}, mod = this.opts.modelName;
+		filts[mod + "s"] = {
+			value: d.key,
+			comparator: "contains"
+		};
+		CT.db.get("group", function(groups) {
+			cb([
+				CT.dom.div("this " + mod + " is used by " + groups.length + " groups",
+					"bigger"),
+				groups.map(g => g.name)
+			]);
+		}, null, null, null, filts);
+	},
+	dodelete: function(d) {
+		var reallybutt = this.del4realbutt, groups = this.mygroups;
+		man.util.m(d, function(embedders) {
+			groups(d, function(gnode) {
 				CT.modal.modal([
 					CT.dom.div("this section is embedded in " + embedders.length + " places",
 						"bigger"),
 					embedders.map(e => e.name),
-					CT.dom.button("click here to delete it anyway", function() {
-						if (!(confirm("really delete this section?") && confirm("really?")))
-							return;
-						CT.db.put(d.key, function() {
-							alert("ok, you asked for it!");
-							location.reload(); // meh
-						}, "delete", "key");
-					}, "big red w1")
+					gnode,
+					reallybutt(d)
 				]);
-			}, "embedders");
-		}, "red");
+			});
+		}, "embedders");
+	},
+	delbutt: function(d) {
+		return CT.dom.button("delete", () => this.dodelete(d), "red");
 	},
 	boolcheck: function(d, name) {
 		var _ = this._, eoz, saveThen = this.saveThen;
